@@ -70,10 +70,10 @@ func _load_room(path: String, door_name: String) -> void:
 # cae al "DefaultSpawn" de la sala. Último recurso: el origen.
 func _find_spawn(door_name: String) -> Vector2:
 	if door_name != "":
-		var door := current_room.find_child(door_name, true, false)
+		var door: Node = current_room.find_child(door_name, true, false)
 		if door != null and door.has_node("Entry"):
 			return (door.get_node("Entry") as Node2D).global_position
-	var spawn := current_room.find_child("DefaultSpawn", true, false)
+	var spawn: Node = current_room.find_child("DefaultSpawn", true, false)
 	if spawn != null:
 		return (spawn as Node2D).global_position
 	return Vector2.ZERO

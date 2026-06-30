@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://c1main00argen"]
+[gd_scene format=3 uid="uid://c1main00argen"]
 
 [ext_resource type="Script" path="res://scripts/room_manager.gd" id="1_manager"]
 [ext_resource type="PackedScene" path="res://scenes/player.tscn" id="2_player"]
