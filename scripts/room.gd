@@ -1,0 +1,14 @@
+extends Node2D
+
+# ============================================================
+#  ROOM — datos de una sala
+#  Por ahora solo los límites de cámara. El RoomManager los
+#  lee al cargar la sala y se los pasa a la cámara del player.
+#  En fases siguientes acá pueden ir spawns de enemigos, etc.
+# ============================================================
+
+@export_group("Límites de cámara")
+@export var camera_limit_left: int = 0
+@export var camera_limit_top: int = 0
+@export var camera_limit_right: int = 1100
+@export var camera_limit_bottom: int = 640

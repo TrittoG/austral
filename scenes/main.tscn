@@ -1,0 +1,35 @@
+[gd_scene load_steps=4 format=3 uid="uid://c1main00argen"]
+
+[ext_resource type="Script" path="res://scripts/room_manager.gd" id="1_manager"]
+[ext_resource type="PackedScene" path="res://scenes/player.tscn" id="2_player"]
+[ext_resource type="Script" path="res://scripts/hud.gd" id="3_hud"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_manager")
+start_room = "res://scenes/rooms/room_01.tscn"
+start_door = ""
+
+[node name="RoomContainer" type="Node2D" parent="."]
+
+[node name="Player" parent="." instance=ExtResource("2_player")]
+position = Vector2(180, 540)
+
+[node name="HUD" type="CanvasLayer" parent="."]
+script = ExtResource("3_hud")
+
+[node name="Label" type="Label" parent="HUD"]
+offset_left = 16.0
+offset_top = 12.0
+offset_right = 220.0
+offset_bottom = 44.0
+theme_override_font_sizes/font_size = 22
+text = "HP"
+
+[node name="Fade" type="CanvasLayer" parent="."]
+layer = 128
+
+[node name="ColorRect" type="ColorRect" parent="Fade"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 0)
+mouse_filter = 2
