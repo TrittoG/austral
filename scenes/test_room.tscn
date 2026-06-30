@@ -11,7 +11,7 @@ size = Vector2(1100, 40)
 size = Vector2(40, 640)
 
 [sub_resource type="RectangleShape2D" id="shape_plat_big"]
-size = Vector2(180, 24)
+size = Vector2(107, 24)
 
 [sub_resource type="RectangleShape2D" id="shape_plat_med"]
 size = Vector2(140, 24)
@@ -64,13 +64,14 @@ color = Color(0.24, 0.24, 0.26, 1)
 position = Vector2(280, 534)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlatformA" unique_id=1352088314]
+position = Vector2(-36.5, 0)
 shape = SubResource("shape_plat_big")
 
 [node name="ColorRect" type="ColorRect" parent="PlatformA" unique_id=363148480]
-offset_left = -90.0
-offset_top = -12.0
-offset_right = 90.0
-offset_bottom = 12.0
+offset_left = -119.0
+offset_top = -9.0
+offset_right = 20.0
+offset_bottom = 15.0
 color = Color(0.36, 0.36, 0.4, 1)
 
 [node name="PlatformB" type="StaticBody2D" parent="." unique_id=1997195308]

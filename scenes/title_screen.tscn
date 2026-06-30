@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3 uid="uid://c1title00argen"]
+[gd_scene format=3 uid="uid://b2pxf1xxpwf7b"]
 
 [ext_resource type="Script" path="res://scripts/title_screen.gd" id="1_title"]
 
