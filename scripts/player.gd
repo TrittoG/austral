@@ -75,6 +75,24 @@ extends CharacterBody2D
 ## Hitstop al recibir daño (un poco más largo que el de pegar).
 @export var hurt_hitstop: float = 0.08
 
+# ---- Habilidades desbloqueadas (sistema de flags) ----------
+# Cada habilidad arranca bloqueada y se activa con su flag. En la Fase 7
+# estas empiezan en false y se prenden al conseguir la habilidad jugando.
+# Por ahora arrancan en true para poder probarlas de una.
+@export_group("Habilidades desbloqueadas")
+@export var has_dash: bool = true
+
+# ---- Dash --------------------------------------------------
+@export_group("Dash")
+## Velocidad del impulso del dash (px/s).
+@export var dash_speed: float = 500.0
+## Cuánto dura el dash en segundos.
+@export var dash_duration: float = 0.15
+## Tiempo mínimo entre dashes.
+@export var dash_cooldown: float = 0.4
+## Si está activo, sos invulnerable durante el dash (i-frames).
+@export var dash_iframes: bool = false
+
 # ---- Valores derivados (no tocar a mano) -------------------
 # Se calculan a partir de jump_height y los tiempos. Se recalculan cada
 # frame para que tunear los @export de arriba surta efecto en vivo.
@@ -95,6 +113,12 @@ var attack_dir: Vector2 = Vector2.RIGHT  # dirección del golpe en curso
 var attack_hit_targets: Array = []       # a quién ya golpeó este swing (evita doble daño)
 var invuln_timer: float = 0.0            # i-frames restantes
 var spawn_point: Vector2                 # dónde reaparecer al morir (provisorio)
+
+# ---- Estado del dash ---------------------------------------
+var is_dashing: bool = false
+var dash_timer: float = 0.0              # tiempo activo restante
+var dash_cooldown_timer: float = 0.0     # tiempo hasta poder volver a dashear
+var dash_dir: int = 1                    # dirección del dash en curso
 
 # Se emite cuando cambia la vida, para que el HUD se actualice.
 signal health_changed(current: int, maximum: int)
@@ -121,11 +145,14 @@ func _physics_process(delta: float) -> void:
 	# con el juego corriendo. Es barato y vale oro para iterar el feel.
 	_update_jump_parameters()
 
-	_update_assist_timers(delta)
-	_try_jump()
-	_apply_variable_jump_height()
-	_apply_gravity(delta)
-	_apply_horizontal_movement(delta)
+	# El dash manda: mientras dura, ignora gravedad y control horizontal normal.
+	_handle_dash(delta)
+	if not is_dashing:
+		_update_assist_timers(delta)
+		_try_jump()
+		_apply_variable_jump_height()
+		_apply_gravity(delta)
+		_apply_horizontal_movement(delta)
 
 	_handle_attack(delta)
 	_handle_invulnerability(delta)
@@ -211,6 +238,39 @@ func _apply_horizontal_movement(delta: float) -> void:
 	else:
 		var friction := ground_friction if is_on_floor() else air_friction
 		velocity.x = move_toward(velocity.x, 0.0, friction * delta)
+
+
+# ------------------------------------------------------------
+#  DASH (primera habilidad de movimiento)
+# ------------------------------------------------------------
+# Impulso horizontal rápido. Mientras dura, anula la gravedad y el control
+# normal: vas derecho a velocidad fija. La velocidad y la duración son las
+# que más cambian el feel, así que cada una es @export.
+func _handle_dash(delta: float) -> void:
+	dash_cooldown_timer = maxf(dash_cooldown_timer - delta, 0.0)
+
+	# Iniciar dash: requiere tener la habilidad y no estar en cooldown.
+	var can_dash := has_dash and dash_cooldown_timer <= 0.0 and not is_dashing
+	if Input.is_action_just_pressed("dash") and can_dash:
+		_start_dash()
+
+	# Mientras el dash está activo, forzar la velocidad en la dirección fijada.
+	if is_dashing:
+		dash_timer -= delta
+		velocity.x = dash_dir * dash_speed
+		velocity.y = 0.0  # dash horizontal puro, sin caer
+		if dash_timer <= 0.0:
+			is_dashing = false
+
+
+func _start_dash() -> void:
+	is_dashing = true
+	dash_timer = dash_duration
+	dash_cooldown_timer = dash_cooldown
+	dash_dir = facing  # dashea hacia donde mira
+	# i-frames opcionales durante el dash (cruzar proyectiles/enemigos).
+	if dash_iframes:
+		invuln_timer = maxf(invuln_timer, dash_duration)
 
 
 # ------------------------------------------------------------
