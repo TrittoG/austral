@@ -38,18 +38,26 @@ offset_right = 550.0
 offset_bottom = 20.0
 color = Color(0.22, 0.26, 0.34, 1)
 
-[node name="WallRight" type="StaticBody2D" parent="."]
-position = Vector2(1080, 300)
+[node name="DoorRight" type="Area2D" parent="."]
+position = Vector2(1085, 400)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("3_door")
+target_room = "res://scenes/rooms/boss_room.tscn"
+target_door = "DoorLeft"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="WallRight"]
-shape = SubResource("shape_wall")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DoorRight"]
+shape = SubResource("shape_door")
 
-[node name="ColorRect" type="ColorRect" parent="WallRight"]
-offset_left = -20.0
-offset_top = -320.0
-offset_right = 20.0
-offset_bottom = 320.0
-color = Color(0.18, 0.22, 0.3, 1)
+[node name="ColorRect" type="ColorRect" parent="DoorRight"]
+offset_left = -15.0
+offset_top = -280.0
+offset_right = 15.0
+offset_bottom = 280.0
+color = Color(0.8, 0.4, 0.3, 0.25)
+
+[node name="Entry" type="Marker2D" parent="DoorRight"]
+position = Vector2(-75, 140)
 
 [node name="PlatformA" type="StaticBody2D" parent="."]
 position = Vector2(850, 520)
