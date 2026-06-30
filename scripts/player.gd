@@ -471,8 +471,17 @@ func _check_incoming_damage() -> void:
 		return
 	for area in hurtbox.get_overlapping_areas():
 		if area.is_in_group("enemy_hitbox"):
-			_take_damage(1, area.global_position)
+			_take_damage(_damage_from(area), area.global_position)
 			break
+
+
+# Cuánto daño hace una fuente de daño. Si el dueño del área (el enemigo)
+# tiene contact_damage, usa ese; si no (hazards, proyectiles), 1 por defecto.
+func _damage_from(area: Area2D) -> int:
+	var src = area.get_owner()
+	if src != null and "contact_damage" in src:
+		return src.contact_damage
+	return 1
 
 
 func _take_damage(amount: int, from_position: Vector2) -> void:
