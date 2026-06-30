@@ -22,12 +22,17 @@ extends Node2D
 
 # Sin tipo: accedemos a propiedades de room.gd (camera_limit_*) que Node no tiene.
 var current_room = null
+var current_room_path: String = ""   # ruta de la sala cargada (para el checkpoint)
 var is_transitioning: bool = false
 
 
 func _ready() -> void:
 	add_to_group("rooms")
-	if start_room != "":
+	# Si hay un checkpoint cargado (vinimos de "Continuar"), arrancamos ahí.
+	var cp := Game.get_checkpoint()
+	if cp["room"] != "":
+		_load_room(cp["room"], "", cp["position"])
+	elif start_room != "":
 		_load_room(start_room, start_door)
 
 
@@ -38,7 +43,26 @@ func go_to_room(path: String, door_name: String) -> void:
 	_transition(path, door_name)
 
 
-func _transition(path: String, door_name: String) -> void:
+# Reaparece en el último banco guardado (la llama el player al morir).
+func respawn_at_checkpoint() -> void:
+	if is_transitioning:
+		return
+	var cp := Game.get_checkpoint()
+	var room: String = cp["room"]
+	var pos: Vector2 = cp["position"]
+	if room == "":
+		# Sin checkpoint todavía: volvemos al inicio de la sala inicial.
+		room = start_room
+		pos = Vector2.INF
+	await _transition(room, "", pos)
+	# Recuperar la vida al reaparecer.
+	var p = get_tree().get_first_node_in_group("player")
+	if p != null and p.has_method("full_heal"):
+		p.full_heal()
+
+
+# explicit_pos = Vector2.INF significa "usar la puerta/DefaultSpawn".
+func _transition(path: String, door_name: String, explicit_pos := Vector2.INF) -> void:
 	is_transitioning = true
 	await _fade_to(1.0)                 # a negro
 
@@ -46,7 +70,7 @@ func _transition(path: String, door_name: String) -> void:
 		current_room.queue_free()
 		current_room = null
 
-	_load_room(path, door_name)
+	_load_room(path, door_name, explicit_pos)
 	await get_tree().physics_frame      # dejar que la posición se asiente
 
 	await _fade_to(0.0)                 # de vuelta a la imagen
@@ -54,13 +78,17 @@ func _transition(path: String, door_name: String) -> void:
 	is_transitioning = false
 
 
-func _load_room(path: String, door_name: String) -> void:
+func _load_room(path: String, door_name: String, explicit_pos := Vector2.INF) -> void:
 	var packed: PackedScene = load(path)
 	current_room = packed.instantiate()
+	current_room_path = path
 	room_container.add_child(current_room)
 
-	# Colocar al player en la puerta destino (o en el spawn por defecto).
-	player.global_position = _find_spawn(door_name)
+	# Posición: explícita (respawn en checkpoint) o resuelta por puerta/spawn.
+	if explicit_pos != Vector2.INF:
+		player.global_position = explicit_pos
+	else:
+		player.global_position = _find_spawn(door_name)
 	player.velocity = Vector2.ZERO
 
 	_apply_camera_limits()

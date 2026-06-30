@@ -160,10 +160,26 @@ signal health_changed(current: int, maximum: int)
 func _ready() -> void:
 	_update_jump_parameters()
 	add_to_group("player")
-	health = max_health
+	_apply_saved_state()
 	spawn_point = global_position
 	# El hitbox del golpe arranca apagado; se prende solo al atacar.
 	sword_shape.disabled = true
+	health_changed.emit(health, max_health)
+
+
+# Toma del estado del juego la vida máxima y qué habilidades están
+# desbloqueadas. Así el save manda sobre lo que se ve en el inspector.
+func _apply_saved_state() -> void:
+	max_health = Game.max_health
+	health = max_health
+	has_dash = Game.get_ability("dash")
+	has_double_jump = Game.get_ability("double_jump")
+	has_wall_jump = Game.get_ability("wall_jump")
+
+
+# Restaura la vida al máximo (la usa el banco / checkpoint).
+func full_heal() -> void:
+	health = max_health
 	health_changed.emit(health, max_health)
 
 
@@ -479,10 +495,14 @@ func _take_damage(amount: int, from_position: Vector2) -> void:
 		_die()
 
 
-# Provisorio hasta la Fase 5 (checkpoints): reaparece en el punto inicial.
+# Al morir, reaparece en el último checkpoint vía el RoomManager. Si no hay
+# manager (ej: probando en test_room en aislado), respawn local al inicio.
 func _die() -> void:
-	health = max_health
-	global_position = spawn_point
-	velocity = Vector2.ZERO
-	invuln_timer = invuln_time
-	health_changed.emit(health, max_health)
+	var manager = get_tree().get_first_node_in_group("rooms")
+	if manager != null and manager.has_method("respawn_at_checkpoint"):
+		manager.respawn_at_checkpoint()
+	else:
+		full_heal()
+		global_position = spawn_point
+		velocity = Vector2.ZERO
+		invuln_timer = invuln_time
