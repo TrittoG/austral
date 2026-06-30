@@ -93,6 +93,27 @@ extends CharacterBody2D
 ## Si está activo, sos invulnerable durante el dash (i-frames).
 @export var dash_iframes: bool = false
 
+# ---- Doble salto -------------------------------------------
+@export_group("Doble salto")
+@export var has_double_jump: bool = true
+## Cuántos saltos extra en el aire (1 = doble salto).
+@export var max_air_jumps: int = 1
+## Altura del salto aéreo relativa al salto base (1.0 = misma altura).
+@export var double_jump_height_mult: float = 1.0
+
+# ---- Wall slide / wall jump --------------------------------
+@export_group("Wall slide / wall jump")
+@export var has_wall_jump: bool = true
+## Velocidad de caída máxima mientras te deslizás por la pared (px/s).
+@export var wall_slide_speed: float = 60.0
+## Empuje horizontal al saltar de la pared (lejos de ella).
+@export var wall_jump_velocity_x: float = 260.0
+## Altura del wall jump relativa al salto base (1.0 = misma altura).
+@export var wall_jump_height_mult: float = 1.0
+## Tiempo (s) que se ignora el input horizontal tras un wall jump, para
+## que el empuje te despegue de la pared aunque sigas apretando hacia ella.
+@export var wall_jump_lockout: float = 0.12
+
 # ---- Valores derivados (no tocar a mano) -------------------
 # Se calculan a partir de jump_height y los tiempos. Se recalculan cada
 # frame para que tunear los @export de arriba surta efecto en vivo.
@@ -119,6 +140,12 @@ var is_dashing: bool = false
 var dash_timer: float = 0.0              # tiempo activo restante
 var dash_cooldown_timer: float = 0.0     # tiempo hasta poder volver a dashear
 var dash_dir: int = 1                    # dirección del dash en curso
+
+# ---- Estado de doble salto y wall slide --------------------
+var air_jumps_used: int = 0              # saltos aéreos consumidos desde el último piso/pared
+var is_wall_sliding: bool = false        # true mientras te deslizás por una pared
+var wall_dir: int = 0                    # hacia dónde está la pared: -1 izq, 1 der
+var wall_jump_lockout_timer: float = 0.0 # ignora input horizontal mientras > 0
 
 # Se emite cuando cambia la vida, para que el HUD se actualice.
 signal health_changed(current: int, maximum: int)
@@ -149,9 +176,11 @@ func _physics_process(delta: float) -> void:
 	_handle_dash(delta)
 	if not is_dashing:
 		_update_assist_timers(delta)
-		_try_jump()
+		_detect_wall_slide()        # decide si estamos deslizando (antes del salto)
+		_try_jump()                 # salto de piso/coyote, wall jump o doble salto
 		_apply_variable_jump_height()
 		_apply_gravity(delta)
+		_apply_wall_slide_clamp()   # limita la caída pegado a la pared (tras la gravedad)
 		_apply_horizontal_movement(delta)
 
 	_handle_attack(delta)
@@ -193,6 +222,7 @@ func _update_assist_timers(delta: float) -> void:
 	# borde (sin saltar) empieza a descontar, dándote unos frames para saltar.
 	if is_on_floor():
 		coyote_timer = coyote_time
+		air_jumps_used = 0  # tocar el piso recarga el doble salto
 	else:
 		coyote_timer -= delta
 
@@ -206,12 +236,32 @@ func _update_assist_timers(delta: float) -> void:
 
 
 func _try_jump() -> void:
-	# Salta si hay intención bufferizada Y todavía queda coyote disponible.
-	# Consumimos ambos timers para que no se dispare dos veces.
-	if jump_buffer_timer > 0.0 and coyote_timer > 0.0:
+	# Sin intención de salto bufferizada no hay nada que hacer.
+	if jump_buffer_timer <= 0.0:
+		return
+
+	# 1) Salto desde piso o coyote: la prioridad más alta.
+	if coyote_timer > 0.0:
 		velocity.y = jump_velocity
 		jump_buffer_timer = 0.0
 		coyote_timer = 0.0
+		return
+
+	# 2) Wall jump: si estamos deslizando, saltamos lejos de la pared.
+	if is_wall_sliding:
+		velocity.y = jump_velocity * wall_jump_height_mult
+		velocity.x = -wall_dir * wall_jump_velocity_x
+		wall_jump_lockout_timer = wall_jump_lockout
+		is_wall_sliding = false
+		air_jumps_used = 0  # el wall jump también recarga el doble salto
+		jump_buffer_timer = 0.0
+		return
+
+	# 3) Doble salto: en el aire, si todavía quedan saltos aéreos.
+	if has_double_jump and air_jumps_used < max_air_jumps:
+		velocity.y = jump_velocity * double_jump_height_mult
+		air_jumps_used += 1
+		jump_buffer_timer = 0.0
 
 
 # ------------------------------------------------------------
@@ -230,6 +280,12 @@ func _apply_variable_jump_height() -> void:
 # La velocidad no se setea de golpe: acelera hacia el objetivo y desacelera
 # al soltar. Eso le da peso e inercia. Parámetros separados suelo/aire.
 func _apply_horizontal_movement(delta: float) -> void:
+	# Tras un wall jump, ignoramos el input unos frames para que el empuje
+	# despegue de la pared aunque sigas apretando hacia ella.
+	if wall_jump_lockout_timer > 0.0:
+		wall_jump_lockout_timer -= delta
+		return
+
 	var direction := Input.get_axis("move_left", "move_right")
 	if direction != 0.0:
 		facing = 1 if direction > 0.0 else -1  # recordar hacia dónde mira
@@ -238,6 +294,38 @@ func _apply_horizontal_movement(delta: float) -> void:
 	else:
 		var friction := ground_friction if is_on_floor() else air_friction
 		velocity.x = move_toward(velocity.x, 0.0, friction * delta)
+
+
+# ------------------------------------------------------------
+#  WALL SLIDE + WALL JUMP
+# ------------------------------------------------------------
+# Deslizar: si te apretás contra una pared en el aire mientras caés, frenás
+# la caída. El salto desde ahí (wall jump) lo maneja _try_jump.
+func _detect_wall_slide() -> void:
+	is_wall_sliding = false
+	if not has_wall_jump or is_on_floor() or not is_on_wall():
+		return
+
+	var normal := get_wall_normal()
+	if is_zero_approx(normal.x):
+		return
+	# La normal apunta hacia afuera de la pared. Si apunta a la derecha (+x),
+	# la pared está a la izquierda → wall_dir = -1, y viceversa.
+	wall_dir = -1 if normal.x > 0.0 else 1
+
+	# Solo deslizamos si empujás hacia la pared y estás cayendo (no subiendo).
+	var direction := Input.get_axis("move_left", "move_right")
+	var pushing_into_wall := direction != 0.0 and (direction > 0.0) == (wall_dir > 0)
+	if pushing_into_wall and velocity.y >= 0.0:
+		is_wall_sliding = true
+		air_jumps_used = 0  # agarrarte de la pared recarga el doble salto
+
+
+# Limita la velocidad de caída mientras deslizás. Va DESPUÉS de la gravedad
+# para que el clamp no se "pise" con la aceleración de caída del frame.
+func _apply_wall_slide_clamp() -> void:
+	if is_wall_sliding:
+		velocity.y = minf(velocity.y, wall_slide_speed)
 
 
 # ------------------------------------------------------------
