@@ -59,7 +59,7 @@ offset_bottom = 320.0
 color = Color(0.24, 0.24, 0.26, 1)
 
 [node name="PlatformA" type="StaticBody2D" parent="."]
-position = Vector2(260, 470)
+position = Vector2(280, 534)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlatformA"]
 shape = SubResource("shape_plat_big")
@@ -72,7 +72,7 @@ offset_bottom = 12.0
 color = Color(0.36, 0.36, 0.4, 1)
 
 [node name="PlatformB" type="StaticBody2D" parent="."]
-position = Vector2(560, 380)
+position = Vector2(500, 476)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlatformB"]
 shape = SubResource("shape_plat_med")
@@ -85,7 +85,7 @@ offset_bottom = 12.0
 color = Color(0.36, 0.36, 0.4, 1)
 
 [node name="PlatformC" type="StaticBody2D" parent="."]
-position = Vector2(840, 300)
+position = Vector2(780, 476)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlatformC"]
 shape = SubResource("shape_plat_sm")
@@ -98,7 +98,7 @@ offset_bottom = 12.0
 color = Color(0.36, 0.36, 0.4, 1)
 
 [node name="PlatformD" type="StaticBody2D" parent="."]
-position = Vector2(150, 280)
+position = Vector2(640, 418)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlatformD"]
 shape = SubResource("shape_plat_sm")
@@ -111,4 +111,4 @@ offset_bottom = 12.0
 color = Color(0.36, 0.36, 0.4, 1)
 
 [node name="Player" parent="." instance=ExtResource("1_player")]
-position = Vector2(550, 520)
+position = Vector2(180, 540)

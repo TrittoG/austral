@@ -86,12 +86,14 @@ func _update_jump_parameters() -> void:
 
 # Gravedad asimétrica: cae más rápido de lo que sube. Esto es clave para que
 # el muñeco no se sienta "flotante". (Queda cubierto con descent < peak.)
-func get_gravity() -> float:
+# Nota: se llama get_current_gravity() y no get_gravity() porque este último
+# ya existe en la clase base (devuelve Vector2) y sobreescribirlo da error.
+func get_current_gravity() -> float:
 	return jump_gravity if velocity.y < 0.0 else fall_gravity
 
 
 func _apply_gravity(delta: float) -> void:
-	velocity.y += get_gravity() * delta
+	velocity.y += get_current_gravity() * delta
 
 
 # ------------------------------------------------------------
