@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://c1spikes0argen"]
+
+[sub_resource type="RectangleShape2D" id="shape_spikes"]
+size = Vector2(120, 16)
+
+[node name="Spikes" type="Area2D" groups=["enemy_hitbox"]]
+collision_layer = 32
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("shape_spikes")
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+color = Color(0.7, 0.24, 0.26, 1)
+polygon = PackedVector2Array(-60, 10, -50, -10, -40, 10, -30, -10, -20, 10, -10, -10, 0, 10, 10, -10, 20, 10, 30, -10, 40, 10, 50, -10, 60, 10)

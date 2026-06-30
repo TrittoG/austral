@@ -1,0 +1,44 @@
+[gd_scene load_steps=5 format=3 uid="uid://c1flyer0argen"]
+
+[ext_resource type="Script" path="res://scripts/enemies/enemy_flyer.gd" id="1_flyer"]
+
+[sub_resource type="RectangleShape2D" id="shape_body"]
+size = Vector2(30, 30)
+
+[sub_resource type="RectangleShape2D" id="shape_hurt"]
+size = Vector2(30, 30)
+
+[sub_resource type="RectangleShape2D" id="shape_contact"]
+size = Vector2(34, 34)
+
+[node name="Flyer" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_flyer")
+use_gravity = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("shape_body")
+
+[node name="Body" type="ColorRect" parent="."]
+offset_left = -15.0
+offset_top = -15.0
+offset_right = 15.0
+offset_bottom = 15.0
+color = Color(0.7, 0.45, 0.8, 1)
+
+[node name="Hurtbox" type="Area2D" parent="." groups=["enemy_hurtbox"]]
+collision_layer = 16
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+shape = SubResource("shape_hurt")
+
+[node name="ContactDamage" type="Area2D" parent="." groups=["enemy_hitbox"]]
+collision_layer = 32
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ContactDamage"]
+shape = SubResource("shape_contact")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://c1bossroomargen"]
+[gd_scene format=3 uid="uid://bef2w0ja7jmo8"]
 
 [ext_resource type="Script" path="res://scripts/boss_arena.gd" id="1_arena"]
 [ext_resource type="Script" path="res://scripts/room_transition.gd" id="2_door"]
