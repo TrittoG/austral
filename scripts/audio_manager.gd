@@ -11,7 +11,7 @@ extends Node
 # ============================================================
 
 const SFX_DIR := "res://assets/audio/sfx/"
-const SFX_NAMES := [
+const SFX_NAMES: Array[String] = [
 	"jump", "land", "dash", "attack", "hit", "boss_hit",
 	"hurt", "shoot", "enemy_death", "checkpoint",
 ]
