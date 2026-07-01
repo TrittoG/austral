@@ -39,3 +39,4 @@ func _shoot() -> void:
 	proj.global_position = global_position + Vector2(dir * muzzle_offset, 0.0)
 	if proj.has_method("setup"):
 		proj.setup(dir)
+	Audio.play("shoot", 0.1)

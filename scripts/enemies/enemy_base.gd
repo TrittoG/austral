@@ -86,6 +86,7 @@ func take_damage(amount: int, from_position: Vector2) -> void:
 
 func _die() -> void:
 	is_dead = true
+	Audio.play("enemy_death", 0.12)
 	died.emit()
 	_on_death()
 	queue_free()

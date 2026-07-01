@@ -124,6 +124,7 @@ var fall_gravity: float
 # ---- Contadores de asistencia ------------------------------
 var coyote_timer: float = 0.0
 var jump_buffer_timer: float = 0.0
+var was_grounded: bool = false   # para detectar el aterrizaje (sonido)
 
 # ---- Estado de combate y vida ------------------------------
 var facing: int = 1                # 1 = mira a la derecha, -1 a la izquierda
@@ -204,6 +205,15 @@ func _physics_process(delta: float) -> void:
 	_check_incoming_damage()
 
 	move_and_slide()
+	_check_landing()
+
+
+# Sonido al aterrizar (transición aire → piso).
+func _check_landing() -> void:
+	var grounded := is_on_floor()
+	if grounded and not was_grounded:
+		Audio.play("land", 0.1)
+	was_grounded = grounded
 
 
 # ------------------------------------------------------------
@@ -261,6 +271,7 @@ func _try_jump() -> void:
 		velocity.y = jump_velocity
 		jump_buffer_timer = 0.0
 		coyote_timer = 0.0
+		Audio.play("jump", 0.05)
 		return
 
 	# 2) Wall jump: si estamos deslizando, saltamos lejos de la pared.
@@ -271,6 +282,7 @@ func _try_jump() -> void:
 		is_wall_sliding = false
 		air_jumps_used = 0  # el wall jump también recarga el doble salto
 		jump_buffer_timer = 0.0
+		Audio.play("jump", 0.05)
 		return
 
 	# 3) Doble salto: en el aire, si todavía quedan saltos aéreos.
@@ -278,6 +290,7 @@ func _try_jump() -> void:
 		velocity.y = jump_velocity * double_jump_height_mult
 		air_jumps_used += 1
 		jump_buffer_timer = 0.0
+		Audio.play("jump", 0.08)
 
 
 # ------------------------------------------------------------
@@ -372,6 +385,7 @@ func _start_dash() -> void:
 	dash_timer = dash_duration
 	dash_cooldown_timer = dash_cooldown
 	dash_dir = facing  # dashea hacia donde mira
+	Audio.play("dash", 0.05)
 	# i-frames opcionales durante el dash (cruzar proyectiles/enemigos).
 	if dash_iframes:
 		invuln_timer = maxf(invuln_timer, dash_duration)
@@ -405,6 +419,7 @@ func _start_attack() -> void:
 	attack_hit_targets.clear()
 	_position_sword(attack_dir)
 	sword_shape.disabled = false
+	Audio.play("attack", 0.06)
 
 
 # La dirección del golpe: arriba si apuntás arriba, abajo si apuntás abajo
@@ -445,6 +460,7 @@ func _check_attack_hits() -> void:
 			target.take_damage(attack_damage, global_position)
 
 		Juice.hitstop(attack_hitstop)
+		Audio.play("hit", 0.1)
 
 		# Pogo: si el golpe es hacia abajo y conectó, rebotamos hacia arriba.
 		if attack_dir == Vector2.DOWN:
@@ -498,6 +514,7 @@ func _take_damage(amount: int, from_position: Vector2) -> void:
 	velocity.y = -hurt_knockback_up
 
 	Juice.hitstop(hurt_hitstop)
+	Audio.play("hurt")
 	health_changed.emit(health, max_health)
 
 	if health <= 0:

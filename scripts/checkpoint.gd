@@ -48,6 +48,7 @@ func _activate() -> void:
 
 	Game.set_checkpoint(room_path, global_position)
 	Game.save_game()
+	Audio.play("checkpoint")
 
 	if restore_health:
 		var player = get_tree().get_first_node_in_group("player")

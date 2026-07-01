@@ -22,6 +22,7 @@ config/features=PackedStringArray("4.7", "GL Compatibility")
 
 Juice="*res://scripts/juice.gd"
 Game="*res://scripts/game_state.gd"
+Audio="*res://scripts/audio_manager.gd"
 
 [display]
 

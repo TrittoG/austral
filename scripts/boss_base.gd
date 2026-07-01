@@ -78,6 +78,7 @@ func take_damage(amount: int, from_position: Vector2) -> void:
 	body.color = hit_flash_color
 	flash_timer = hit_flash_time
 	Juice.hitstop(hit_hitstop)
+	Audio.play("boss_hit", 0.05)
 	_check_phase()
 	health_changed.emit(health, max_health)
 	if health <= 0:
@@ -93,6 +94,7 @@ func _check_phase() -> void:
 
 func _die() -> void:
 	is_dead = true
+	Audio.play("enemy_death")
 	Game.mark_boss_defeated(boss_id)
 	if reward_ability != "":
 		Game.unlock_ability(reward_ability)

@@ -54,7 +54,7 @@ anchor_bottom = 1.0
 
 [node name="VBox" type="VBoxContainer" parent="Options"]
 layout_mode = 2
-theme_override_constants/separation = 16
+theme_override_constants/separation = 14
 
 [node name="Title" type="Label" parent="Options/VBox"]
 layout_mode = 2
@@ -62,16 +62,53 @@ theme_override_font_sizes/font_size = 40
 text = "OPCIONES"
 horizontal_alignment = 1
 
-[node name="VolumeRow" type="HBoxContainer" parent="Options/VBox"]
+[node name="MasterRow" type="HBoxContainer" parent="Options/VBox"]
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="Label" type="Label" parent="Options/VBox/VolumeRow"]
+[node name="Label" type="Label" parent="Options/VBox/MasterRow"]
+custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
-theme_override_font_sizes/font_size = 22
-text = "Volumen"
+theme_override_font_sizes/font_size = 20
+text = "Master"
 
-[node name="VolumeSlider" type="HSlider" parent="Options/VBox/VolumeRow"]
+[node name="Slider" type="HSlider" parent="Options/VBox/MasterRow"]
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+size_flags_vertical = 4
+max_value = 1.0
+step = 0.05
+value = 1.0
+
+[node name="MusicRow" type="HBoxContainer" parent="Options/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Label" type="Label" parent="Options/VBox/MusicRow"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Música"
+
+[node name="Slider" type="HSlider" parent="Options/VBox/MusicRow"]
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+size_flags_vertical = 4
+max_value = 1.0
+step = 0.05
+value = 1.0
+
+[node name="SfxRow" type="HBoxContainer" parent="Options/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Label" type="Label" parent="Options/VBox/SfxRow"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Efectos"
+
+[node name="Slider" type="HSlider" parent="Options/VBox/SfxRow"]
 custom_minimum_size = Vector2(240, 0)
 layout_mode = 2
 size_flags_vertical = 4
@@ -81,7 +118,7 @@ value = 1.0
 
 [node name="FullscreenCheck" type="CheckButton" parent="Options/VBox"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 20
 text = "Pantalla completa"
 
 [node name="BackButton" type="Button" parent="Options/VBox"]
