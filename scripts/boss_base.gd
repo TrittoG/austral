@@ -95,6 +95,7 @@ func _check_phase() -> void:
 func _die() -> void:
 	is_dead = true
 	Audio.play("enemy_death")
+	Juice.shake(9.0, 0.4)  # la caída del jefe se siente en la cámara
 	Game.mark_boss_defeated(boss_id)
 	if reward_ability != "":
 		Game.unlock_ability(reward_ability)

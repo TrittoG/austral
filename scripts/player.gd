@@ -162,6 +162,9 @@ signal health_changed(current: int, maximum: int)
 @onready var sword_shape: CollisionShape2D = $Sword/CollisionShape2D
 @onready var hurtbox: Area2D = $Hurtbox
 @onready var body: ColorRect = $Body
+@onready var dust_land: CPUParticles2D = $DustLand
+@onready var dust_dash: CPUParticles2D = $DustDash
+@onready var hit_sparks: CPUParticles2D = $HitSparks
 
 
 func _ready() -> void:
@@ -224,14 +227,30 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 	_check_landing()
+	_update_squash_stretch(delta)
 
 
-# Sonido al aterrizar (transición aire → piso).
+# Sonido, polvo y squash al aterrizar (transición aire → piso).
 func _check_landing() -> void:
 	var grounded := is_on_floor()
 	if grounded and not was_grounded:
 		Audio.play("land", 0.1)
+		dust_land.restart()
+		body.scale = Vector2(1.3, 0.7)  # achatado al caer
 	was_grounded = grounded
+
+
+# ------------------------------------------------------------
+#  SQUASH & STRETCH
+# ------------------------------------------------------------
+# Deformamos solo el ColorRect (la colisión no cambia): estirado al
+# saltar, achatado al aterrizar, y vuelve solo a la forma normal.
+func _update_squash_stretch(delta: float) -> void:
+	body.scale = body.scale.lerp(Vector2.ONE, 12.0 * delta)
+
+
+func _squash_jump() -> void:
+	body.scale = Vector2(0.75, 1.25)  # estirado hacia arriba
 
 
 # ------------------------------------------------------------
@@ -291,6 +310,7 @@ func _try_jump() -> void:
 		jump_buffer_timer = 0.0
 		coyote_timer = 0.0
 		Audio.play("jump", 0.05)
+		_squash_jump()
 		return
 
 	# 2) Wall jump: si estamos deslizando, saltamos lejos de la pared.
@@ -302,6 +322,7 @@ func _try_jump() -> void:
 		air_jumps_used = 0  # el wall jump también recarga el doble salto
 		jump_buffer_timer = 0.0
 		Audio.play("jump", 0.05)
+		_squash_jump()
 		return
 
 	# 3) Doble salto: en el aire, si todavía quedan saltos aéreos.
@@ -314,6 +335,7 @@ func _try_jump() -> void:
 		air_jumps_used += 1
 		jump_buffer_timer = 0.0
 		Audio.play("jump", 0.08)
+		_squash_jump()
 
 
 # ------------------------------------------------------------
@@ -409,6 +431,10 @@ func _start_dash() -> void:
 	dash_cooldown_timer = dash_cooldown
 	dash_dir = facing  # dashea hacia donde mira
 	Audio.play("dash", 0.05)
+	# Polvo hacia atrás y cuerpo estirado horizontal.
+	dust_dash.direction = Vector2(-dash_dir, 0)
+	dust_dash.restart()
+	body.scale = Vector2(1.35, 0.7)
 	# i-frames opcionales durante el dash (cruzar proyectiles/enemigos).
 	if dash_iframes:
 		invuln_timer = maxf(invuln_timer, dash_duration)
@@ -483,7 +509,12 @@ func _check_attack_hits() -> void:
 			target.take_damage(attack_damage, global_position)
 
 		Juice.hitstop(attack_hitstop)
+		Juice.shake(2.0, 0.12)  # sutil: es un golpe que conecta
 		Audio.play("hit", 0.1)
+		# Chispas en el punto del impacto.
+		if target is Node2D:
+			hit_sparks.global_position = target.global_position
+			hit_sparks.restart()
 
 		# Pogo: si el golpe es hacia abajo y conectó, rebotamos hacia arriba.
 		if attack_dir == Vector2.DOWN:
@@ -537,6 +568,7 @@ func _take_damage(amount: int, from_position: Vector2) -> void:
 	velocity.y = -hurt_knockback_up
 
 	Juice.hitstop(hurt_hitstop)
+	Juice.shake(6.0, 0.25)  # recibir daño sacude más que pegar
 	Audio.play("hurt")
 	health_changed.emit(health, max_health)
 

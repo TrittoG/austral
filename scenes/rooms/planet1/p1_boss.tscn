@@ -21,6 +21,7 @@ size = Vector2(40, 640)
 
 [node name="P1Boss" type="Node2D"]
 script = ExtResource("1_arena")
+music_track = "res://assets/audio/music/boss.wav"
 
 [node name="Floor" type="StaticBody2D" parent="."]
 position = Vector2(550, 600)

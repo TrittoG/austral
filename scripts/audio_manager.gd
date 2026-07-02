@@ -21,6 +21,7 @@ var _sfx: Dictionary = {}
 var _players: Array[AudioStreamPlayer] = []
 var _next: int = 0
 var _music: AudioStreamPlayer
+var _music_path: String = ""
 
 
 func _ready() -> void:
@@ -37,10 +38,11 @@ func _ready() -> void:
 		add_child(p)
 		_players.append(p)
 
-	# Canal de música.
+	# Canal de música. Al terminar el stream, vuelve a arrancar (loop).
 	_music = AudioStreamPlayer.new()
 	_music.bus = "Music"
 	add_child(_music)
+	_music.finished.connect(_music.play)
 
 
 # Reproduce un SFX por nombre. pitch_variation = ±rango aleatorio.
@@ -66,5 +68,20 @@ func play_music(stream: AudioStream, loop: bool = true) -> void:
 	_music.play()
 
 
+# Reproduce música por ruta de archivo. Si ya está sonando esa misma
+# pista, no la reinicia: así el tema sigue de largo entre salas del
+# mismo planeta. La usa el RoomManager con room.music_track.
+func play_music_path(path: String) -> void:
+	if path == _music_path:
+		return
+	_music_path = path
+	if path == "" or not ResourceLoader.exists(path):
+		_music.stop()
+		return
+	_music.stream = load(path)
+	_music.play()
+
+
 func stop_music() -> void:
+	_music_path = ""
 	_music.stop()

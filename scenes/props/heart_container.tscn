@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://c1heart00argen"]
+
+[ext_resource type="Script" path="res://scripts/heart_container.gd" id="1_heart"]
+
+[sub_resource type="CircleShape2D" id="shape_heart"]
+radius = 15.0
+
+[node name="HeartContainer" type="Area2D"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_heart")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("shape_heart")
+
+[node name="Heart" type="Polygon2D" parent="."]
+color = Color(0.95, 0.3, 0.4, 1)
+polygon = PackedVector2Array(0, 12, -12, -2, -12, -8, -7, -13, -1, -10, 0, -7, 1, -10, 7, -13, 12, -8, 12, -2)
+
+[node name="Label" type="Label" parent="."]
+offset_left = -60.0
+offset_top = -40.0
+offset_right = 60.0
+offset_bottom = -20.0
+theme_override_colors/font_color = Color(1, 0.6, 0.65, 1)
+theme_override_font_sizes/font_size = 12
+text = "+1 VIDA"
+horizontal_alignment = 1

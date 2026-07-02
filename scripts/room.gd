@@ -12,3 +12,8 @@ extends Node2D
 @export var camera_limit_top: int = 0
 @export var camera_limit_right: int = 1100
 @export var camera_limit_bottom: int = 640
+
+@export_group("Ambiente")
+## Música de la sala. Si dos salas comparten pista, el tema sigue de
+## largo al pasar de una a otra ("" = silencio).
+@export_file("*.wav", "*.ogg") var music_track: String = ""
