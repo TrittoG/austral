@@ -6,7 +6,13 @@
 [ext_resource type="PackedScene" path="res://scenes/props/sign.tscn" id="4_sign"]
 
 [sub_resource type="RectangleShape2D" id="shape_floor"]
-size = Vector2(800, 40)
+size = Vector2(560, 40)
+
+[sub_resource type="RectangleShape2D" id="shape_floor_r"]
+size = Vector2(100, 40)
+
+[sub_resource type="RectangleShape2D" id="shape_door_h"]
+size = Vector2(160, 30)
 
 [sub_resource type="RectangleShape2D" id="shape_door"]
 size = Vector2(30, 560)
@@ -19,18 +25,50 @@ script = ExtResource("1_room")
 camera_limit_right = 800
 music_track = "res://assets/audio/music/planet1.wav"
 
-[node name="Floor" type="StaticBody2D" parent="."]
-position = Vector2(400, 600)
+[node name="FloorLeft" type="StaticBody2D" parent="."]
+position = Vector2(280, 600)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FloorLeft"]
 shape = SubResource("shape_floor")
 
-[node name="ColorRect" type="ColorRect" parent="Floor"]
-offset_left = -400.0
+[node name="ColorRect" type="ColorRect" parent="FloorLeft"]
+offset_left = -280.0
 offset_top = -20.0
-offset_right = 400.0
+offset_right = 280.0
 offset_bottom = 20.0
 color = Color(0.36, 0.31, 0.25, 1)
+
+[node name="FloorRight" type="StaticBody2D" parent="."]
+position = Vector2(750, 600)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FloorRight"]
+shape = SubResource("shape_floor_r")
+
+[node name="ColorRect" type="ColorRect" parent="FloorRight"]
+offset_left = -50.0
+offset_top = -20.0
+offset_right = 50.0
+offset_bottom = 20.0
+color = Color(0.36, 0.31, 0.25, 1)
+
+[node name="DoorBottom" type="Area2D" parent="."]
+position = Vector2(630, 655)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("2_door")
+target_room = "res://scenes/rooms/planet1/p1_caves.tscn"
+target_door = "DoorUpRefuge"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DoorBottom"]
+shape = SubResource("shape_door_h")
+
+[node name="Entry" type="Marker2D" parent="DoorBottom"]
+position = Vector2(-110, -115)
+
+[node name="SignPozo" parent="." instance=ExtResource("4_sign")]
+position = Vector2(540, 540)
+text = "Un pozo hacia
+las cuevas"
 
 [node name="SignRest" parent="." instance=ExtResource("4_sign")]
 position = Vector2(240, 540)
@@ -92,4 +130,4 @@ offset_bottom = 280.0
 color = Color(0.3, 0.8, 0.4, 0.25)
 
 [node name="Entry" type="Marker2D" parent="DoorRight"]
-position = Vector2(-75, 140)
+position = Vector2(-60, 140)

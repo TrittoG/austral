@@ -12,8 +12,12 @@ extends CharacterBody2D
 signal health_changed(current: int, maximum: int)
 signal defeated
 
+const COIN_SCENE := preload("res://scenes/props/antimatter.tscn")
+
 @export_group("Vida")
 @export var max_health: int = 30
+## Esquirlas de antimateria que suelta al caer.
+@export var currency_drop: int = 30
 ## Id único para el save (qué jefes ya venciste).
 @export var boss_id: String = "boss_01"
 ## Habilidad que se desbloquea al vencerlo ("" = ninguna). Se conecta en Fase 7.
@@ -96,6 +100,10 @@ func _die() -> void:
 	is_dead = true
 	Audio.play("enemy_death")
 	Juice.shake(9.0, 0.4)  # la caída del jefe se siente en la cámara
+	for i in currency_drop:
+		var coin := COIN_SCENE.instantiate()
+		get_parent().add_child(coin)
+		coin.global_position = global_position
 	Game.mark_boss_defeated(boss_id)
 	if reward_ability != "":
 		Game.unlock_ability(reward_ability)

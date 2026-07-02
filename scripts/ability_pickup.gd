@@ -27,7 +27,8 @@ func _ready() -> void:
 		queue_free()
 		return
 	_base_y = position.y
-	label.text = ability_key.to_upper().replace("_", " ")
+	# Nombre del objeto espacial que otorga la habilidad.
+	label.text = Game.ABILITY_ITEMS.get(ability_key, {}).get("name", ability_key.to_upper())
 	body_entered.connect(_on_body_entered)
 
 

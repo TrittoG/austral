@@ -100,6 +100,12 @@ func _load_room(path: String, door_name: String, explicit_pos := Vector2.INF) ->
 	if "music_track" in current_room:
 		Audio.play_music_path(current_room.music_track)
 
+	# Niebla: se activa en salas con fog, salvo que tengas el disipador.
+	var fog_overlay = get_node_or_null("FogOverlay")
+	if fog_overlay != null:
+		var room_has_fog: bool = ("fog" in current_room) and current_room.fog
+		fog_overlay.visible = room_has_fog and not Game.has_key_item("disipador_ionico")
+
 
 # Busca el Marker2D "Entry" dentro de la puerta destino. Si no hay puerta,
 # cae al "DefaultSpawn" de la sala. Último recurso: el origen.

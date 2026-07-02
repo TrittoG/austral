@@ -45,6 +45,10 @@ const ROOMS := {
 		{"planet": "planet1", "rect": Rect2(5700, 0, 1100, 640)},
 	"res://scenes/rooms/planet1/p1_exit.tscn":
 		{"planet": "planet1", "rect": Rect2(5700, -660, 800, 640)},
+	"res://scenes/rooms/planet1/p1_caves.tscn":
+		{"planet": "planet1", "rect": Rect2(1700, 660, 1400, 640)},
+	"res://scenes/rooms/planet1/p1_depths.tscn":
+		{"planet": "planet1", "rect": Rect2(760, 660, 900, 640)},
 }
 
 

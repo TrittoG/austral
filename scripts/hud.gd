@@ -10,6 +10,7 @@ extends CanvasLayer
 
 @onready var label: Label = $Label
 @onready var notice: Label = get_node_or_null("Notice")
+@onready var currency_label: Label = get_node_or_null("Currency")
 
 
 func _ready() -> void:
@@ -25,6 +26,10 @@ func _ready() -> void:
 		notice.visible = false
 		Game.ability_unlocked.connect(_on_ability_unlocked)
 		Game.charm_collected.connect(_on_charm_collected)
+		Game.key_item_collected.connect(_on_key_item_collected)
+	if currency_label != null:
+		Game.currency_changed.connect(_on_currency_changed)
+		_on_currency_changed(Game.currency)
 
 
 func _on_health_changed(current: int, maximum: int) -> void:
@@ -32,12 +37,27 @@ func _on_health_changed(current: int, maximum: int) -> void:
 
 
 func _on_ability_unlocked(key: String) -> void:
-	_show_notice("¡Habilidad desbloqueada: %s!" % key.to_upper().replace("_", " "))
+	# El objeto espacial que otorga la habilidad (Propulsor de Vacío, etc.).
+	var item_name: String = Game.ABILITY_ITEMS.get(key, {}).get("name", "")
+	var ability := key.to_upper().replace("_", " ")
+	if item_name != "":
+		_show_notice("¡%s! Nueva habilidad: %s" % [item_name, ability])
+	else:
+		_show_notice("¡Habilidad desbloqueada: %s!" % ability)
 
 
 func _on_charm_collected(id: String) -> void:
 	var charm_name: String = Game.CHARMS.get(id, {}).get("name", id)
 	_show_notice("Amuleto encontrado: %s — equipalo en un banco" % charm_name)
+
+
+func _on_key_item_collected(id: String) -> void:
+	var item_name: String = Game.KEY_ITEMS.get(id, {}).get("name", id)
+	_show_notice("Objeto clave: %s" % item_name)
+
+
+func _on_currency_changed(total: int) -> void:
+	currency_label.text = "◆ %d" % total
 
 
 func _show_notice(message: String) -> void:

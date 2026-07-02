@@ -1,0 +1,246 @@
+[gd_scene format=3 uid="uid://p1caves00argen"]
+
+[ext_resource type="Script" path="res://scripts/room.gd" id="1_room"]
+[ext_resource type="Script" path="res://scripts/room_transition.gd" id="2_door"]
+[ext_resource type="PackedScene" path="res://scenes/props/sign.tscn" id="3_sign"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/walker.tscn" id="4_walker"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/flyer.tscn" id="5_flyer"]
+[ext_resource type="PackedScene" path="res://scenes/props/currency_rock.tscn" id="6_rock"]
+
+[sub_resource type="RectangleShape2D" id="shape_floor"]
+size = Vector2(1400, 40)
+
+[sub_resource type="RectangleShape2D" id="shape_wall"]
+size = Vector2(40, 640)
+
+[sub_resource type="RectangleShape2D" id="shape_door"]
+size = Vector2(30, 260)
+
+[sub_resource type="RectangleShape2D" id="shape_door_h"]
+size = Vector2(200, 30)
+
+[sub_resource type="RectangleShape2D" id="shape_plat_sm"]
+size = Vector2(110, 24)
+
+[sub_resource type="RectangleShape2D" id="shape_plat_med"]
+size = Vector2(140, 24)
+
+[node name="P1Caves" type="Node2D"]
+script = ExtResource("1_room")
+camera_limit_right = 1400
+music_track = "res://assets/audio/music/planet1.wav"
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(700, 600)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("shape_floor")
+
+[node name="ColorRect" type="ColorRect" parent="Floor"]
+offset_left = -700.0
+offset_top = -20.0
+offset_right = 700.0
+offset_bottom = 20.0
+color = Color(0.26, 0.22, 0.2, 1)
+
+[node name="WallRight" type="StaticBody2D" parent="."]
+position = Vector2(1390, 300)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallRight"]
+shape = SubResource("shape_wall")
+
+[node name="ColorRect" type="ColorRect" parent="WallRight"]
+offset_left = -20.0
+offset_top = -320.0
+offset_right = 20.0
+offset_bottom = 320.0
+color = Color(0.2, 0.17, 0.16, 1)
+
+[node name="FromRavine" type="Node2D" parent="."]
+position = Vector2(200, 40)
+
+[node name="Entry" type="Marker2D" parent="FromRavine"]
+position = Vector2(0, 60)
+
+[node name="PlatformA" type="StaticBody2D" parent="."]
+position = Vector2(450, 520)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlatformA"]
+shape = SubResource("shape_plat_med")
+
+[node name="ColorRect" type="ColorRect" parent="PlatformA"]
+offset_left = -70.0
+offset_top = -12.0
+offset_right = 70.0
+offset_bottom = 12.0
+color = Color(0.34, 0.29, 0.26, 1)
+
+[node name="PlatformB" type="StaticBody2D" parent="."]
+position = Vector2(700, 460)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlatformB"]
+shape = SubResource("shape_plat_med")
+
+[node name="ColorRect" type="ColorRect" parent="PlatformB"]
+offset_left = -70.0
+offset_top = -12.0
+offset_right = 70.0
+offset_bottom = 12.0
+color = Color(0.34, 0.29, 0.26, 1)
+
+[node name="LedgeA" type="StaticBody2D" parent="."]
+position = Vector2(1240, 520)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LedgeA"]
+shape = SubResource("shape_plat_sm")
+
+[node name="ColorRect" type="ColorRect" parent="LedgeA"]
+offset_left = -55.0
+offset_top = -12.0
+offset_right = 55.0
+offset_bottom = 12.0
+color = Color(0.34, 0.29, 0.26, 1)
+
+[node name="LedgeB" type="StaticBody2D" parent="."]
+position = Vector2(1330, 450)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LedgeB"]
+shape = SubResource("shape_plat_sm")
+
+[node name="ColorRect" type="ColorRect" parent="LedgeB"]
+offset_left = -55.0
+offset_top = -12.0
+offset_right = 55.0
+offset_bottom = 12.0
+color = Color(0.34, 0.29, 0.26, 1)
+
+[node name="LedgeC" type="StaticBody2D" parent="."]
+position = Vector2(1240, 380)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LedgeC"]
+shape = SubResource("shape_plat_sm")
+
+[node name="ColorRect" type="ColorRect" parent="LedgeC"]
+offset_left = -55.0
+offset_top = -12.0
+offset_right = 55.0
+offset_bottom = 12.0
+color = Color(0.34, 0.29, 0.26, 1)
+
+[node name="LedgeD" type="StaticBody2D" parent="."]
+position = Vector2(1330, 310)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LedgeD"]
+shape = SubResource("shape_plat_sm")
+
+[node name="ColorRect" type="ColorRect" parent="LedgeD"]
+offset_left = -55.0
+offset_top = -12.0
+offset_right = 55.0
+offset_bottom = 12.0
+color = Color(0.34, 0.29, 0.26, 1)
+
+[node name="LedgeE" type="StaticBody2D" parent="."]
+position = Vector2(1240, 240)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LedgeE"]
+shape = SubResource("shape_plat_sm")
+
+[node name="ColorRect" type="ColorRect" parent="LedgeE"]
+offset_left = -55.0
+offset_top = -12.0
+offset_right = 55.0
+offset_bottom = 12.0
+color = Color(0.34, 0.29, 0.26, 1)
+
+[node name="LedgeF" type="StaticBody2D" parent="."]
+position = Vector2(1330, 170)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LedgeF"]
+shape = SubResource("shape_plat_sm")
+
+[node name="ColorRect" type="ColorRect" parent="LedgeF"]
+offset_left = -55.0
+offset_top = -12.0
+offset_right = 55.0
+offset_bottom = 12.0
+color = Color(0.34, 0.29, 0.26, 1)
+
+[node name="LedgeG" type="StaticBody2D" parent="."]
+position = Vector2(1240, 110)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LedgeG"]
+shape = SubResource("shape_plat_sm")
+
+[node name="ColorRect" type="ColorRect" parent="LedgeG"]
+offset_left = -55.0
+offset_top = -12.0
+offset_right = 55.0
+offset_bottom = 12.0
+color = Color(0.34, 0.29, 0.26, 1)
+
+[node name="Walker" parent="." instance=ExtResource("4_walker")]
+position = Vector2(600, 562)
+
+[node name="Flyer" parent="." instance=ExtResource("5_flyer")]
+position = Vector2(850, 380)
+
+[node name="RockA" parent="." instance=ExtResource("6_rock")]
+position = Vector2(350, 558)
+rock_id = "p1_rock_c1"
+
+[node name="RockB" parent="." instance=ExtResource("6_rock")]
+position = Vector2(1050, 558)
+rock_id = "p1_rock_c2"
+
+[node name="SignShaft" parent="." instance=ExtResource("3_sign")]
+position = Vector2(1130, 540)
+text = "El refugio está
+allá arriba"
+
+[node name="SignFog" parent="." instance=ExtResource("3_sign")]
+position = Vector2(170, 540)
+text = "Una niebla espesa
+viene de la izquierda..."
+
+[node name="DoorLeft" type="Area2D" parent="."]
+position = Vector2(15, 460)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("2_door")
+target_room = "res://scenes/rooms/planet1/p1_depths.tscn"
+target_door = "DoorRight"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DoorLeft"]
+shape = SubResource("shape_door")
+
+[node name="ColorRect" type="ColorRect" parent="DoorLeft"]
+offset_left = -15.0
+offset_top = -130.0
+offset_right = 15.0
+offset_bottom = 130.0
+color = Color(0.3, 0.8, 0.4, 0.25)
+
+[node name="Entry" type="Marker2D" parent="DoorLeft"]
+position = Vector2(75, 80)
+
+[node name="DoorUpRefuge" type="Area2D" parent="."]
+position = Vector2(1290, 60)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("2_door")
+target_room = "res://scenes/rooms/planet1/p1_refuge.tscn"
+target_door = "DoorBottom"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DoorUpRefuge"]
+shape = SubResource("shape_door_h")
+
+[node name="ColorRect" type="ColorRect" parent="DoorUpRefuge"]
+offset_left = -100.0
+offset_top = -15.0
+offset_right = 100.0
+offset_bottom = 15.0
+color = Color(0.3, 0.6, 0.85, 0.3)
+
+[node name="Entry" type="Marker2D" parent="DoorUpRefuge"]
+position = Vector2(0, 70)

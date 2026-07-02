@@ -14,8 +14,12 @@ extends CharacterBody2D
 
 signal died
 
+const COIN_SCENE := preload("res://scenes/props/antimatter.tscn")
+
 @export_group("Vida")
 @export var max_health: int = 4
+## Esquirlas de antimateria que suelta al morir.
+@export var currency_drop: int = 2
 
 @export_group("Daño y físico")
 ## Daño por contacto (lo aplica el Area2D de contacto; informativo acá).
@@ -87,9 +91,17 @@ func take_damage(amount: int, from_position: Vector2) -> void:
 func _die() -> void:
 	is_dead = true
 	Audio.play("enemy_death", 0.12)
+	_drop_currency()
 	died.emit()
 	_on_death()
 	queue_free()
+
+
+func _drop_currency() -> void:
+	for i in currency_drop:
+		var coin := COIN_SCENE.instantiate()
+		get_parent().add_child(coin)
+		coin.global_position = global_position
 
 
 func _update_flash(delta: float) -> void:

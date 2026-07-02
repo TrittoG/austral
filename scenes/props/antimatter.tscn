@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://c1antimat0argen"]
+
+[ext_resource type="Script" path="res://scripts/antimatter.gd" id="1_coin"]
+
+[sub_resource type="CircleShape2D" id="shape_coin_body"]
+radius = 5.0
+
+[sub_resource type="CircleShape2D" id="shape_coin_collect"]
+radius = 12.0
+
+[node name="Antimatter" type="CharacterBody2D"]
+collision_layer = 0
+collision_mask = 1
+script = ExtResource("1_coin")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("shape_coin_body")
+
+[node name="Glow" type="Polygon2D" parent="."]
+color = Color(0.75, 0.5, 1, 0.5)
+polygon = PackedVector2Array(0, -8, 8, 0, 0, 8, -8, 0)
+
+[node name="Core" type="Polygon2D" parent="."]
+color = Color(0.9, 0.75, 1, 1)
+polygon = PackedVector2Array(0, -5, 5, 0, 0, 5, -5, 0)
+
+[node name="Collector" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collector"]
+shape = SubResource("shape_coin_collect")

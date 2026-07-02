@@ -1,0 +1,90 @@
+[gd_scene format=3 uid="uid://p1depths0argen"]
+
+[ext_resource type="Script" path="res://scripts/room.gd" id="1_room"]
+[ext_resource type="Script" path="res://scripts/room_transition.gd" id="2_door"]
+[ext_resource type="PackedScene" path="res://scenes/props/sign.tscn" id="3_sign"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/charger.tscn" id="4_charger"]
+[ext_resource type="PackedScene" path="res://scenes/props/currency_rock.tscn" id="5_rock"]
+[ext_resource type="PackedScene" path="res://scenes/props/heart_container.tscn" id="6_heart"]
+
+[sub_resource type="RectangleShape2D" id="shape_floor"]
+size = Vector2(900, 40)
+
+[sub_resource type="RectangleShape2D" id="shape_wall"]
+size = Vector2(40, 640)
+
+[sub_resource type="RectangleShape2D" id="shape_door"]
+size = Vector2(30, 560)
+
+[node name="P1Depths" type="Node2D"]
+script = ExtResource("1_room")
+camera_limit_right = 900
+music_track = "res://assets/audio/music/planet1.wav"
+fog = true
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(450, 600)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("shape_floor")
+
+[node name="ColorRect" type="ColorRect" parent="Floor"]
+offset_left = -450.0
+offset_top = -20.0
+offset_right = 450.0
+offset_bottom = 20.0
+color = Color(0.24, 0.22, 0.24, 1)
+
+[node name="WallLeft" type="StaticBody2D" parent="."]
+position = Vector2(20, 300)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallLeft"]
+shape = SubResource("shape_wall")
+
+[node name="ColorRect" type="ColorRect" parent="WallLeft"]
+offset_left = -20.0
+offset_top = -320.0
+offset_right = 20.0
+offset_bottom = 320.0
+color = Color(0.18, 0.16, 0.18, 1)
+
+[node name="Charger" parent="." instance=ExtResource("4_charger")]
+position = Vector2(400, 562)
+
+[node name="RockA" parent="." instance=ExtResource("5_rock")]
+position = Vector2(250, 558)
+rock_id = "p1_rock_d1"
+
+[node name="RockB" parent="." instance=ExtResource("5_rock")]
+position = Vector2(600, 558)
+rock_id = "p1_rock_d2"
+
+[node name="Heart" parent="." instance=ExtResource("6_heart")]
+position = Vector2(120, 510)
+container_id = "p1_heart_2"
+
+[node name="SignFog" parent="." instance=ExtResource("3_sign")]
+position = Vector2(680, 540)
+text = "Niebla iónica densa...
+dicen que un Disipador la aclara"
+
+[node name="DoorRight" type="Area2D" parent="."]
+position = Vector2(885, 400)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("2_door")
+target_room = "res://scenes/rooms/planet1/p1_caves.tscn"
+target_door = "DoorLeft"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DoorRight"]
+shape = SubResource("shape_door")
+
+[node name="ColorRect" type="ColorRect" parent="DoorRight"]
+offset_left = -15.0
+offset_top = -280.0
+offset_right = 15.0
+offset_bottom = 280.0
+color = Color(0.3, 0.8, 0.4, 0.25)
+
+[node name="Entry" type="Marker2D" parent="DoorRight"]
+position = Vector2(-75, 140)

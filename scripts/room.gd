@@ -17,3 +17,6 @@ extends Node2D
 ## Música de la sala. Si dos salas comparten pista, el tema sigue de
 ## largo al pasar de una a otra ("" = silencio).
 @export_file("*.wav", "*.ogg") var music_track: String = ""
+## Niebla densa: casi no se ve nada salvo alrededor tuyo. Se disipa
+## si tenés el objeto clave "disipador_ionico" (mundos gaseosos).
+@export var fog: bool = false

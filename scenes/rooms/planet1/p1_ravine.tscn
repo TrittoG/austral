@@ -10,7 +10,10 @@
 [ext_resource type="PackedScene" path="res://scenes/props/heart_container.tscn" id="8_heart"]
 
 [sub_resource type="RectangleShape2D" id="shape_floor"]
-size = Vector2(1100, 40)
+size = Vector2(460, 40)
+
+[sub_resource type="RectangleShape2D" id="shape_door_h"]
+size = Vector2(180, 30)
 
 [sub_resource type="RectangleShape2D" id="shape_door"]
 size = Vector2(30, 560)
@@ -22,18 +25,47 @@ size = Vector2(140, 24)
 script = ExtResource("1_room")
 music_track = "res://assets/audio/music/planet1.wav"
 
-[node name="Floor" type="StaticBody2D" parent="."]
-position = Vector2(550, 600)
+[node name="FloorLeft" type="StaticBody2D" parent="."]
+position = Vector2(230, 600)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FloorLeft"]
 shape = SubResource("shape_floor")
 
-[node name="ColorRect" type="ColorRect" parent="Floor"]
-offset_left = -550.0
+[node name="ColorRect" type="ColorRect" parent="FloorLeft"]
+offset_left = -230.0
 offset_top = -20.0
-offset_right = 550.0
+offset_right = 230.0
 offset_bottom = 20.0
 color = Color(0.34, 0.29, 0.24, 1)
+
+[node name="FloorRight" type="StaticBody2D" parent="."]
+position = Vector2(870, 600)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FloorRight"]
+shape = SubResource("shape_floor")
+
+[node name="ColorRect" type="ColorRect" parent="FloorRight"]
+offset_left = -230.0
+offset_top = -20.0
+offset_right = 230.0
+offset_bottom = 20.0
+color = Color(0.34, 0.29, 0.24, 1)
+
+[node name="PitDoor" type="Area2D" parent="."]
+position = Vector2(550, 655)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("2_door")
+target_room = "res://scenes/rooms/planet1/p1_caves.tscn"
+target_door = "FromRavine"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PitDoor"]
+shape = SubResource("shape_door_h")
+
+[node name="SignPit" parent="." instance=ExtResource("3_sign")]
+position = Vector2(420, 540)
+text = "Se escucha un eco
+allá abajo..."
 
 [node name="SignDanger" parent="." instance=ExtResource("3_sign")]
 position = Vector2(240, 540)
@@ -80,7 +112,7 @@ offset_bottom = 12.0
 color = Color(0.42, 0.36, 0.29, 1)
 
 [node name="Spikes" parent="." instance=ExtResource("6_spikes")]
-position = Vector2(500, 570)
+position = Vector2(350, 570)
 
 [node name="Acid" parent="." instance=ExtResource("7_acid")]
 position = Vector2(740, 566)

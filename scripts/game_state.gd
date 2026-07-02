@@ -17,6 +17,31 @@ signal ability_unlocked(key: String)
 signal charm_collected(id: String)
 # Se emite al equipar/desequipar amuletos (el player recalcula stats).
 signal charms_changed
+# Se emite al cambiar la cantidad de antimateria (el HUD se actualiza).
+signal currency_changed(total: int)
+# Se emite al conseguir un objeto clave (madera, disipador...).
+signal key_item_collected(id: String)
+
+# ---- Objetos que dan habilidades (identidad espacial) -------
+# El nombre que se ve al agarrar el pickup de cada habilidad.
+const ABILITY_ITEMS := {
+	"dash": {"name": "Propulsor de Vacío"},
+	"double_jump": {"name": "Botas Antigravedad"},
+	"wall_jump": {"name": "Garfio Magnético"},
+}
+
+# ---- Objetos clave -------------------------------------------
+# Ítems únicos de la aventura, ligados a planetas concretos.
+const KEY_ITEMS := {
+	"madera": {
+		"name": "Madera",
+		"desc": "La materia más rara del universo: solo nace en mundos con vida.",
+	},
+	"disipador_ionico": {
+		"name": "Disipador Iónico",
+		"desc": "Dispersa las nieblas densas de los mundos gaseosos.",
+	},
+}
 
 # ---- Registro de amuletos (estilo Hollow Knight) ------------
 # Cada amuleto ocupa muescas. Se equipan/desequipan en los bancos.
@@ -51,6 +76,8 @@ var charms_owned: Array = []            # ids de amuletos encontrados
 var charms_equipped: Array = []         # ids de amuletos equipados
 var charm_notches: int = 3              # muescas disponibles para equipar
 var rooms_visited: Array = []           # rutas de salas visitadas (mapa)
+var currency: int = 0                   # antimateria (moneda del juego)
+var key_items: Array = []               # ids de objetos clave obtenidos
 
 
 func _ready() -> void:
@@ -74,6 +101,8 @@ func new_game() -> void:
 	charms_equipped = []
 	charm_notches = 3
 	rooms_visited = []
+	currency = 0
+	key_items = []
 
 
 # ---- Habilidades -------------------------------------------
@@ -140,6 +169,24 @@ func unequip_charm(id: String) -> void:
 		charms_changed.emit()
 
 
+# ---- Antimateria (moneda) ------------------------------------
+func add_currency(amount: int) -> void:
+	currency += amount
+	currency_changed.emit(currency)
+
+
+# ---- Objetos clave --------------------------------------------
+func has_key_item(id: String) -> bool:
+	return id in key_items
+
+
+func give_key_item(id: String) -> void:
+	if id in key_items:
+		return
+	key_items.append(id)
+	key_item_collected.emit(id)
+
+
 # ---- Mapa: salas visitadas -----------------------------------
 func mark_room_visited(path: String) -> void:
 	if path not in rooms_visited:
@@ -187,6 +234,8 @@ func save_game() -> void:
 		"charms_equipped": charms_equipped,
 		"charm_notches": charm_notches,
 		"rooms_visited": rooms_visited,
+		"currency": currency,
+		"key_items": key_items,
 	}
 	var file := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
 	if file != null:
@@ -218,4 +267,6 @@ func load_game() -> bool:
 	charms_equipped = parsed.get("charms_equipped", [])
 	charm_notches = int(parsed.get("charm_notches", 3))
 	rooms_visited = parsed.get("rooms_visited", [])
+	currency = int(parsed.get("currency", 0))
+	key_items = parsed.get("key_items", [])
 	return true
