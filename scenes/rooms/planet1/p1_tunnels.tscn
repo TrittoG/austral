@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://p1tunnels0argen"]
+[gd_scene format=3 uid="uid://bc4u26b0kcdm8"]
 
 [ext_resource type="Script" path="res://scripts/room.gd" id="1_room"]
 [ext_resource type="Script" path="res://scripts/room_transition.gd" id="2_door"]

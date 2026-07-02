@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://p1boss200argen"]
+[gd_scene format=3 uid="uid://cxepfa58cuns4"]
 
 [ext_resource type="Script" path="res://scripts/boss_arena.gd" id="1_arena"]
 [ext_resource type="Script" path="res://scripts/room_transition.gd" id="2_door"]

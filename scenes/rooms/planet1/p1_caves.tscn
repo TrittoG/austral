@@ -71,7 +71,7 @@ target_door = "FromCaves"
 shape = SubResource("shape_door_h")
 
 [node name="Entry" type="Marker2D" parent="PitDoor"]
-position = Vector2(-150, -115)
+position = Vector2(-290, -115)
 
 [node name="SignAbismo" parent="." instance=ExtResource("3_sign")]
 position = Vector2(390, 540)

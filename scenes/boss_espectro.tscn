@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://c1espectro0argen"]
+[gd_scene format=3 uid="uid://bckbcjdl5hdxd"]
 
 [ext_resource type="Script" path="res://scripts/boss_espectro.gd" id="1_boss"]
 [ext_resource type="PackedScene" path="res://scenes/enemies/projectile.tscn" id="2_proj"]
