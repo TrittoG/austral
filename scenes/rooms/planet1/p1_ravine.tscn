@@ -1,0 +1,132 @@
+[gd_scene format=3 uid="uid://p1ravine0argen"]
+
+[ext_resource type="Script" path="res://scripts/room.gd" id="1_room"]
+[ext_resource type="Script" path="res://scripts/room_transition.gd" id="2_door"]
+[ext_resource type="PackedScene" path="res://scenes/props/sign.tscn" id="3_sign"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/walker.tscn" id="4_walker"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/flyer.tscn" id="5_flyer"]
+[ext_resource type="PackedScene" path="res://scenes/hazards/spikes.tscn" id="6_spikes"]
+[ext_resource type="PackedScene" path="res://scenes/hazards/acid.tscn" id="7_acid"]
+
+[sub_resource type="RectangleShape2D" id="shape_floor"]
+size = Vector2(1100, 40)
+
+[sub_resource type="RectangleShape2D" id="shape_door"]
+size = Vector2(30, 560)
+
+[sub_resource type="RectangleShape2D" id="shape_plat_med"]
+size = Vector2(140, 24)
+
+[node name="P1Ravine" type="Node2D"]
+script = ExtResource("1_room")
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(550, 600)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("shape_floor")
+
+[node name="ColorRect" type="ColorRect" parent="Floor"]
+offset_left = -550.0
+offset_top = -20.0
+offset_right = 550.0
+offset_bottom = 20.0
+color = Color(0.34, 0.29, 0.24, 1)
+
+[node name="SignDanger" parent="." instance=ExtResource("3_sign")]
+position = Vector2(240, 540)
+text = "¡Cuidado!
+Las espinas y el ácido duelen"
+
+[node name="PlatformA" type="StaticBody2D" parent="."]
+position = Vector2(380, 520)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlatformA"]
+shape = SubResource("shape_plat_med")
+
+[node name="ColorRect" type="ColorRect" parent="PlatformA"]
+offset_left = -70.0
+offset_top = -12.0
+offset_right = 70.0
+offset_bottom = 12.0
+color = Color(0.42, 0.36, 0.29, 1)
+
+[node name="PlatformB" type="StaticBody2D" parent="."]
+position = Vector2(620, 460)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlatformB"]
+shape = SubResource("shape_plat_med")
+
+[node name="ColorRect" type="ColorRect" parent="PlatformB"]
+offset_left = -70.0
+offset_top = -12.0
+offset_right = 70.0
+offset_bottom = 12.0
+color = Color(0.42, 0.36, 0.29, 1)
+
+[node name="PlatformC" type="StaticBody2D" parent="."]
+position = Vector2(870, 520)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlatformC"]
+shape = SubResource("shape_plat_med")
+
+[node name="ColorRect" type="ColorRect" parent="PlatformC"]
+offset_left = -70.0
+offset_top = -12.0
+offset_right = 70.0
+offset_bottom = 12.0
+color = Color(0.42, 0.36, 0.29, 1)
+
+[node name="Spikes" parent="." instance=ExtResource("6_spikes")]
+position = Vector2(500, 570)
+
+[node name="Acid" parent="." instance=ExtResource("7_acid")]
+position = Vector2(740, 566)
+
+[node name="WalkerOnPlatform" parent="." instance=ExtResource("4_walker")]
+position = Vector2(620, 430)
+
+[node name="Flyer" parent="." instance=ExtResource("5_flyer")]
+position = Vector2(450, 340)
+
+[node name="DoorLeft" type="Area2D" parent="."]
+position = Vector2(15, 400)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("2_door")
+target_room = "res://scenes/rooms/planet1/p1_crash.tscn"
+target_door = "DoorRight"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DoorLeft"]
+shape = SubResource("shape_door")
+
+[node name="ColorRect" type="ColorRect" parent="DoorLeft"]
+offset_left = -15.0
+offset_top = -280.0
+offset_right = 15.0
+offset_bottom = 280.0
+color = Color(0.3, 0.8, 0.4, 0.25)
+
+[node name="Entry" type="Marker2D" parent="DoorLeft"]
+position = Vector2(75, 140)
+
+[node name="DoorRight" type="Area2D" parent="."]
+position = Vector2(1085, 400)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("2_door")
+target_room = "res://scenes/rooms/planet1/p1_refuge.tscn"
+target_door = "DoorLeft"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DoorRight"]
+shape = SubResource("shape_door")
+
+[node name="ColorRect" type="ColorRect" parent="DoorRight"]
+offset_left = -15.0
+offset_top = -280.0
+offset_right = 15.0
+offset_bottom = 280.0
+color = Color(0.3, 0.8, 0.4, 0.25)
+
+[node name="Entry" type="Marker2D" parent="DoorRight"]
+position = Vector2(-75, 140)

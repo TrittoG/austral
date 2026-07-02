@@ -115,6 +115,7 @@ color = Color(0.36, 0.36, 0.4, 1)
 
 [node name="Player" parent="." unique_id=894116221 instance=ExtResource("1_player")]
 position = Vector2(180, 540)
+use_saved_abilities = false
 
 [node name="DummyFloor" parent="." unique_id=753071548 instance=ExtResource("2_dummy")]
 position = Vector2(620, 540)

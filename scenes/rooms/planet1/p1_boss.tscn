@@ -1,0 +1,107 @@
+[gd_scene format=3 uid="uid://p1boss000argen"]
+
+[ext_resource type="Script" path="res://scripts/boss_arena.gd" id="1_arena"]
+[ext_resource type="Script" path="res://scripts/room_transition.gd" id="2_door"]
+[ext_resource type="PackedScene" path="res://scenes/boss_01.tscn" id="3_boss"]
+
+[sub_resource type="RectangleShape2D" id="shape_floor"]
+size = Vector2(1100, 40)
+
+[sub_resource type="RectangleShape2D" id="shape_wall"]
+size = Vector2(40, 640)
+
+[sub_resource type="RectangleShape2D" id="shape_door"]
+size = Vector2(30, 560)
+
+[sub_resource type="RectangleShape2D" id="shape_gate"]
+size = Vector2(30, 640)
+
+[sub_resource type="RectangleShape2D" id="shape_trigger"]
+size = Vector2(40, 640)
+
+[node name="P1Boss" type="Node2D"]
+script = ExtResource("1_arena")
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(550, 600)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("shape_floor")
+
+[node name="ColorRect" type="ColorRect" parent="Floor"]
+offset_left = -550.0
+offset_top = -20.0
+offset_right = 550.0
+offset_bottom = 20.0
+color = Color(0.3, 0.24, 0.2, 1)
+
+[node name="WallRight" type="StaticBody2D" parent="."]
+position = Vector2(1080, 300)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallRight"]
+shape = SubResource("shape_wall")
+
+[node name="ColorRect" type="ColorRect" parent="WallRight"]
+offset_left = -20.0
+offset_top = -320.0
+offset_right = 20.0
+offset_bottom = 320.0
+color = Color(0.24, 0.19, 0.16, 1)
+
+[node name="DoorLeft" type="Area2D" parent="."]
+position = Vector2(15, 400)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("2_door")
+target_room = "res://scenes/rooms/planet1/p1_rift.tscn"
+target_door = "DoorBoss"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DoorLeft"]
+shape = SubResource("shape_door")
+
+[node name="ColorRect" type="ColorRect" parent="DoorLeft"]
+offset_left = -15.0
+offset_top = -280.0
+offset_right = 15.0
+offset_bottom = 280.0
+color = Color(0.3, 0.8, 0.4, 0.25)
+
+[node name="Entry" type="Marker2D" parent="DoorLeft"]
+position = Vector2(75, 140)
+
+[node name="Gate" type="StaticBody2D" parent="."]
+position = Vector2(55, 300)
+collision_layer = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Gate"]
+shape = SubResource("shape_gate")
+
+[node name="ColorRect" type="ColorRect" parent="Gate"]
+offset_left = -15.0
+offset_top = -320.0
+offset_right = 15.0
+offset_bottom = 320.0
+color = Color(0.75, 0.2, 0.2, 1)
+
+[node name="FightTrigger" type="Area2D" parent="."]
+position = Vector2(250, 300)
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FightTrigger"]
+shape = SubResource("shape_trigger")
+
+[node name="Boss" parent="." instance=ExtResource("3_boss")]
+position = Vector2(750, 540)
+max_health = 25
+boss_id = "p1_guardian"
+reward_ability = "dash"
+
+[node name="BossUI" type="CanvasLayer" parent="."]
+
+[node name="HealthBar" type="ProgressBar" parent="BossUI"]
+offset_left = 250.0
+offset_top = 592.0
+offset_right = 850.0
+offset_bottom = 616.0
+show_percentage = false

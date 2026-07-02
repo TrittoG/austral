@@ -1,0 +1,224 @@
+[gd_scene format=3 uid="uid://p1rift000argen"]
+
+[ext_resource type="Script" path="res://scripts/room.gd" id="1_room"]
+[ext_resource type="Script" path="res://scripts/room_transition.gd" id="2_door"]
+[ext_resource type="PackedScene" path="res://scenes/props/sign.tscn" id="3_sign"]
+[ext_resource type="PackedScene" path="res://scenes/props/ability_pickup.tscn" id="4_pickup"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/walker.tscn" id="5_walker"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/charger.tscn" id="6_charger"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/shooter.tscn" id="7_shooter"]
+
+[sub_resource type="RectangleShape2D" id="shape_floor"]
+size = Vector2(2200, 40)
+
+[sub_resource type="RectangleShape2D" id="shape_door"]
+size = Vector2(30, 560)
+
+[sub_resource type="RectangleShape2D" id="shape_door_boss"]
+size = Vector2(30, 260)
+
+[sub_resource type="RectangleShape2D" id="shape_door_exit"]
+size = Vector2(30, 200)
+
+[sub_resource type="RectangleShape2D" id="shape_plat_med"]
+size = Vector2(140, 24)
+
+[sub_resource type="RectangleShape2D" id="shape_ledge"]
+size = Vector2(180, 24)
+
+[sub_resource type="RectangleShape2D" id="shape_exit_plat"]
+size = Vector2(230, 24)
+
+[node name="P1Rift" type="Node2D"]
+script = ExtResource("1_room")
+camera_limit_right = 2200
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(1100, 600)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("shape_floor")
+
+[node name="ColorRect" type="ColorRect" parent="Floor"]
+offset_left = -1100.0
+offset_top = -20.0
+offset_right = 1100.0
+offset_bottom = 20.0
+color = Color(0.32, 0.27, 0.23, 1)
+
+[node name="SignBoss" parent="." instance=ExtResource("3_sign")]
+position = Vector2(320, 540)
+text = "Algo enorme acecha
+al final del camino..."
+
+[node name="StepA" type="StaticBody2D" parent="."]
+position = Vector2(480, 522)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StepA"]
+shape = SubResource("shape_plat_med")
+
+[node name="ColorRect" type="ColorRect" parent="StepA"]
+offset_left = -70.0
+offset_top = -12.0
+offset_right = 70.0
+offset_bottom = 12.0
+color = Color(0.42, 0.36, 0.29, 1)
+
+[node name="StepB" type="StaticBody2D" parent="."]
+position = Vector2(700, 464)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StepB"]
+shape = SubResource("shape_plat_med")
+
+[node name="ColorRect" type="ColorRect" parent="StepB"]
+offset_left = -70.0
+offset_top = -12.0
+offset_right = 70.0
+offset_bottom = 12.0
+color = Color(0.42, 0.36, 0.29, 1)
+
+[node name="StepC" type="StaticBody2D" parent="."]
+position = Vector2(920, 406)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StepC"]
+shape = SubResource("shape_plat_med")
+
+[node name="ColorRect" type="ColorRect" parent="StepC"]
+offset_left = -70.0
+offset_top = -12.0
+offset_right = 70.0
+offset_bottom = 12.0
+color = Color(0.42, 0.36, 0.29, 1)
+
+[node name="NearLedge" type="StaticBody2D" parent="."]
+position = Vector2(1150, 348)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NearLedge"]
+shape = SubResource("shape_ledge")
+
+[node name="ColorRect" type="ColorRect" parent="NearLedge"]
+offset_left = -90.0
+offset_top = -12.0
+offset_right = 90.0
+offset_bottom = 12.0
+color = Color(0.42, 0.36, 0.29, 1)
+
+[node name="SignGap" parent="." instance=ExtResource("3_sign")]
+position = Vector2(1150, 296)
+text = "Demasiado lejos
+para saltar..."
+
+[node name="FarLedge" type="StaticBody2D" parent="."]
+position = Vector2(1550, 348)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FarLedge"]
+shape = SubResource("shape_ledge")
+
+[node name="ColorRect" type="ColorRect" parent="FarLedge"]
+offset_left = -90.0
+offset_top = -12.0
+offset_right = 90.0
+offset_bottom = 12.0
+color = Color(0.42, 0.36, 0.29, 1)
+
+[node name="DoubleJumpPickup" parent="." instance=ExtResource("4_pickup")]
+position = Vector2(1550, 308)
+ability_key = "double_jump"
+
+[node name="Bridge" type="StaticBody2D" parent="."]
+position = Vector2(1790, 348)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bridge"]
+shape = SubResource("shape_plat_med")
+
+[node name="ColorRect" type="ColorRect" parent="Bridge"]
+offset_left = -70.0
+offset_top = -12.0
+offset_right = 70.0
+offset_bottom = 12.0
+color = Color(0.42, 0.36, 0.29, 1)
+
+[node name="ExitPlatform" type="StaticBody2D" parent="."]
+position = Vector2(2085, 348)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ExitPlatform"]
+shape = SubResource("shape_exit_plat")
+
+[node name="ColorRect" type="ColorRect" parent="ExitPlatform"]
+offset_left = -115.0
+offset_top = -12.0
+offset_right = 115.0
+offset_bottom = 12.0
+color = Color(0.42, 0.36, 0.29, 1)
+
+[node name="Walker" parent="." instance=ExtResource("5_walker")]
+position = Vector2(700, 562)
+
+[node name="Charger" parent="." instance=ExtResource("6_charger")]
+position = Vector2(1250, 562)
+
+[node name="Shooter" parent="." instance=ExtResource("7_shooter")]
+position = Vector2(1850, 561)
+
+[node name="DoorLeft" type="Area2D" parent="."]
+position = Vector2(15, 400)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("2_door")
+target_room = "res://scenes/rooms/planet1/p1_refuge.tscn"
+target_door = "DoorRight"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DoorLeft"]
+shape = SubResource("shape_door")
+
+[node name="ColorRect" type="ColorRect" parent="DoorLeft"]
+offset_left = -15.0
+offset_top = -280.0
+offset_right = 15.0
+offset_bottom = 280.0
+color = Color(0.3, 0.8, 0.4, 0.25)
+
+[node name="Entry" type="Marker2D" parent="DoorLeft"]
+position = Vector2(75, 140)
+
+[node name="DoorBoss" type="Area2D" parent="."]
+position = Vector2(2185, 460)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("2_door")
+target_room = "res://scenes/rooms/planet1/p1_boss.tscn"
+target_door = "DoorLeft"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DoorBoss"]
+shape = SubResource("shape_door_boss")
+
+[node name="ColorRect" type="ColorRect" parent="DoorBoss"]
+offset_left = -15.0
+offset_top = -130.0
+offset_right = 15.0
+offset_bottom = 130.0
+color = Color(0.8, 0.35, 0.3, 0.3)
+
+[node name="Entry" type="Marker2D" parent="DoorBoss"]
+position = Vector2(-75, 80)
+
+[node name="DoorExit" type="Area2D" parent="."]
+position = Vector2(2185, 218)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("2_door")
+target_room = "res://scenes/rooms/planet1/p1_exit.tscn"
+target_door = "DoorLeft"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DoorExit"]
+shape = SubResource("shape_door_exit")
+
+[node name="ColorRect" type="ColorRect" parent="DoorExit"]
+offset_left = -15.0
+offset_top = -100.0
+offset_right = 15.0
+offset_bottom = 100.0
+color = Color(0.3, 0.6, 0.85, 0.3)
+
+[node name="Entry" type="Marker2D" parent="DoorExit"]
+position = Vector2(-75, 80)

@@ -1,0 +1,109 @@
+[gd_scene format=3 uid="uid://p1exit000argen"]
+
+[ext_resource type="Script" path="res://scripts/room.gd" id="1_room"]
+[ext_resource type="Script" path="res://scripts/room_transition.gd" id="2_door"]
+[ext_resource type="Script" path="res://scripts/checkpoint.gd" id="3_bench"]
+[ext_resource type="PackedScene" path="res://scenes/props/sign.tscn" id="4_sign"]
+
+[sub_resource type="RectangleShape2D" id="shape_floor"]
+size = Vector2(800, 40)
+
+[sub_resource type="RectangleShape2D" id="shape_door"]
+size = Vector2(30, 560)
+
+[sub_resource type="RectangleShape2D" id="shape_bench"]
+size = Vector2(70, 120)
+
+[node name="P1Exit" type="Node2D"]
+script = ExtResource("1_room")
+camera_limit_right = 800
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(400, 600)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("shape_floor")
+
+[node name="ColorRect" type="ColorRect" parent="Floor"]
+offset_left = -400.0
+offset_top = -20.0
+offset_right = 400.0
+offset_bottom = 20.0
+color = Color(0.36, 0.31, 0.25, 1)
+
+[node name="WallRight" type="StaticBody2D" parent="."]
+position = Vector2(780, 300)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallRight"]
+shape = SubResource("shape_door")
+
+[node name="ColorRect" type="ColorRect" parent="WallRight"]
+offset_left = -15.0
+offset_top = -280.0
+offset_right = 15.0
+offset_bottom = 280.0
+color = Color(0.28, 0.24, 0.2, 1)
+
+[node name="Bench" type="Area2D" parent="."]
+position = Vector2(300, 540)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("3_bench")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bench"]
+shape = SubResource("shape_bench")
+
+[node name="ColorRect" type="ColorRect" parent="Bench"]
+offset_left = -22.0
+offset_top = -2.0
+offset_right = 22.0
+offset_bottom = 40.0
+color = Color(0.55, 0.5, 0.3, 1)
+
+[node name="SignSave" parent="." instance=ExtResource("4_sign")]
+position = Vector2(160, 540)
+text = "E — descansar y guardar"
+
+[node name="Portal" type="Node2D" parent="."]
+position = Vector2(580, 540)
+
+[node name="Frame" type="ColorRect" parent="Portal"]
+offset_left = -38.0
+offset_top = -110.0
+offset_right = 38.0
+offset_bottom = 40.0
+color = Color(0.25, 0.3, 0.4, 1)
+
+[node name="Glow" type="ColorRect" parent="Portal"]
+offset_left = -28.0
+offset_top = -100.0
+offset_right = 28.0
+offset_bottom = 30.0
+color = Color(0.35, 0.75, 0.9, 0.6)
+
+[node name="SignPortal" parent="." instance=ExtResource("4_sign")]
+position = Vector2(580, 400)
+text = "Portal interplanetario
+— FIN DEL PROTOTIPO —
+Los próximos planetas: en construcción"
+
+[node name="DoorLeft" type="Area2D" parent="."]
+position = Vector2(15, 400)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("2_door")
+target_room = "res://scenes/rooms/planet1/p1_rift.tscn"
+target_door = "DoorExit"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DoorLeft"]
+shape = SubResource("shape_door")
+
+[node name="ColorRect" type="ColorRect" parent="DoorLeft"]
+offset_left = -15.0
+offset_top = -280.0
+offset_right = 15.0
+offset_bottom = 280.0
+color = Color(0.3, 0.8, 0.4, 0.25)
+
+[node name="Entry" type="Marker2D" parent="DoorLeft"]
+position = Vector2(75, 140)

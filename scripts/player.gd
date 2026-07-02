@@ -34,6 +34,9 @@ extends CharacterBody2D
 ## Al soltar el botón mientras subís, se multiplica velocity.y por esto.
 ## Tap corto = salto bajo, mantener = salto alto.
 @export_range(0.0, 1.0) var jump_cut_multiplier: float = 0.5
+## Velocidad terminal de caída (px/s). Evita caídas infinitamente rápidas
+## en pozos largos y mantiene la caída legible.
+@export var max_fall_speed: float = 520.0
 
 # ---- Asistencias de salto ----------------------------------
 @export_group("Asistencias de salto")
@@ -76,18 +79,21 @@ extends CharacterBody2D
 @export var hurt_hitstop: float = 0.08
 
 # ---- Habilidades desbloqueadas (sistema de flags) ----------
-# Cada habilidad arranca bloqueada y se activa con su flag. En la Fase 7
-# estas empiezan en false y se prenden al conseguir la habilidad jugando.
-# Por ahora arrancan en true para poder probarlas de una.
+# Los flags se leen del estado del juego (Game): arrancan bloqueados y se
+# consiguen jugando. Con use_saved_abilities = false el player ignora el
+# save y usa los flags del inspector (para test_room / pruebas aisladas).
 @export_group("Habilidades desbloqueadas")
+@export var use_saved_abilities: bool = true
 @export var has_dash: bool = true
 
 # ---- Dash --------------------------------------------------
 @export_group("Dash")
 ## Velocidad del impulso del dash (px/s).
-@export var dash_speed: float = 500.0
+## 650 × 0.18s ≈ 117px de recorrido: salto+dash cruza ~250px,
+## lo justo para el gap de 220px de La Grieta (imposible sin dash).
+@export var dash_speed: float = 650.0
 ## Cuánto dura el dash en segundos.
-@export var dash_duration: float = 0.15
+@export var dash_duration: float = 0.18
 ## Tiempo mínimo entre dashes.
 @export var dash_cooldown: float = 0.4
 ## Si está activo, sos invulnerable durante el dash (i-frames).
@@ -173,9 +179,21 @@ func _ready() -> void:
 func _apply_saved_state() -> void:
 	max_health = Game.max_health
 	health = max_health
+	if use_saved_abilities:
+		refresh_abilities()
+		# Al desbloquear una habilidad (jefe, pickup) el player se entera solo.
+		Game.ability_unlocked.connect(_on_ability_unlocked)
+
+
+# Copia los flags de habilidad desde el estado del juego.
+func refresh_abilities() -> void:
 	has_dash = Game.get_ability("dash")
 	has_double_jump = Game.get_ability("double_jump")
 	has_wall_jump = Game.get_ability("wall_jump")
+
+
+func _on_ability_unlocked(_key: String) -> void:
+	refresh_abilities()
 
 
 # Restaura la vida al máximo (la usa el banco / checkpoint).
@@ -238,6 +256,7 @@ func get_current_gravity() -> float:
 
 func _apply_gravity(delta: float) -> void:
 	velocity.y += get_current_gravity() * delta
+	velocity.y = minf(velocity.y, max_fall_speed)  # velocidad terminal
 
 
 # ------------------------------------------------------------
@@ -286,7 +305,11 @@ func _try_jump() -> void:
 		return
 
 	# 3) Doble salto: en el aire, si todavía quedan saltos aéreos.
-	if has_double_jump and air_jumps_used < max_air_jumps:
+	# Solo con el botón apretado ESTE frame (no bufferizado): así un salto
+	# apretado justo antes de aterrizar espera al piso en vez de gastar
+	# el salto aéreo a un pelo del suelo.
+	var can_air_jump := has_double_jump and air_jumps_used < max_air_jumps
+	if can_air_jump and Input.is_action_just_pressed("jump"):
 		velocity.y = jump_velocity * double_jump_height_mult
 		air_jumps_used += 1
 		jump_buffer_timer = 0.0

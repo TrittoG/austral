@@ -10,6 +10,10 @@ extends Node
 const SAVE_PATH := "user://savegame.json"
 const SAVE_VERSION := 1
 
+# Se emite al desbloquear una habilidad nueva (el player se refresca,
+# el HUD muestra el aviso).
+signal ability_unlocked(key: String)
+
 # --- Estado persistente ---
 var abilities: Dictionary = {}          # { "dash": bool, "double_jump": bool, "wall_jump": bool }
 var checkpoint_room: String = ""        # ruta de la sala del último banco
@@ -27,9 +31,10 @@ func _ready() -> void:
 
 # Resetea el estado a una partida nueva.
 func new_game() -> void:
-	# Por ahora las habilidades arrancan desbloqueadas para poder probarlas.
-	# En la Fase 7 arrancarán en false y se consiguen jugando.
-	abilities = {"dash": true, "double_jump": true, "wall_jump": true}
+	# Progresión real: las habilidades arrancan bloqueadas y se consiguen
+	# jugando (jefes, pickups). Para probar con todo desbloqueado en
+	# aislado está test_room (el player ahí ignora el save).
+	abilities = {"dash": false, "double_jump": false, "wall_jump": false}
 	checkpoint_room = ""
 	checkpoint_position = Vector2.ZERO
 	bosses_defeated = []
@@ -43,7 +48,10 @@ func get_ability(key: String) -> bool:
 
 
 func unlock_ability(key: String) -> void:
+	if get_ability(key):
+		return  # ya la tenías; no re-anunciar
 	abilities[key] = true
+	ability_unlocked.emit(key)
 
 
 # ---- Checkpoint --------------------------------------------

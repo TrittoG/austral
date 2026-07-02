@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://c1pickup00argen"]
+
+[ext_resource type="Script" path="res://scripts/ability_pickup.gd" id="1_pickup"]
+
+[sub_resource type="CircleShape2D" id="shape_pickup"]
+radius = 16.0
+
+[node name="AbilityPickup" type="Area2D"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_pickup")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("shape_pickup")
+
+[node name="Diamond" type="Polygon2D" parent="."]
+color = Color(1, 0.85, 0.3, 1)
+polygon = PackedVector2Array(0, -15, 13, 0, 0, 15, -13, 0)
+
+[node name="Core" type="Polygon2D" parent="."]
+color = Color(1, 1, 0.85, 1)
+polygon = PackedVector2Array(0, -7, 6, 0, 0, 7, -6, 0)
+
+[node name="Label" type="Label" parent="."]
+offset_left = -70.0
+offset_top = -44.0
+offset_right = 70.0
+offset_bottom = -22.0
+theme_override_colors/font_color = Color(1, 0.9, 0.5, 1)
+theme_override_font_sizes/font_size = 13
+text = "DASH"
+horizontal_alignment = 1

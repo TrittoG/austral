@@ -1,0 +1,94 @@
+[gd_scene format=3 uid="uid://p1refuge0argen"]
+
+[ext_resource type="Script" path="res://scripts/room.gd" id="1_room"]
+[ext_resource type="Script" path="res://scripts/room_transition.gd" id="2_door"]
+[ext_resource type="Script" path="res://scripts/checkpoint.gd" id="3_bench"]
+[ext_resource type="PackedScene" path="res://scenes/props/sign.tscn" id="4_sign"]
+
+[sub_resource type="RectangleShape2D" id="shape_floor"]
+size = Vector2(800, 40)
+
+[sub_resource type="RectangleShape2D" id="shape_door"]
+size = Vector2(30, 560)
+
+[sub_resource type="RectangleShape2D" id="shape_bench"]
+size = Vector2(70, 120)
+
+[node name="P1Refuge" type="Node2D"]
+script = ExtResource("1_room")
+camera_limit_right = 800
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(400, 600)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("shape_floor")
+
+[node name="ColorRect" type="ColorRect" parent="Floor"]
+offset_left = -400.0
+offset_top = -20.0
+offset_right = 400.0
+offset_bottom = 20.0
+color = Color(0.36, 0.31, 0.25, 1)
+
+[node name="SignRest" parent="." instance=ExtResource("4_sign")]
+position = Vector2(240, 540)
+text = "E — descansar y guardar"
+
+[node name="Bench" type="Area2D" parent="."]
+position = Vector2(420, 540)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("3_bench")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bench"]
+shape = SubResource("shape_bench")
+
+[node name="ColorRect" type="ColorRect" parent="Bench"]
+offset_left = -22.0
+offset_top = -2.0
+offset_right = 22.0
+offset_bottom = 40.0
+color = Color(0.55, 0.5, 0.3, 1)
+
+[node name="DoorLeft" type="Area2D" parent="."]
+position = Vector2(15, 400)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("2_door")
+target_room = "res://scenes/rooms/planet1/p1_ravine.tscn"
+target_door = "DoorRight"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DoorLeft"]
+shape = SubResource("shape_door")
+
+[node name="ColorRect" type="ColorRect" parent="DoorLeft"]
+offset_left = -15.0
+offset_top = -280.0
+offset_right = 15.0
+offset_bottom = 280.0
+color = Color(0.3, 0.8, 0.4, 0.25)
+
+[node name="Entry" type="Marker2D" parent="DoorLeft"]
+position = Vector2(75, 140)
+
+[node name="DoorRight" type="Area2D" parent="."]
+position = Vector2(785, 400)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("2_door")
+target_room = "res://scenes/rooms/planet1/p1_rift.tscn"
+target_door = "DoorLeft"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DoorRight"]
+shape = SubResource("shape_door")
+
+[node name="ColorRect" type="ColorRect" parent="DoorRight"]
+offset_left = -15.0
+offset_top = -280.0
+offset_right = 15.0
+offset_bottom = 280.0
+color = Color(0.3, 0.8, 0.4, 0.25)
+
+[node name="Entry" type="Marker2D" parent="DoorRight"]
+position = Vector2(-75, 140)
