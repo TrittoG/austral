@@ -34,7 +34,7 @@ color = Color(0.36, 0.31, 0.25, 1)
 
 [node name="SignRest" parent="." instance=ExtResource("4_sign")]
 position = Vector2(240, 540)
-text = "E — descansar y guardar"
+text = "↑ — descansar y guardar"
 
 [node name="Bench" type="Area2D" parent="."]
 position = Vector2(420, 540)

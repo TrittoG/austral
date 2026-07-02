@@ -29,7 +29,7 @@ theme_override_constants/separation = 18
 [node name="Title" type="Label" parent="Center/VBox"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 56
-text = "ARGENVANIA"
+text = "AUSTRAL"
 horizontal_alignment = 1
 
 [node name="Spacer" type="Control" parent="Center/VBox"]

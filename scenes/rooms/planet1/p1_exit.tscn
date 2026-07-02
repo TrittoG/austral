@@ -63,7 +63,7 @@ color = Color(0.55, 0.5, 0.3, 1)
 
 [node name="SignSave" parent="." instance=ExtResource("4_sign")]
 position = Vector2(160, 540)
-text = "E — descansar y guardar"
+text = "↑ — descansar y guardar"
 
 [node name="Portal" type="Node2D" parent="."]
 position = Vector2(580, 540)

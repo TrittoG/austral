@@ -29,7 +29,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif visible and event.is_action_pressed("pause"):
 		close()
 		get_viewport().set_input_as_handled()
-	elif visible and event.is_action_pressed("ui_focus_next"):  # TAB
+	elif visible and (event.is_action_pressed("ui_left") or event.is_action_pressed("ui_right")):
 		_switch_view()
 		get_viewport().set_input_as_handled()
 
