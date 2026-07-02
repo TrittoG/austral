@@ -607,6 +607,9 @@ func _take_damage(amount: int, from_position: Vector2) -> void:
 func _die() -> void:
 	var manager = get_tree().get_first_node_in_group("rooms")
 	if manager != null and manager.has_method("respawn_at_checkpoint"):
+		# Tu antimateria queda tirada donde caíste (la guarda una sombra).
+		if "current_room_path" in manager:
+			Game.drop_currency_at(manager.current_room_path, global_position)
 		manager.respawn_at_checkpoint()
 	else:
 		full_heal()

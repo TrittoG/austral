@@ -16,6 +16,8 @@ extends Node2D
 ## Duración de cada mitad del fundido (out y in), en segundos.
 @export var fade_time: float = 0.25
 
+const SHADE_SCENE := preload("res://scenes/props/shade.tscn")
+
 @onready var room_container: Node2D = $RoomContainer
 @onready var player: CharacterBody2D = $Player
 @onready var fade_rect: ColorRect = $Fade/ColorRect
@@ -95,6 +97,12 @@ func _load_room(path: String, door_name: String, explicit_pos := Vector2.INF) ->
 
 	# El mapa se revela por salas visitadas.
 	Game.mark_room_visited(path)
+
+	# Si moriste en esta sala con antimateria encima, tu sombra te espera.
+	if Game.lost_currency > 0 and Game.lost_room == path:
+		var shade := SHADE_SCENE.instantiate()
+		current_room.add_child(shade)
+		shade.position = Game.lost_position
 
 	# Música de la sala (si comparte pista con la anterior, sigue de largo).
 	if "music_track" in current_room:

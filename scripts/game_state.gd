@@ -104,6 +104,11 @@ var rooms_visited: Array = []           # rutas de salas visitadas (mapa)
 var currency: int = 0                   # antimateria (moneda del juego)
 var key_items: Array = []               # ids de objetos clave obtenidos
 
+# ---- Antimateria perdida al morir (la "sombra") --------------
+var lost_currency: int = 0              # cuánto quedó tirado
+var lost_room: String = ""              # en qué sala
+var lost_position: Vector2 = Vector2.ZERO
+
 
 func _ready() -> void:
 	# Por defecto arrancamos una partida nueva en memoria. Cargar un save
@@ -128,6 +133,9 @@ func new_game() -> void:
 	rooms_visited = []
 	currency = 0
 	key_items = []
+	lost_currency = 0
+	lost_room = ""
+	lost_position = Vector2.ZERO
 
 
 # ---- Habilidades -------------------------------------------
@@ -200,6 +208,28 @@ func add_currency(amount: int) -> void:
 	currency_changed.emit(currency)
 
 
+# Al morir: tu antimateria queda tirada donde caíste (estilo HK).
+# Si morís de nuevo sin recuperarla, la nueva pila reemplaza a la vieja.
+func drop_currency_at(room: String, position: Vector2) -> void:
+	if currency <= 0:
+		return  # sin plata no hay sombra; la anterior (si había) sigue ahí
+	lost_currency = currency
+	lost_room = room
+	lost_position = position
+	currency = 0
+	currency_changed.emit(currency)
+	# Guardar ya: si cerrás el juego tras morir, la pérdida no se deshace.
+	save_game()
+
+
+# Tocaste la sombra: recuperás todo.
+func recover_lost_currency() -> void:
+	currency += lost_currency
+	lost_currency = 0
+	lost_room = ""
+	currency_changed.emit(currency)
+
+
 # ---- Objetos clave --------------------------------------------
 func has_key_item(id: String) -> bool:
 	return id in key_items
@@ -261,6 +291,9 @@ func save_game() -> void:
 		"rooms_visited": rooms_visited,
 		"currency": currency,
 		"key_items": key_items,
+		"lost_currency": lost_currency,
+		"lost_room": lost_room,
+		"lost_position": [lost_position.x, lost_position.y],
 	}
 	var file := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
 	if file != null:
@@ -294,4 +327,8 @@ func load_game() -> bool:
 	rooms_visited = parsed.get("rooms_visited", [])
 	currency = int(parsed.get("currency", 0))
 	key_items = parsed.get("key_items", [])
+	lost_currency = int(parsed.get("lost_currency", 0))
+	lost_room = parsed.get("lost_room", "")
+	var lost_pos = parsed.get("lost_position", [0, 0])
+	lost_position = Vector2(lost_pos[0], lost_pos[1])
 	return true

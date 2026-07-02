@@ -33,7 +33,8 @@ func _on_continue() -> void:
 
 func _on_new_game() -> void:
 	Game.new_game()
-	get_tree().change_scene_to_file("res://scenes/main.tscn")
+	# Partida nueva pasa por la intro; Continuar va directo al juego.
+	get_tree().change_scene_to_file("res://scenes/intro.tscn")
 
 
 func _on_quit() -> void:

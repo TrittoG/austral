@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://c1intro00argen"]
+
+[ext_resource type="Script" path="res://scripts/intro.gd" id="1_intro"]
+
+[node name="Intro" type="Control"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_intro")
+
+[node name="Background" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.04, 0.05, 0.08, 1)
+
+[node name="Center" type="CenterContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Text" type="Label" parent="Center"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.85, 0.8, 1)
+theme_override_font_sizes/font_size = 26
+text = "..."
+horizontal_alignment = 1
+
+[node name="Hint" type="Label" parent="."]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -60.0
+offset_bottom = -28.0
+theme_override_colors/font_color = Color(0.45, 0.45, 0.5, 1)
+theme_override_font_sizes/font_size = 15
+text = "Z — continuar"
+horizontal_alignment = 1
