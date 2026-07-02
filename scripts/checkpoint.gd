@@ -1,17 +1,19 @@
 extends Area2D
 
 # ============================================================
-#  CHECKPOINT (banco, estilo Hollow Knight)
-#  Te parás encima y apretás "interact" (E): guarda la partida,
-#  fija este punto como respawn y te recupera la vida.
+#  CHECKPOINT — cápsula de reposo
+#  Rol de los bancos de Hollow Knight, en clave espacial: te
+#  parás en el campo de energía y apretás "interact" (↑):
+#  guarda la partida, fija el respawn y te recupera la vida.
 # ============================================================
 
 ## Si recupera la vida al usarlo.
 @export var restore_health: bool = true
 
-# Colores del placeholder: dorado si es el banco activo, apagado si no.
-const ACTIVE_COLOR := Color(1.0, 0.85, 0.3, 1.0)
-const IDLE_COLOR := Color(0.55, 0.5, 0.3, 1.0)
+# Colores del campo de energía de la cápsula: dorado si es el
+# checkpoint activo, celeste tenue si no.
+const ACTIVE_COLOR := Color(1.0, 0.85, 0.4, 0.75)
+const IDLE_COLOR := Color(0.4, 0.65, 0.8, 0.5)
 
 var player_in_range: bool = false
 

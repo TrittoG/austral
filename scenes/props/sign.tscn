@@ -2,35 +2,30 @@
 
 [ext_resource type="Script" path="res://scripts/sign.gd" id="1_sign"]
 
-[sub_resource type="StyleBoxFlat" id="style_plate"]
-content_margin_left = 12.0
-content_margin_top = 6.0
-content_margin_right = 12.0
-content_margin_bottom = 6.0
-bg_color = Color(0.07, 0.08, 0.11, 0.88)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-
 [node name="Sign" type="Node2D"]
 script = ExtResource("1_sign")
 
 [node name="Post" type="ColorRect" parent="."]
 offset_left = -3.0
-offset_top = -30.0
+offset_top = -26.0
 offset_right = 3.0
 offset_bottom = 40.0
 color = Color(0.45, 0.42, 0.38, 1)
 
+[node name="Plate" type="ColorRect" parent="."]
+offset_left = -40.0
+offset_top = -46.0
+offset_right = 40.0
+offset_bottom = -22.0
+color = Color(0.38, 0.36, 0.33, 1)
+
 [node name="Label" type="Label" parent="."]
 offset_left = -170.0
-offset_top = -100.0
+offset_top = -84.0
 offset_right = 170.0
-offset_bottom = -34.0
-theme_override_colors/font_color = Color(0.93, 0.91, 0.83, 1)
+offset_bottom = -50.0
+theme_override_colors/font_color = Color(0.85, 0.83, 0.75, 1)
 theme_override_font_sizes/font_size = 15
-theme_override_styles/normal = SubResource("style_plate")
 text = "..."
 horizontal_alignment = 1
-vertical_alignment = 1
+vertical_alignment = 2
