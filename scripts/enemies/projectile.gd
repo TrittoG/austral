@@ -13,6 +13,7 @@ extends Area2D
 
 var dir: int = 1
 var time_left: float = 0.0
+var vel: Vector2 = Vector2.ZERO   # modo vector (jefes): manda sobre dir
 
 
 func _ready() -> void:
@@ -21,13 +22,21 @@ func _ready() -> void:
 	body_entered.connect(_on_body_entered)
 
 
-# La llama el shooter al crearlo.
+# La llama el shooter al crearlo (vuelo horizontal simple).
 func setup(direction: int) -> void:
 	dir = direction
 
 
+# Modo vector: vuela con esta velocidad exacta (jefes que apuntan).
+func setup_vector(velocity: Vector2) -> void:
+	vel = velocity
+
+
 func _physics_process(delta: float) -> void:
-	position.x += dir * speed * delta
+	if vel != Vector2.ZERO:
+		position += vel * delta
+	else:
+		position.x += dir * speed * delta
 	time_left -= delta
 	if time_left <= 0.0:
 		queue_free()

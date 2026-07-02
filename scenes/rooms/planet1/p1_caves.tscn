@@ -8,7 +8,10 @@
 [ext_resource type="PackedScene" path="res://scenes/props/currency_rock.tscn" id="6_rock"]
 
 [sub_resource type="RectangleShape2D" id="shape_floor"]
-size = Vector2(1400, 40)
+size = Vector2(480, 40)
+
+[sub_resource type="RectangleShape2D" id="shape_floor_r"]
+size = Vector2(740, 40)
 
 [sub_resource type="RectangleShape2D" id="shape_wall"]
 size = Vector2(40, 640)
@@ -30,18 +33,50 @@ script = ExtResource("1_room")
 camera_limit_right = 1400
 music_track = "res://assets/audio/music/planet1.wav"
 
-[node name="Floor" type="StaticBody2D" parent="."]
-position = Vector2(700, 600)
+[node name="FloorLeft" type="StaticBody2D" parent="."]
+position = Vector2(240, 600)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FloorLeft"]
 shape = SubResource("shape_floor")
 
-[node name="ColorRect" type="ColorRect" parent="Floor"]
-offset_left = -700.0
+[node name="ColorRect" type="ColorRect" parent="FloorLeft"]
+offset_left = -240.0
 offset_top = -20.0
-offset_right = 700.0
+offset_right = 240.0
 offset_bottom = 20.0
 color = Color(0.26, 0.22, 0.2, 1)
+
+[node name="FloorRight" type="StaticBody2D" parent="."]
+position = Vector2(1030, 600)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FloorRight"]
+shape = SubResource("shape_floor_r")
+
+[node name="ColorRect" type="ColorRect" parent="FloorRight"]
+offset_left = -370.0
+offset_top = -20.0
+offset_right = 370.0
+offset_bottom = 20.0
+color = Color(0.26, 0.22, 0.2, 1)
+
+[node name="PitDoor" type="Area2D" parent="."]
+position = Vector2(570, 655)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("2_door")
+target_room = "res://scenes/rooms/planet1/p1_chasm.tscn"
+target_door = "FromCaves"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PitDoor"]
+shape = SubResource("shape_door_h")
+
+[node name="Entry" type="Marker2D" parent="PitDoor"]
+position = Vector2(-150, -115)
+
+[node name="SignAbismo" parent="." instance=ExtResource("3_sign")]
+position = Vector2(390, 540)
+text = "El Abismo.
+No se ve el fondo..."
 
 [node name="WallRight" type="StaticBody2D" parent="."]
 position = Vector2(1390, 300)
@@ -180,7 +215,7 @@ offset_bottom = 12.0
 color = Color(0.34, 0.29, 0.26, 1)
 
 [node name="Walker" parent="." instance=ExtResource("4_walker")]
-position = Vector2(600, 562)
+position = Vector2(800, 562)
 
 [node name="Flyer" parent="." instance=ExtResource("5_flyer")]
 position = Vector2(850, 380)
@@ -208,7 +243,7 @@ position = Vector2(15, 460)
 collision_layer = 0
 collision_mask = 2
 script = ExtResource("2_door")
-target_room = "res://scenes/rooms/planet1/p1_depths.tscn"
+target_room = "res://scenes/rooms/planet1/p1_tunnels.tscn"
 target_door = "DoorRight"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DoorLeft"]

@@ -63,6 +63,31 @@ const CHARMS := {
 		"desc": "+2 de vida máxima",
 		"cost": 2,
 	},
+	"iman_estelar": {
+		"name": "Imán Estelar",
+		"desc": "Atrae las esquirlas de antimateria desde lejos",
+		"cost": 1,
+	},
+}
+
+# ---- Catálogo del Chatarrero (tienda) ------------------------
+# Compras únicas; lo comprado se marca en secrets_found con su id.
+const SHOP_ITEMS := {
+	"shop_heart": {
+		"name": "Célula de Vida",
+		"desc": "+1 de vida máxima, permanente",
+		"price": 45,
+	},
+	"shop_notch": {
+		"name": "Muesca de Amuleto",
+		"desc": "+1 muesca para equipar amuletos",
+		"price": 60,
+	},
+	"shop_charm_iman": {
+		"name": "Amuleto: Imán Estelar",
+		"desc": "Atrae la antimateria desde lejos (1 muesca)",
+		"price": 35,
+	},
 }
 
 # --- Estado persistente ---

@@ -47,8 +47,16 @@ const ROOMS := {
 		{"planet": "planet1", "rect": Rect2(5700, -660, 800, 640)},
 	"res://scenes/rooms/planet1/p1_caves.tscn":
 		{"planet": "planet1", "rect": Rect2(1700, 660, 1400, 640)},
+	"res://scenes/rooms/planet1/p1_tunnels.tscn":
+		{"planet": "planet1", "rect": Rect2(880, 660, 800, 640)},
 	"res://scenes/rooms/planet1/p1_depths.tscn":
-		{"planet": "planet1", "rect": Rect2(760, 660, 900, 640)},
+		{"planet": "planet1", "rect": Rect2(-40, 660, 900, 640)},
+	"res://scenes/rooms/planet1/p1_chasm.tscn":
+		{"planet": "planet1", "rect": Rect2(2050, 1320, 1000, 1280)},
+	"res://scenes/rooms/planet1/p1_market.tscn":
+		{"planet": "planet1", "rect": Rect2(1030, 1960, 1000, 640)},
+	"res://scenes/rooms/planet1/p1_boss2.tscn":
+		{"planet": "planet1", "rect": Rect2(3070, 1960, 1100, 640)},
 }
 
 

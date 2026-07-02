@@ -1,0 +1,99 @@
+[gd_scene format=3 uid="uid://p1tunnels0argen"]
+
+[ext_resource type="Script" path="res://scripts/room.gd" id="1_room"]
+[ext_resource type="Script" path="res://scripts/room_transition.gd" id="2_door"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/walker.tscn" id="3_walker"]
+[ext_resource type="PackedScene" path="res://scenes/props/currency_rock.tscn" id="4_rock"]
+[ext_resource type="PackedScene" path="res://scenes/hazards/spikes.tscn" id="5_spikes"]
+
+[sub_resource type="RectangleShape2D" id="shape_floor"]
+size = Vector2(800, 40)
+
+[sub_resource type="RectangleShape2D" id="shape_door"]
+size = Vector2(30, 560)
+
+[sub_resource type="RectangleShape2D" id="shape_plat_med"]
+size = Vector2(140, 24)
+
+[node name="P1Tunnels" type="Node2D"]
+script = ExtResource("1_room")
+camera_limit_right = 800
+music_track = "res://assets/audio/music/planet1.wav"
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(400, 600)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("shape_floor")
+
+[node name="ColorRect" type="ColorRect" parent="Floor"]
+offset_left = -400.0
+offset_top = -20.0
+offset_right = 400.0
+offset_bottom = 20.0
+color = Color(0.25, 0.21, 0.2, 1)
+
+[node name="PlatformA" type="StaticBody2D" parent="."]
+position = Vector2(400, 500)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlatformA"]
+shape = SubResource("shape_plat_med")
+
+[node name="ColorRect" type="ColorRect" parent="PlatformA"]
+offset_left = -70.0
+offset_top = -12.0
+offset_right = 70.0
+offset_bottom = 12.0
+color = Color(0.33, 0.28, 0.26, 1)
+
+[node name="Spikes" parent="." instance=ExtResource("5_spikes")]
+position = Vector2(400, 570)
+
+[node name="Walker" parent="." instance=ExtResource("3_walker")]
+position = Vector2(600, 562)
+
+[node name="Rock" parent="." instance=ExtResource("4_rock")]
+position = Vector2(150, 558)
+rock_id = "p1_rock_t1"
+
+[node name="DoorLeft" type="Area2D" parent="."]
+position = Vector2(15, 400)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("2_door")
+target_room = "res://scenes/rooms/planet1/p1_depths.tscn"
+target_door = "DoorRight"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DoorLeft"]
+shape = SubResource("shape_door")
+
+[node name="ColorRect" type="ColorRect" parent="DoorLeft"]
+offset_left = -15.0
+offset_top = -280.0
+offset_right = 15.0
+offset_bottom = 280.0
+color = Color(0.3, 0.8, 0.4, 0.25)
+
+[node name="Entry" type="Marker2D" parent="DoorLeft"]
+position = Vector2(75, 140)
+
+[node name="DoorRight" type="Area2D" parent="."]
+position = Vector2(785, 400)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("2_door")
+target_room = "res://scenes/rooms/planet1/p1_caves.tscn"
+target_door = "DoorLeft"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DoorRight"]
+shape = SubResource("shape_door")
+
+[node name="ColorRect" type="ColorRect" parent="DoorRight"]
+offset_left = -15.0
+offset_top = -280.0
+offset_right = 15.0
+offset_bottom = 280.0
+color = Color(0.3, 0.8, 0.4, 0.25)
+
+[node name="Entry" type="Marker2D" parent="DoorRight"]
+position = Vector2(-75, 140)

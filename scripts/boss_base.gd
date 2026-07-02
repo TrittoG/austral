@@ -25,6 +25,8 @@ const COIN_SCENE := preload("res://scenes/props/antimatter.tscn")
 
 @export_group("Daño y feedback")
 @export var contact_damage: int = 1
+## Apagar para jefes voladores.
+@export var use_gravity: bool = true
 @export var gravity: float = 980.0
 @export var hit_flash_color: Color = Color(1, 1, 1)
 @export var hit_flash_time: float = 0.06
@@ -57,7 +59,7 @@ func _physics_process(delta: float) -> void:
 		_acquire_player()
 	_update_flash(delta)
 
-	if not is_on_floor():
+	if use_gravity and not is_on_floor():
 		velocity.y += gravity * delta
 
 	if active:

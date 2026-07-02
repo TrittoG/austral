@@ -42,11 +42,15 @@ func _physics_process(delta: float) -> void:
 	if is_on_floor() and _prev_vy > 140.0:
 		velocity.y = -_prev_vy * 0.45
 
-	# Imán suave hacia el player cercano.
+	# Imán suave hacia el player cercano. El amuleto Imán Estelar
+	# triplica el alcance.
 	var player = get_tree().get_first_node_in_group("player")
 	if player != null:
+		var reach := magnet_range
+		if Game.is_charm_equipped("iman_estelar"):
+			reach *= 3.0
 		var dist := global_position.distance_to(player.global_position)
-		if dist < magnet_range:
+		if dist < reach:
 			global_position = global_position.move_toward(
 					player.global_position, magnet_speed * delta)
 
