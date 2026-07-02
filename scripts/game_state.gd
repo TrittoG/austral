@@ -13,6 +13,32 @@ const SAVE_VERSION := 1
 # Se emite al desbloquear una habilidad nueva (el player se refresca,
 # el HUD muestra el aviso).
 signal ability_unlocked(key: String)
+# Se emite al encontrar un amuleto nuevo (el HUD avisa).
+signal charm_collected(id: String)
+# Se emite al equipar/desequipar amuletos (el player recalcula stats).
+signal charms_changed
+
+# ---- Registro de amuletos (estilo Hollow Knight) ------------
+# Cada amuleto ocupa muescas. Se equipan/desequipan en los bancos.
+# Para agregar uno: entrada acá + su efecto en player.apply_charms()
+# + un charm_pickup en el mundo con este id.
+const CHARMS := {
+	"filo_largo": {
+		"name": "Filo Largo",
+		"desc": "El golpe alcanza bastante más lejos",
+		"cost": 1,
+	},
+	"garra_veloz": {
+		"name": "Garra Veloz",
+		"desc": "El dash recarga el doble de rápido",
+		"cost": 1,
+	},
+	"corazon_ferreo": {
+		"name": "Corazón Férreo",
+		"desc": "+2 de vida máxima",
+		"cost": 2,
+	},
+}
 
 # --- Estado persistente ---
 var abilities: Dictionary = {}          # { "dash": bool, "double_jump": bool, "wall_jump": bool }
@@ -21,6 +47,10 @@ var checkpoint_position: Vector2 = Vector2.ZERO  # posición del banco
 var bosses_defeated: Array = []         # ids de jefes vencidos
 var secrets_found: Array = []           # ids de secretos encontrados
 var max_health: int = 5                 # vida máxima (sube con upgrades)
+var charms_owned: Array = []            # ids de amuletos encontrados
+var charms_equipped: Array = []         # ids de amuletos equipados
+var charm_notches: int = 3              # muescas disponibles para equipar
+var rooms_visited: Array = []           # rutas de salas visitadas (mapa)
 
 
 func _ready() -> void:
@@ -40,6 +70,10 @@ func new_game() -> void:
 	bosses_defeated = []
 	secrets_found = []
 	max_health = 5
+	charms_owned = []
+	charms_equipped = []
+	charm_notches = 3
+	rooms_visited = []
 
 
 # ---- Habilidades -------------------------------------------
@@ -62,6 +96,58 @@ func set_checkpoint(room: String, position: Vector2) -> void:
 
 func get_checkpoint() -> Dictionary:
 	return {"room": checkpoint_room, "position": checkpoint_position}
+
+
+# ---- Amuletos ------------------------------------------------
+func own_charm(id: String) -> void:
+	if id in charms_owned:
+		return
+	charms_owned.append(id)
+	charm_collected.emit(id)
+
+
+func is_charm_owned(id: String) -> bool:
+	return id in charms_owned
+
+
+func is_charm_equipped(id: String) -> bool:
+	return id in charms_equipped
+
+
+# Muescas ocupadas por los amuletos equipados.
+func used_notches() -> int:
+	var total := 0
+	for id in charms_equipped:
+		total += int(CHARMS.get(id, {}).get("cost", 1))
+	return total
+
+
+# Intenta equipar. Devuelve false si no hay muescas suficientes.
+func equip_charm(id: String) -> bool:
+	if not is_charm_owned(id) or is_charm_equipped(id):
+		return false
+	var cost: int = CHARMS.get(id, {}).get("cost", 1)
+	if used_notches() + cost > charm_notches:
+		return false
+	charms_equipped.append(id)
+	charms_changed.emit()
+	return true
+
+
+func unequip_charm(id: String) -> void:
+	if is_charm_equipped(id):
+		charms_equipped.erase(id)
+		charms_changed.emit()
+
+
+# ---- Mapa: salas visitadas -----------------------------------
+func mark_room_visited(path: String) -> void:
+	if path not in rooms_visited:
+		rooms_visited.append(path)
+
+
+func is_room_visited(path: String) -> bool:
+	return path in rooms_visited
 
 
 # ---- Jefes / secretos --------------------------------------
@@ -97,6 +183,10 @@ func save_game() -> void:
 		"bosses_defeated": bosses_defeated,
 		"secrets_found": secrets_found,
 		"max_health": max_health,
+		"charms_owned": charms_owned,
+		"charms_equipped": charms_equipped,
+		"charm_notches": charm_notches,
+		"rooms_visited": rooms_visited,
 	}
 	var file := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
 	if file != null:
@@ -124,4 +214,8 @@ func load_game() -> bool:
 	bosses_defeated = parsed.get("bosses_defeated", [])
 	secrets_found = parsed.get("secrets_found", [])
 	max_health = int(parsed.get("max_health", 5))
+	charms_owned = parsed.get("charms_owned", [])
+	charms_equipped = parsed.get("charms_equipped", [])
+	charm_notches = int(parsed.get("charm_notches", 3))
+	rooms_visited = parsed.get("rooms_visited", [])
 	return true

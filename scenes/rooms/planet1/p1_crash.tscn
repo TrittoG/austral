@@ -4,6 +4,7 @@
 [ext_resource type="Script" path="res://scripts/room_transition.gd" id="2_door"]
 [ext_resource type="PackedScene" path="res://scenes/props/sign.tscn" id="3_sign"]
 [ext_resource type="PackedScene" path="res://scenes/enemies/walker.tscn" id="4_walker"]
+[ext_resource type="PackedScene" path="res://scenes/props/charm_pickup.tscn" id="5_charm"]
 
 [sub_resource type="RectangleShape2D" id="shape_floor"]
 size = Vector2(1600, 40)
@@ -78,7 +79,8 @@ position = Vector2(140, 540)
 [node name="SignMove" parent="." instance=ExtResource("3_sign")]
 position = Vector2(450, 540)
 text = "A / D — moverte
-ESPACIO — saltar"
+ESPACIO — saltar
+M — mapa"
 
 [node name="SignJump" parent="." instance=ExtResource("3_sign")]
 position = Vector2(770, 540)
@@ -131,6 +133,10 @@ color = Color(0.42, 0.36, 0.29, 1)
 
 [node name="Walker" parent="." instance=ExtResource("4_walker")]
 position = Vector2(1280, 562)
+
+[node name="CharmFiloLargo" parent="." instance=ExtResource("5_charm")]
+position = Vector2(790, 420)
+charm_id = "filo_largo"
 
 [node name="DoorRight" type="Area2D" parent="."]
 position = Vector2(1585, 400)

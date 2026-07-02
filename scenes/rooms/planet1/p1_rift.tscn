@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" path="res://scenes/enemies/walker.tscn" id="5_walker"]
 [ext_resource type="PackedScene" path="res://scenes/enemies/charger.tscn" id="6_charger"]
 [ext_resource type="PackedScene" path="res://scenes/enemies/shooter.tscn" id="7_shooter"]
+[ext_resource type="PackedScene" path="res://scenes/props/charm_pickup.tscn" id="8_charm"]
 
 [sub_resource type="RectangleShape2D" id="shape_floor"]
 size = Vector2(2200, 40)
@@ -125,6 +126,10 @@ color = Color(0.42, 0.36, 0.29, 1)
 [node name="DoubleJumpPickup" parent="." instance=ExtResource("4_pickup")]
 position = Vector2(1550, 308)
 ability_key = "double_jump"
+
+[node name="CharmGarraVeloz" parent="." instance=ExtResource("8_charm")]
+position = Vector2(1790, 305)
+charm_id = "garra_veloz"
 
 [node name="Bridge" type="StaticBody2D" parent="."]
 position = Vector2(1790, 348)

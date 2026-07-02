@@ -57,6 +57,12 @@ func _activate() -> void:
 
 	_refresh_visual()
 
+	# Descansar en el banco abre el menú de amuletos (estilo Hollow Knight:
+	# solo se cambian sentado en un banco).
+	var menu = get_tree().get_first_node_in_group("charm_menu")
+	if menu != null:
+		menu.open()
+
 
 # Dorado si este banco es el checkpoint guardado.
 func _refresh_visual() -> void:

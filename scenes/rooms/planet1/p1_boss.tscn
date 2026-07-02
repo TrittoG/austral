@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://scripts/boss_arena.gd" id="1_arena"]
 [ext_resource type="Script" path="res://scripts/room_transition.gd" id="2_door"]
 [ext_resource type="PackedScene" path="res://scenes/boss_01.tscn" id="3_boss"]
+[ext_resource type="PackedScene" path="res://scenes/props/charm_pickup.tscn" id="4_charm"]
 
 [sub_resource type="RectangleShape2D" id="shape_floor"]
 size = Vector2(1100, 40)
@@ -97,6 +98,10 @@ position = Vector2(750, 540)
 max_health = 25
 boss_id = "p1_guardian"
 reward_ability = "dash"
+
+[node name="CharmCorazonFerreo" parent="." instance=ExtResource("4_charm")]
+position = Vector2(980, 530)
+charm_id = "corazon_ferreo"
 
 [node name="BossUI" type="CanvasLayer" parent="."]
 

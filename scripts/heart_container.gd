@@ -34,11 +34,14 @@ func _on_body_entered(body: Node2D) -> void:
 		Game.mark_secret_found(container_id)
 	Game.max_health += 1
 
-	# El player toma la vida máxima nueva y queda curado a tope.
-	# Sin tipo: max_health/full_heal no están declarados en Node.
+	# El player recalcula su vida máxima (base nueva + bonus de amuletos)
+	# y queda curado a tope. Sin tipo: métodos no declarados en Node.
 	var player = get_tree().get_first_node_in_group("player")
 	if player != null:
-		player.max_health = Game.max_health
+		if player.has_method("apply_charms"):
+			player.apply_charms()
+		else:
+			player.max_health = Game.max_health
 		player.full_heal()
 
 	Audio.play("checkpoint")

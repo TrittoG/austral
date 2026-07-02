@@ -1,0 +1,66 @@
+[gd_scene format=3 uid="uid://c1charmmenu0argen"]
+
+[ext_resource type="Script" path="res://scripts/charm_menu.gd" id="1_menu"]
+
+[node name="CharmMenu" type="CanvasLayer"]
+process_mode = 3
+layer = 95
+script = ExtResource("1_menu")
+
+[node name="Dim" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 0.65)
+
+[node name="Frame" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 220.0
+offset_top = 90.0
+offset_right = -220.0
+offset_bottom = -90.0
+color = Color(0.1, 0.11, 0.14, 0.95)
+
+[node name="VBox" type="VBoxContainer" parent="Frame"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 30.0
+offset_top = 20.0
+offset_right = -30.0
+offset_bottom = -20.0
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="Frame/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 34
+text = "AMULETOS"
+horizontal_alignment = 1
+
+[node name="Notches" type="Label" parent="Frame/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.4, 1)
+theme_override_font_sizes/font_size = 20
+text = "Muescas: 0 / 3"
+horizontal_alignment = 1
+
+[node name="Empty" type="Label" parent="Frame/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.6, 0.6, 1)
+theme_override_font_sizes/font_size = 16
+text = "Todavía no encontraste amuletos."
+horizontal_alignment = 1
+
+[node name="List" type="VBoxContainer" parent="Frame/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 10
+
+[node name="CloseButton" type="Button" parent="Frame/VBox"]
+custom_minimum_size = Vector2(200, 42)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 18
+text = "Cerrar (E)"

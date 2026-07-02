@@ -93,6 +93,9 @@ func _load_room(path: String, door_name: String, explicit_pos := Vector2.INF) ->
 
 	_apply_camera_limits()
 
+	# El mapa se revela por salas visitadas.
+	Game.mark_room_visited(path)
+
 	# Música de la sala (si comparte pista con la anterior, sigue de largo).
 	if "music_track" in current_room:
 		Audio.play_music_path(current_room.music_track)

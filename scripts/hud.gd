@@ -24,6 +24,7 @@ func _ready() -> void:
 	if notice != null:
 		notice.visible = false
 		Game.ability_unlocked.connect(_on_ability_unlocked)
+		Game.charm_collected.connect(_on_charm_collected)
 
 
 func _on_health_changed(current: int, maximum: int) -> void:
@@ -31,7 +32,16 @@ func _on_health_changed(current: int, maximum: int) -> void:
 
 
 func _on_ability_unlocked(key: String) -> void:
-	notice.text = "¡Habilidad desbloqueada: %s!" % key.to_upper().replace("_", " ")
+	_show_notice("¡Habilidad desbloqueada: %s!" % key.to_upper().replace("_", " "))
+
+
+func _on_charm_collected(id: String) -> void:
+	var charm_name: String = Game.CHARMS.get(id, {}).get("name", id)
+	_show_notice("Amuleto encontrado: %s — equipalo en un banco" % charm_name)
+
+
+func _show_notice(message: String) -> void:
+	notice.text = message
 	notice.visible = true
 	await get_tree().create_timer(3.0).timeout
 	notice.visible = false

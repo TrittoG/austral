@@ -1,0 +1,56 @@
+[gd_scene format=3 uid="uid://c1mapscreen0argen"]
+
+[ext_resource type="Script" path="res://scripts/map_screen.gd" id="1_map"]
+[ext_resource type="Script" path="res://scripts/map_view.gd" id="2_view"]
+
+[node name="MapScreen" type="CanvasLayer"]
+process_mode = 3
+layer = 90
+script = ExtResource("1_map")
+
+[node name="Dim" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 0.75)
+
+[node name="Frame" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 70.0
+offset_top = 40.0
+offset_right = -70.0
+offset_bottom = -40.0
+color = Color(0.08, 0.09, 0.12, 0.95)
+
+[node name="Title" type="Label" parent="Frame"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 12.0
+offset_bottom = 52.0
+theme_override_font_sizes/font_size = 28
+text = "MAPA"
+horizontal_alignment = 1
+
+[node name="MapView" type="Control" parent="Frame"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 60.0
+offset_right = -20.0
+offset_bottom = -46.0
+script = ExtResource("2_view")
+
+[node name="Hint" type="Label" parent="Frame"]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -38.0
+offset_bottom = -10.0
+theme_override_colors/font_color = Color(0.55, 0.55, 0.6, 1)
+theme_override_font_sizes/font_size = 15
+text = "TAB — cambiar vista      M / Esc — cerrar"
+horizontal_alignment = 1

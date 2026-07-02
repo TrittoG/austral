@@ -154,6 +154,10 @@ var is_wall_sliding: bool = false        # true mientras te deslizás por una pa
 var wall_dir: int = 0                    # hacia dónde está la pared: -1 izq, 1 der
 var wall_jump_lockout_timer: float = 0.0 # ignora input horizontal mientras > 0
 
+# ---- Modificadores por amuletos (los recalcula apply_charms) --
+var charm_dash_cooldown_mult: float = 1.0
+var charm_reach_mult: float = 1.0
+
 # Se emite cuando cambia la vida, para que el HUD se actualice.
 signal health_changed(current: int, maximum: int)
 
@@ -184,8 +188,27 @@ func _apply_saved_state() -> void:
 	health = max_health
 	if use_saved_abilities:
 		refresh_abilities()
-		# Al desbloquear una habilidad (jefe, pickup) el player se entera solo.
+		apply_charms()
+		# Al desbloquear una habilidad (jefe, pickup) el player se entera solo,
+		# y al cambiar amuletos en un banco recalcula sus stats.
 		Game.ability_unlocked.connect(_on_ability_unlocked)
+		Game.charms_changed.connect(apply_charms)
+
+
+# ------------------------------------------------------------
+#  AMULETOS — efectos sobre el player
+# ------------------------------------------------------------
+# Recalcula los modificadores según lo equipado. Acá se define QUÉ hace
+# cada amuleto (el registro con nombre/costo vive en Game.CHARMS).
+func apply_charms() -> void:
+	charm_dash_cooldown_mult = 0.5 if Game.is_charm_equipped("garra_veloz") else 1.0
+	charm_reach_mult = 1.4 if Game.is_charm_equipped("filo_largo") else 1.0
+
+	# Corazón Férreo: +2 de vida máxima mientras esté puesto.
+	var bonus := 2 if Game.is_charm_equipped("corazon_ferreo") else 0
+	max_health = Game.max_health + bonus
+	health = mini(health, max_health)  # sacarlo no cura, recorta
+	health_changed.emit(health, max_health)
 
 
 # Copia los flags de habilidad desde el estado del juego.
@@ -428,7 +451,8 @@ func _handle_dash(delta: float) -> void:
 func _start_dash() -> void:
 	is_dashing = true
 	dash_timer = dash_duration
-	dash_cooldown_timer = dash_cooldown
+	# Garra Veloz reduce el cooldown a la mitad.
+	dash_cooldown_timer = dash_cooldown * charm_dash_cooldown_mult
 	dash_dir = facing  # dashea hacia donde mira
 	Audio.play("dash", 0.05)
 	# Polvo hacia atrás y cuerpo estirado horizontal.
@@ -483,13 +507,15 @@ func _get_attack_direction() -> Vector2:
 
 # Coloca y orienta el hitbox del golpe según la dirección.
 func _position_sword(dir: Vector2) -> void:
+	# Filo Largo estira el alcance del golpe.
+	var reach := attack_reach * charm_reach_mult
 	var shape := sword_shape.shape as RectangleShape2D
 	if dir == Vector2.UP or dir == Vector2.DOWN:
-		shape.size = Vector2(attack_width, attack_reach)
+		shape.size = Vector2(attack_width, reach)
 	else:
-		shape.size = Vector2(attack_reach, attack_width)
+		shape.size = Vector2(reach, attack_width)
 	# Desplazar el hitbox hacia afuera, en la dirección del golpe.
-	sword_shape.position = dir * (attack_reach * 0.5 + 8.0)
+	sword_shape.position = dir * (reach * 0.5 + 8.0)
 
 
 func _check_attack_hits() -> void:

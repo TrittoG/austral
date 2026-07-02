@@ -4,6 +4,8 @@
 [ext_resource type="PackedScene" path="res://scenes/player.tscn" id="2_player"]
 [ext_resource type="Script" path="res://scripts/hud.gd" id="3_hud"]
 [ext_resource type="PackedScene" path="res://scenes/pause_menu.tscn" id="4_pause"]
+[ext_resource type="PackedScene" path="res://scenes/charm_menu.tscn" id="5_charms"]
+[ext_resource type="PackedScene" path="res://scenes/map_screen.tscn" id="6_map"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_manager")
@@ -47,3 +49,7 @@ color = Color(0, 0, 0, 0)
 mouse_filter = 2
 
 [node name="PauseMenu" parent="." instance=ExtResource("4_pause")]
+
+[node name="CharmMenu" parent="." instance=ExtResource("5_charms")]
+
+[node name="MapScreen" parent="." instance=ExtResource("6_map")]
