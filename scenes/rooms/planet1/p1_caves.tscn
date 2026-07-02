@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://p1caves00argen"]
+[gd_scene format=3 uid="uid://cxyry058cuns4"]
 
 [ext_resource type="Script" path="res://scripts/room.gd" id="1_room"]
 [ext_resource type="Script" path="res://scripts/room_transition.gd" id="2_door"]
@@ -89,7 +89,7 @@ offset_bottom = 12.0
 color = Color(0.34, 0.29, 0.26, 1)
 
 [node name="LedgeA" type="StaticBody2D" parent="."]
-position = Vector2(1240, 520)
+position = Vector2(1170, 520)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LedgeA"]
 shape = SubResource("shape_plat_sm")
@@ -115,7 +115,7 @@ offset_bottom = 12.0
 color = Color(0.34, 0.29, 0.26, 1)
 
 [node name="LedgeC" type="StaticBody2D" parent="."]
-position = Vector2(1240, 380)
+position = Vector2(1170, 380)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LedgeC"]
 shape = SubResource("shape_plat_sm")
@@ -141,7 +141,7 @@ offset_bottom = 12.0
 color = Color(0.34, 0.29, 0.26, 1)
 
 [node name="LedgeE" type="StaticBody2D" parent="."]
-position = Vector2(1240, 240)
+position = Vector2(1170, 240)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LedgeE"]
 shape = SubResource("shape_plat_sm")
@@ -167,7 +167,7 @@ offset_bottom = 12.0
 color = Color(0.34, 0.29, 0.26, 1)
 
 [node name="LedgeG" type="StaticBody2D" parent="."]
-position = Vector2(1240, 110)
+position = Vector2(1170, 110)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LedgeG"]
 shape = SubResource("shape_plat_sm")
