@@ -20,7 +20,8 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if not visible:
 		return
-	if event.is_action_pressed("pause") or event.is_action_pressed("interact"):
+	# OJO: interact (↑) NO cierra: ↑/↓ navegan la lista.
+	if event.is_action_pressed("pause") or event.is_action_pressed("ui_cancel"):
 		close()
 		get_viewport().set_input_as_handled()
 
@@ -37,12 +38,14 @@ func close() -> void:
 	get_tree().set_deferred("paused", false)
 
 
-func _rebuild() -> void:
+func _rebuild(focus_index: int = 0) -> void:
 	for child in list.get_children():
 		child.queue_free()
 
 	currency_label.text = "Tenés  ◆ %d" % Game.currency
 
+	var buttons: Array = []
+	var row_index := 0
 	for id in Game.SHOP_ITEMS:
 		var data: Dictionary = Game.SHOP_ITEMS[id]
 		var price: int = data["price"]
@@ -59,8 +62,9 @@ func _rebuild() -> void:
 		else:
 			buy.text = "◆ %d" % price
 			buy.disabled = Game.currency < price
-			buy.pressed.connect(_on_buy.bind(id))
+			buy.pressed.connect(_on_buy.bind(id, row_index))
 		row.add_child(buy)
+		buttons.append(buy)
 
 		var info := Label.new()
 		info.text = "%s — %s" % [data["name"], data["desc"]]
@@ -69,9 +73,16 @@ func _rebuild() -> void:
 		row.add_child(info)
 
 		list.add_child(row)
+		row_index += 1
+
+	# Foco para navegar sin mouse; tras comprar, se queda en la misma fila.
+	if buttons.is_empty():
+		close_button.grab_focus()
+	else:
+		buttons[clampi(focus_index, 0, buttons.size() - 1)].grab_focus()
 
 
-func _on_buy(id: String) -> void:
+func _on_buy(id: String, row_index: int = 0) -> void:
 	var data: Dictionary = Game.SHOP_ITEMS[id]
 	var price: int = data["price"]
 	if Game.currency < price or Game.is_secret_found(id):
@@ -95,4 +106,4 @@ func _on_buy(id: String) -> void:
 
 	Audio.play("checkpoint")
 	Game.save_game()  # la compra queda guardada ya mismo
-	_rebuild()
+	_rebuild(row_index)

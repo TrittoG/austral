@@ -40,6 +40,14 @@ func _unhandled_input(event: InputEvent) -> void:
 			_resume()
 		else:
 			_open()
+		get_viewport().set_input_as_handled()
+	elif visible and event.is_action_pressed("ui_cancel"):
+		# B en joystick: en opciones vuelve al menú, en el menú reanuda.
+		if options_panel.visible:
+			_show_main()
+		else:
+			_resume()
+		get_viewport().set_input_as_handled()
 
 
 func _open() -> void:
@@ -56,11 +64,14 @@ func _resume() -> void:
 func _show_main() -> void:
 	main_panel.visible = true
 	options_panel.visible = false
+	# Foco inicial: sin esto, flechas/joystick no navegan.
+	$MainButtons/VBox/ResumeButton.grab_focus()
 
 
 func _show_options() -> void:
 	main_panel.visible = false
 	options_panel.visible = true
+	master_slider.grab_focus()  # ←/→ ajustan el slider enfocado
 
 
 func _quit_to_title() -> void:

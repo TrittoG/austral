@@ -22,7 +22,8 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if not visible:
 		return
-	if event.is_action_pressed("pause") or event.is_action_pressed("interact"):
+	# OJO: interact (↑) NO cierra: ↑/↓ navegan la lista.
+	if event.is_action_pressed("pause") or event.is_action_pressed("ui_cancel"):
 		close()
 		get_viewport().set_input_as_handled()
 
@@ -43,13 +44,16 @@ func close() -> void:
 
 
 # Rearma la lista de amuletos según lo que tenés y lo equipado.
-func _rebuild() -> void:
+# focus_index: qué fila queda enfocada (navegación por teclado/joystick).
+func _rebuild(focus_index: int = 0) -> void:
 	for child in list.get_children():
 		child.queue_free()
 
 	notches_label.text = "Muescas: %d / %d" % [Game.used_notches(), Game.charm_notches]
 	empty_label.visible = Game.charms_owned.is_empty()
 
+	var buttons: Array = []
+	var row_index := 0
 	for id in Game.CHARMS:
 		if not Game.is_charm_owned(id):
 			continue
@@ -63,8 +67,9 @@ func _rebuild() -> void:
 		button.custom_minimum_size = Vector2(250, 40)
 		var mark := "[ x ]" if equipped else "[    ]"
 		button.text = "%s  %s  (%d)" % [mark, data["name"], data["cost"]]
-		button.pressed.connect(_on_toggle.bind(id))
+		button.pressed.connect(_on_toggle.bind(id, row_index))
 		row.add_child(button)
+		buttons.append(button)
 
 		var desc := Label.new()
 		desc.text = data["desc"]
@@ -74,13 +79,21 @@ func _rebuild() -> void:
 		row.add_child(desc)
 
 		list.add_child(row)
+		row_index += 1
+
+	# Foco inicial para navegar sin mouse. Tras un toggle, vuelve a la
+	# misma fila (si no, cada clic te dejaría sin foco).
+	if buttons.is_empty():
+		close_button.grab_focus()
+	else:
+		buttons[clampi(focus_index, 0, buttons.size() - 1)].grab_focus()
 
 
-func _on_toggle(id: String) -> void:
+func _on_toggle(id: String, row_index: int) -> void:
 	if Game.is_charm_equipped(id):
 		Game.unequip_charm(id)
 	else:
 		# Si no hay muescas suficientes, equip_charm devuelve false
 		# y la lista simplemente no cambia.
 		Game.equip_charm(id)
-	_rebuild()
+	_rebuild(row_index)

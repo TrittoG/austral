@@ -23,7 +23,10 @@ func _ready() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("pause") or event.is_action_pressed("interact"):
+	var back := (event.is_action_pressed("pause")
+			or event.is_action_pressed("interact")
+			or event.is_action_pressed("ui_cancel"))
+	if back:
 		_back_to_title()
 
 

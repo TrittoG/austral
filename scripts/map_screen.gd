@@ -26,7 +26,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				return
 			open()
 		get_viewport().set_input_as_handled()
-	elif visible and event.is_action_pressed("pause"):
+	elif visible and (event.is_action_pressed("pause") or event.is_action_pressed("ui_cancel")):
 		close()
 		get_viewport().set_input_as_handled()
 	elif visible and (event.is_action_pressed("ui_left") or event.is_action_pressed("ui_right")):
