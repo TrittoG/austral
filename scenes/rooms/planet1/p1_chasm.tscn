@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" path="res://scenes/enemies/flyer.tscn" id="4_flyer"]
 [ext_resource type="PackedScene" path="res://scenes/hazards/spikes.tscn" id="5_spikes"]
 [ext_resource type="PackedScene" path="res://scenes/props/heart_container.tscn" id="6_heart"]
+[ext_resource type="PackedScene" path="res://scenes/props/eco.tscn" id="7_eco"]
 
 [sub_resource type="RectangleShape2D" id="shape_floor"]
 size = Vector2(1000, 40)
@@ -335,6 +336,11 @@ position = Vector2(820, 1210)
 position = Vector2(450, 1180)
 text = "Izquierda: luces de un puesto.
 Derecha: un chirrido metálico."
+
+[node name="EcoFondo" parent="." instance=ExtResource("7_eco")]
+position = Vector2(620, 1170)
+text = "…no bajes al fondo…
+…ah. Ya estás en el fondo."
 
 [node name="DoorLeft" type="Area2D" parent="."]
 position = Vector2(15, 1100)

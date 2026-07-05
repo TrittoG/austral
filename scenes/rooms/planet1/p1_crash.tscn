@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" path="res://scenes/props/sign.tscn" id="3_sign"]
 [ext_resource type="PackedScene" path="res://scenes/enemies/walker.tscn" id="4_walker"]
 [ext_resource type="PackedScene" path="res://scenes/props/charm_pickup.tscn" id="5_charm"]
+[ext_resource type="PackedScene" path="res://scenes/props/eco.tscn" id="6_eco"]
 
 [sub_resource type="RectangleShape2D" id="shape_floor"]
 size = Vector2(1600, 40)
@@ -137,6 +138,11 @@ position = Vector2(1280, 562)
 [node name="CharmFiloLargo" parent="." instance=ExtResource("5_charm")]
 position = Vector2(790, 420)
 charm_id = "filo_largo"
+
+[node name="EcoCaida" parent="." instance=ExtResource("6_eco")]
+position = Vector2(150, 520)
+text = "…vi caer una nave… ¿era tuya?…
+qué suerte… morir mirando algo nuevo…"
 
 [node name="DoorRight" type="Area2D" parent="."]
 position = Vector2(1585, 400)
