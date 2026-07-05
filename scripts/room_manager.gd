@@ -30,6 +30,10 @@ var is_transitioning: bool = false
 
 func _ready() -> void:
 	add_to_group("rooms")
+	# La niebla reacciona en vivo a amuletos (Oído Fino) y objetos clave
+	# (matar al Fanal la levanta al instante, sin recargar la sala).
+	Game.charms_changed.connect(_update_fog)
+	Game.key_item_collected.connect(func(_id): _update_fog())
 	# Si hay un checkpoint cargado (vinimos de "Continuar"), arrancamos ahí.
 	var cp := Game.get_checkpoint()
 	if cp["room"] != "":
@@ -92,6 +96,9 @@ func _load_room(path: String, door_name: String, explicit_pos := Vector2.INF) ->
 	else:
 		player.global_position = _find_spawn(door_name)
 	player.velocity = Vector2.ZERO
+	# Si cruzaste la puerta adentro de un géiser, el empuje no debe viajar.
+	if "updraft_force" in player:
+		player.updraft_force = 0.0
 
 	_apply_camera_limits()
 
@@ -109,10 +116,26 @@ func _load_room(path: String, door_name: String, explicit_pos := Vector2.INF) ->
 		Audio.play_music_path(current_room.music_track)
 
 	# Niebla: se activa en salas con fog, salvo que tengas el disipador.
+	_update_fog()
+
+
+# Recalcula la niebla: densidad de la sala, atenuada por el amuleto
+# Oído Fino, anulada por el Disipador Iónico.
+func _update_fog() -> void:
 	var fog_overlay = get_node_or_null("FogOverlay")
-	if fog_overlay != null:
-		var room_has_fog: bool = ("fog" in current_room) and current_room.fog
-		fog_overlay.visible = room_has_fog and not Game.has_key_item("disipador_ionico")
+	if fog_overlay == null or current_room == null or not is_instance_valid(current_room):
+		return
+	var room_has_fog: bool = ("fog" in current_room) and current_room.fog
+	if not room_has_fog or Game.has_key_item("disipador_ionico"):
+		fog_overlay.visible = false
+		return
+	var intensity: float = 1.0
+	if "fog_intensity" in current_room:
+		intensity = current_room.fog_intensity
+	if Game.is_charm_equipped("oido_fino"):
+		intensity *= 0.6
+	fog_overlay.visible = true
+	fog_overlay.get_node("TextureRect").modulate.a = intensity
 
 
 # Busca el Marker2D "Entry" dentro de la puerta destino. Si no hay puerta,

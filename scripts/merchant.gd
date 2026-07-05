@@ -11,19 +11,21 @@ extends Area2D
 ## Nombre que muestra la caja de diálogo.
 @export var npc_name: String = "El Chatarrero"
 ## Líneas del primer encuentro (una vez; persiste en el save).
-@export var first_lines: Array[String] = [
+@export var first_lines: PackedStringArray = [
 	"Un caído vivo. Eso es nuevo.",
 	"Yo no robo, Caído. Los muertos no son dueños de nada.",
 	"Los vivos, en cambio, pagan. ¿Ves algo que te guste?",
 ]
 ## Líneas de las visitas siguientes.
-@export var repeat_lines: Array[String] = [
+@export var repeat_lines: PackedStringArray = [
 	"¿Antimateria fresca? Pasá, pasá.",
 ]
 ## Id único para recordar que ya lo conociste ("" = siempre first_lines).
 @export var met_id: String = "npc_chatarrero_met"
 ## Si abre la tienda al terminar de hablar.
 @export var opens_shop: bool = true
+## Qué artículos vende este NPC (vacío = catálogo completo).
+@export var shop_items: PackedStringArray = []
 
 var player_in_range: bool = false
 
@@ -44,7 +46,7 @@ func _talk() -> void:
 		_after_dialogue()  # sin sistema de diálogo, ir directo
 		return
 
-	var lines: Array = first_lines
+	var lines: PackedStringArray = first_lines
 	if met_id != "" and Game.is_secret_found(met_id):
 		lines = repeat_lines
 	elif met_id != "":
@@ -59,7 +61,7 @@ func _after_dialogue() -> void:
 		return
 	var menu = get_tree().get_first_node_in_group("shop_menu")
 	if menu != null:
-		menu.open()
+		menu.open(shop_items)
 
 
 func _on_body_entered(body: Node2D) -> void:

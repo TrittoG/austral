@@ -68,6 +68,11 @@ const CHARMS := {
 		"desc": "Atrae las esquirlas de antimateria desde lejos",
 		"cost": 1,
 	},
+	"oido_fino": {
+		"name": "Oído Fino",
+		"desc": "La niebla se vuelve más tenue a tu alrededor",
+		"cost": 1,
+	},
 }
 
 # ---- Catálogo del Chatarrero (tienda) ------------------------
@@ -87,6 +92,11 @@ const SHOP_ITEMS := {
 		"name": "Amuleto: Imán Estelar",
 		"desc": "Atrae la antimateria desde lejos (1 muesca)",
 		"price": 35,
+	},
+	"shop_charm_oido": {
+		"name": "Amuleto: Oído Fino",
+		"desc": "La niebla se vuelve más tenue (1 muesca)",
+		"price": 40,
 	},
 }
 

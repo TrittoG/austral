@@ -26,7 +26,13 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 
-func open() -> void:
+# Qué artículos muestra esta apertura (vacío = catálogo completo).
+var _filter: PackedStringArray = []
+
+
+# filter_items: ids de SHOP_ITEMS que vende este NPC en particular.
+func open(filter_items: PackedStringArray = PackedStringArray()) -> void:
+	_filter = filter_items
 	visible = true
 	get_tree().paused = true
 	_rebuild()
@@ -47,6 +53,8 @@ func _rebuild(focus_index: int = 0) -> void:
 	var buttons: Array = []
 	var row_index := 0
 	for id in Game.SHOP_ITEMS:
+		if not _filter.is_empty() and id not in _filter:
+			continue
 		var data: Dictionary = Game.SHOP_ITEMS[id]
 		var price: int = data["price"]
 		var sold: bool = Game.is_secret_found(id)
@@ -103,6 +111,8 @@ func _on_buy(id: String, row_index: int = 0) -> void:
 			Game.charm_notches += 1
 		"shop_charm_iman":
 			Game.own_charm("iman_estelar")
+		"shop_charm_oido":
+			Game.own_charm("oido_fino")
 
 	Audio.play("checkpoint")
 	Game.save_game()  # la compra queda guardada ya mismo

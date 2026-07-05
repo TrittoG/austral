@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://c1ermitana0argen"]
+
+[ext_resource type="Script" path="res://scripts/merchant.gd" id="1_npc"]
+
+[sub_resource type="RectangleShape2D" id="shape_zone"]
+size = Vector2(120, 110)
+
+[node name="Ermitana" type="Area2D"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_npc")
+npc_name = "La Ermitaña"
+first_lines = PackedStringArray("Pasos nuevos. Hacía años.", "¿Venís por la luz del fondo? No la mires mucho: la luz de acá abajo tiene dientes.", "El Silencio no odia, nene. Tiene hambre. Como todos.", "Tomá asiento si querés. O mejor: mirá mis cositas.")
+repeat_lines = PackedStringArray("La niebla no está vacía. Nunca estuvo.")
+met_id = "npc_ermitana_met"
+shop_items = PackedStringArray("shop_charm_oido")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -15)
+shape = SubResource("shape_zone")
+
+[node name="Chair" type="Polygon2D" parent="."]
+color = Color(0.4, 0.45, 0.55, 1)
+polygon = PackedVector2Array(-26, 40, -20, 10, 20, 10, 26, 40)
+
+[node name="Body" type="Polygon2D" parent="."]
+color = Color(0.6, 0.55, 0.7, 1)
+polygon = PackedVector2Array(-18, 12, -14, -20, 0, -30, 14, -20, 18, 12)
+
+[node name="Hood" type="Polygon2D" parent="."]
+color = Color(0.45, 0.4, 0.55, 1)
+polygon = PackedVector2Array(-14, -18, 0, -34, 14, -18, 8, -12, -8, -12)
+
+[node name="Label" type="Label" parent="."]
+offset_left = -80.0
+offset_top = -62.0
+offset_right = 80.0
+offset_bottom = -42.0
+theme_override_colors/font_color = Color(0.75, 0.7, 0.9, 1)
+theme_override_font_sizes/font_size = 13
+text = "↑ — hablar"
+horizontal_alignment = 1

@@ -19,12 +19,12 @@ const PLANETS := {
 		"pos": Vector2(0.22, 0.6),
 	},
 	"planet2": {
-		"name": "???",
+		"name": "El Velo",
 		"color": Color(0.4, 0.6, 0.8),
 		"pos": Vector2(0.52, 0.3),
 	},
 	"planet3": {
-		"name": "???",
+		"name": "Raíz",
 		"color": Color(0.6, 0.4, 0.7),
 		"pos": Vector2(0.8, 0.62),
 	},
@@ -57,6 +57,20 @@ const ROOMS := {
 		{"planet": "planet1", "rect": Rect2(1030, 1960, 1000, 640)},
 	"res://scenes/rooms/planet1/p1_boss2.tscn":
 		{"planet": "planet1", "rect": Rect2(3070, 1960, 1100, 640)},
+	"res://scenes/rooms/planet2/p2_arrival.tscn":
+		{"planet": "planet2", "rect": Rect2(0, 0, 800, 640)},
+	"res://scenes/rooms/planet2/p2_ring1.tscn":
+		{"planet": "planet2", "rect": Rect2(800, 0, 1600, 640)},
+	"res://scenes/rooms/planet2/p2_geysers.tscn":
+		{"planet": "planet2", "rect": Rect2(2400, -640, 1100, 1280)},
+	"res://scenes/rooms/planet2/p2_hermit.tscn":
+		{"planet": "planet2", "rect": Rect2(3500, -640, 800, 640)},
+	"res://scenes/rooms/planet2/p2_deep.tscn":
+		{"planet": "planet2", "rect": Rect2(3500, 0, 1600, 640)},
+	"res://scenes/rooms/planet2/p2_boss.tscn":
+		{"planet": "planet2", "rect": Rect2(5100, 0, 1100, 640)},
+	"res://scenes/rooms/planet2/p2_core.tscn":
+		{"planet": "planet2", "rect": Rect2(6200, 0, 800, 640)},
 }
 
 

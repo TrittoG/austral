@@ -1,0 +1,81 @@
+[gd_scene format=3 uid="uid://p2hermit00argen"]
+
+[ext_resource type="Script" path="res://scripts/room.gd" id="1_room"]
+[ext_resource type="Script" path="res://scripts/room_transition.gd" id="2_door"]
+[ext_resource type="PackedScene" path="res://scenes/props/bench.tscn" id="3_pod"]
+[ext_resource type="PackedScene" path="res://scenes/props/ermitana.tscn" id="4_ermitana"]
+[ext_resource type="PackedScene" path="res://scenes/props/sign.tscn" id="5_sign"]
+
+[sub_resource type="RectangleShape2D" id="shape_floor"]
+size = Vector2(800, 40)
+
+[sub_resource type="RectangleShape2D" id="shape_wall"]
+size = Vector2(40, 640)
+
+[sub_resource type="RectangleShape2D" id="shape_door"]
+size = Vector2(30, 560)
+
+[node name="P2Hermit" type="Node2D"]
+script = ExtResource("1_room")
+camera_limit_right = 800
+music_track = "res://assets/audio/music/planet2.wav"
+fog = true
+fog_intensity = 0.3
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(400, 600)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("shape_floor")
+
+[node name="ColorRect" type="ColorRect" parent="Floor"]
+offset_left = -400.0
+offset_top = -20.0
+offset_right = 400.0
+offset_bottom = 20.0
+color = Color(0.22, 0.28, 0.34, 1)
+
+[node name="WallRight" type="StaticBody2D" parent="."]
+position = Vector2(780, 300)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallRight"]
+shape = SubResource("shape_wall")
+
+[node name="ColorRect" type="ColorRect" parent="WallRight"]
+offset_left = -20.0
+offset_top = -320.0
+offset_right = 20.0
+offset_bottom = 320.0
+color = Color(0.15, 0.19, 0.25, 1)
+
+[node name="RestPod" parent="." instance=ExtResource("3_pod")]
+position = Vector2(220, 540)
+
+[node name="Ermitana" parent="." instance=ExtResource("4_ermitana")]
+position = Vector2(480, 540)
+
+[node name="SignHermit" parent="." instance=ExtResource("5_sign")]
+position = Vector2(650, 540)
+text = "La silla flota.
+Ella también."
+
+[node name="DoorLeft" type="Area2D" parent="."]
+position = Vector2(15, 400)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("2_door")
+target_room = "res://scenes/rooms/planet2/p2_geysers.tscn"
+target_door = "DoorHermit"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DoorLeft"]
+shape = SubResource("shape_door")
+
+[node name="ColorRect" type="ColorRect" parent="DoorLeft"]
+offset_left = -15.0
+offset_top = -280.0
+offset_right = 15.0
+offset_bottom = 280.0
+color = Color(0.3, 0.8, 0.4, 0.25)
+
+[node name="Entry" type="Marker2D" parent="DoorLeft"]
+position = Vector2(75, 140)

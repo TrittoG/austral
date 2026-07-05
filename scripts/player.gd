@@ -158,6 +158,10 @@ var wall_jump_lockout_timer: float = 0.0 # ignora input horizontal mientras > 0
 var charm_dash_cooldown_mult: float = 1.0
 var charm_reach_mult: float = 1.0
 
+# ---- Corrientes ascendentes (géiseres del Velo) ------------
+# Lo setean las áreas updraft al entrar/salir. Empuja hacia arriba.
+var updraft_force: float = 0.0
+
 # Se emite cuando cambia la vida, para que el HUD se actualice.
 signal health_changed(current: int, maximum: int)
 
@@ -299,6 +303,10 @@ func get_current_gravity() -> float:
 func _apply_gravity(delta: float) -> void:
 	velocity.y += get_current_gravity() * delta
 	velocity.y = minf(velocity.y, max_fall_speed)  # velocidad terminal
+	# Géiser: empuje hacia arriba, con tope de velocidad de ascenso.
+	if updraft_force > 0.0:
+		velocity.y -= updraft_force * delta
+		velocity.y = maxf(velocity.y, -450.0)
 
 
 # ------------------------------------------------------------

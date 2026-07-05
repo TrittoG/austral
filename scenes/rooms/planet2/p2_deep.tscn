@@ -1,0 +1,128 @@
+[gd_scene format=3 uid="uid://p2deep000argen"]
+
+[ext_resource type="Script" path="res://scripts/room.gd" id="1_room"]
+[ext_resource type="Script" path="res://scripts/room_transition.gd" id="2_door"]
+[ext_resource type="PackedScene" path="res://scenes/props/sign.tscn" id="3_sign"]
+[ext_resource type="PackedScene" path="res://scenes/props/eco.tscn" id="4_eco"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/medusa.tscn" id="5_medusa"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/shooter.tscn" id="6_shooter"]
+[ext_resource type="PackedScene" path="res://scenes/props/currency_rock.tscn" id="7_rock"]
+
+[sub_resource type="RectangleShape2D" id="shape_floor"]
+size = Vector2(1600, 40)
+
+[sub_resource type="RectangleShape2D" id="shape_door"]
+size = Vector2(30, 560)
+
+[sub_resource type="RectangleShape2D" id="shape_plat_med"]
+size = Vector2(140, 24)
+
+[node name="P2Deep" type="Node2D"]
+script = ExtResource("1_room")
+camera_limit_right = 1600
+music_track = "res://assets/audio/music/planet2.wav"
+fog = true
+fog_intensity = 1.0
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(800, 600)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("shape_floor")
+
+[node name="ColorRect" type="ColorRect" parent="Floor"]
+offset_left = -800.0
+offset_top = -20.0
+offset_right = 800.0
+offset_bottom = 20.0
+color = Color(0.16, 0.2, 0.26, 1)
+
+[node name="PlatformA" type="StaticBody2D" parent="."]
+position = Vector2(600, 490)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlatformA"]
+shape = SubResource("shape_plat_med")
+
+[node name="ColorRect" type="ColorRect" parent="PlatformA"]
+offset_left = -70.0
+offset_top = -12.0
+offset_right = 70.0
+offset_bottom = 12.0
+color = Color(0.24, 0.3, 0.38, 1)
+
+[node name="PlatformB" type="StaticBody2D" parent="."]
+position = Vector2(1050, 460)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlatformB"]
+shape = SubResource("shape_plat_med")
+
+[node name="ColorRect" type="ColorRect" parent="PlatformB"]
+offset_left = -70.0
+offset_top = -12.0
+offset_right = 70.0
+offset_bottom = 12.0
+color = Color(0.24, 0.3, 0.38, 1)
+
+[node name="SignEntry" parent="." instance=ExtResource("3_sign")]
+position = Vector2(150, 540)
+text = "La niebla se traga la luz"
+
+[node name="EcoLuz" parent="." instance=ExtResource("4_eco")]
+position = Vector2(450, 520)
+text = "…la luz…
+no sigas la luz…"
+
+[node name="MedusaA" parent="." instance=ExtResource("5_medusa")]
+position = Vector2(500, 380)
+
+[node name="MedusaB" parent="." instance=ExtResource("5_medusa")]
+position = Vector2(1000, 300)
+
+[node name="Shooter" parent="." instance=ExtResource("6_shooter")]
+position = Vector2(1350, 561)
+
+[node name="Rock" parent="." instance=ExtResource("7_rock")]
+position = Vector2(250, 558)
+rock_id = "p2_rock_d1"
+
+[node name="DoorLeft" type="Area2D" parent="."]
+position = Vector2(15, 400)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("2_door")
+target_room = "res://scenes/rooms/planet2/p2_geysers.tscn"
+target_door = "DoorDeep"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DoorLeft"]
+shape = SubResource("shape_door")
+
+[node name="ColorRect" type="ColorRect" parent="DoorLeft"]
+offset_left = -15.0
+offset_top = -280.0
+offset_right = 15.0
+offset_bottom = 280.0
+color = Color(0.3, 0.8, 0.4, 0.25)
+
+[node name="Entry" type="Marker2D" parent="DoorLeft"]
+position = Vector2(75, 140)
+
+[node name="DoorRight" type="Area2D" parent="."]
+position = Vector2(1585, 400)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("2_door")
+target_room = "res://scenes/rooms/planet2/p2_boss.tscn"
+target_door = "DoorLeft"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DoorRight"]
+shape = SubResource("shape_door")
+
+[node name="ColorRect" type="ColorRect" parent="DoorRight"]
+offset_left = -15.0
+offset_top = -280.0
+offset_right = 15.0
+offset_bottom = 280.0
+color = Color(0.8, 0.35, 0.3, 0.3)
+
+[node name="Entry" type="Marker2D" parent="DoorRight"]
+position = Vector2(-75, 140)

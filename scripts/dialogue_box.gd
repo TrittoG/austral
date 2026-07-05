@@ -17,7 +17,8 @@ signal finished
 ## Velocidad del efecto máquina de escribir (caracteres por segundo).
 @export var chars_per_second: float = 45.0
 
-var lines: Array = []
+# Sin tipo: acepta Array o PackedStringArray indistintamente.
+var lines = []
 var index: int = 0
 var _reveal: float = 0.0
 
@@ -31,7 +32,7 @@ func _ready() -> void:
 	visible = false
 
 
-func show_dialogue(speaker: String, new_lines: Array) -> void:
+func show_dialogue(speaker: String, new_lines) -> void:
 	if new_lines.is_empty():
 		finished.emit()
 		return

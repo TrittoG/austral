@@ -22,6 +22,9 @@ const COIN_SCENE := preload("res://scenes/props/antimatter.tscn")
 @export var boss_id: String = "boss_01"
 ## Habilidad que se desbloquea al vencerlo ("" = ninguna). Se conecta en Fase 7.
 @export var reward_ability: String = ""
+## Objeto clave que suelta al vencerlo ("" = ninguno). Ej: el Fanal
+## suelta el disipador_ionico.
+@export var reward_key_item: String = ""
 
 @export_group("Daño y feedback")
 @export var contact_damage: int = 1
@@ -109,6 +112,8 @@ func _die() -> void:
 	Game.mark_boss_defeated(boss_id)
 	if reward_ability != "":
 		Game.unlock_ability(reward_ability)
+	if reward_key_item != "":
+		Game.give_key_item(reward_key_item)
 	defeated.emit()
 	_on_defeated()
 	queue_free()

@@ -20,3 +20,5 @@ extends Node2D
 ## Niebla densa: casi no se ve nada salvo alrededor tuyo. Se disipa
 ## si tenés el objeto clave "disipador_ionico" (mundos gaseosos).
 @export var fog: bool = false
+## Densidad de la niebla (1 = total, 0.4 = bruma suave del anillo).
+@export_range(0.0, 1.0) var fog_intensity: float = 1.0
