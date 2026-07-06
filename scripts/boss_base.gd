@@ -88,6 +88,7 @@ func take_damage(amount: int, from_position: Vector2) -> void:
 	flash_timer = hit_flash_time
 	Juice.hitstop(hit_hitstop)
 	Audio.play("boss_hit", 0.05)
+	_on_hit()  # hook: la Jardinera cancela su curación acá
 	_check_phase()
 	health_changed.emit(health, max_health)
 	if health <= 0:
@@ -116,7 +117,9 @@ func _die() -> void:
 		Game.give_key_item(reward_key_item)
 	defeated.emit()
 	_on_defeated()
-	queue_free()
+	# La Jardinera no muere: se rinde y queda en escena.
+	if _should_free_on_death():
+		queue_free()
 
 
 func _update_flash(delta: float) -> void:
@@ -147,6 +150,12 @@ func _acquire_player() -> void:
 # ---- "Virtuales": el jefe concreto los sobreescribe ----
 func _on_boss_ready() -> void:
 	pass
+
+func _on_hit() -> void:
+	pass
+
+func _should_free_on_death() -> bool:
+	return true
 
 func _boss_physics(_delta: float) -> void:
 	pass

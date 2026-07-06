@@ -14,13 +14,17 @@ Idioma: español rioplatense (voseo) en comentarios, textos y diálogos.
   orbe doble salto, Chatarrero, cápsulas, amuletos, corazones, sombra al morir.
 - ✅ Planeta 2 (El Velo): 7 salas, niebla con densidad, géiseres, Ermitaña,
   el Fanal (suelta el Disipador Iónico que anula la niebla).
-- ✅ Sistemas: mapa doble (Tab), amuletos con muescas, tienda por vendedor,
-  antimateria + rocas + sombra, diálogos + Ecos, objetos clave, intro/fin de demo,
-  menús 100% teclado/joystick (layout HK), juice (shake/partículas/squash), audio
-  procedural placeholder.
-- ⬜ Pendiente: Planeta 3 "Raíz" (Jardinera, la Madera/Semilla), mundo final
-  "La Garganta" (el Silencio, 3 fases), quest del núcleo del portal, susurros,
-  finales normal/verdadero, export Windows + itch.io. Detalle en GUION.md §11.
+- ✅ Planeta 3 (Raíz): 7 salas, mitad viva/mitad muda, espinas pulsantes,
+  hopper/escarabajo blindado/escupidor, el Brote (mascota por sala), la
+  Jardinera (no muere: se rinde, dialoga y da la "madera"; cura interrumpible
+  vía _on_hit; root spikes bajo el player). El claro que canta (claro.wav).
+- ✅ Sistemas: mapa doble (Tab), amuletos con muescas (6: +savia_espesa regen
+  quieto), tienda por vendedor, antimateria + rocas + sombra, diálogos + Ecos,
+  objetos clave, intro/fin de demo, menús 100% teclado/joystick (layout HK),
+  juice, audio procedural. Jefes: _on_hit y _should_free_on_death virtuales.
+- ⬜ Pendiente: mundo final "La Garganta" (el Silencio, 3 fases, zonas mudas
+  sin música), quest del núcleo del portal, susurros, finales normal/verdadero
+  (plantar la Semilla), export Windows + itch.io. Detalle en GUION.md §11.
 
 ## Arquitectura
 

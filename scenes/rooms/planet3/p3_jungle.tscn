@@ -1,0 +1,123 @@
+[gd_scene format=3 uid="uid://p3jungle00argen"]
+
+[ext_resource type="Script" path="res://scripts/room.gd" id="1_room"]
+[ext_resource type="Script" path="res://scripts/room_transition.gd" id="2_door"]
+[ext_resource type="PackedScene" path="res://scenes/hazards/pulsing_spikes.tscn" id="3_pspikes"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/hopper.tscn" id="4_hopper"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/sap_spitter.tscn" id="5_spitter"]
+[ext_resource type="PackedScene" path="res://scenes/props/currency_rock.tscn" id="6_rock"]
+
+[sub_resource type="RectangleShape2D" id="shape_floor"]
+size = Vector2(1600, 40)
+
+[sub_resource type="RectangleShape2D" id="shape_door"]
+size = Vector2(30, 560)
+
+[sub_resource type="RectangleShape2D" id="shape_plat_med"]
+size = Vector2(140, 24)
+
+[node name="P3Jungle" type="Node2D"]
+script = ExtResource("1_room")
+camera_limit_right = 1600
+music_track = "res://assets/audio/music/planet3.wav"
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(800, 600)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("shape_floor")
+
+[node name="ColorRect" type="ColorRect" parent="Floor"]
+offset_left = -800.0
+offset_top = -20.0
+offset_right = 800.0
+offset_bottom = 20.0
+color = Color(0.24, 0.32, 0.2, 1)
+
+[node name="PlatformA" type="StaticBody2D" parent="."]
+position = Vector2(500, 490)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlatformA"]
+shape = SubResource("shape_plat_med")
+
+[node name="ColorRect" type="ColorRect" parent="PlatformA"]
+offset_left = -70.0
+offset_top = -12.0
+offset_right = 70.0
+offset_bottom = 12.0
+color = Color(0.32, 0.42, 0.28, 1)
+
+[node name="PlatformB" type="StaticBody2D" parent="."]
+position = Vector2(1000, 470)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlatformB"]
+shape = SubResource("shape_plat_med")
+
+[node name="ColorRect" type="ColorRect" parent="PlatformB"]
+offset_left = -70.0
+offset_top = -12.0
+offset_right = 70.0
+offset_bottom = 12.0
+color = Color(0.32, 0.42, 0.28, 1)
+
+[node name="SpikesA" parent="." instance=ExtResource("3_pspikes")]
+position = Vector2(450, 570)
+
+[node name="SpikesB" parent="." instance=ExtResource("3_pspikes")]
+position = Vector2(950, 570)
+offset = 1.2
+
+[node name="HopperA" parent="." instance=ExtResource("4_hopper")]
+position = Vector2(650, 560)
+
+[node name="HopperB" parent="." instance=ExtResource("4_hopper")]
+position = Vector2(1200, 560)
+
+[node name="Spitter" parent="." instance=ExtResource("5_spitter")]
+position = Vector2(1420, 561)
+
+[node name="Rock" parent="." instance=ExtResource("6_rock")]
+position = Vector2(220, 558)
+rock_id = "p3_rock_j1"
+
+[node name="DoorLeft" type="Area2D" parent="."]
+position = Vector2(15, 400)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("2_door")
+target_room = "res://scenes/rooms/planet3/p3_arrival.tscn"
+target_door = "DoorRight"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DoorLeft"]
+shape = SubResource("shape_door")
+
+[node name="ColorRect" type="ColorRect" parent="DoorLeft"]
+offset_left = -15.0
+offset_top = -280.0
+offset_right = 15.0
+offset_bottom = 280.0
+color = Color(0.3, 0.8, 0.4, 0.25)
+
+[node name="Entry" type="Marker2D" parent="DoorLeft"]
+position = Vector2(75, 140)
+
+[node name="DoorRight" type="Area2D" parent="."]
+position = Vector2(1585, 400)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("2_door")
+target_room = "res://scenes/rooms/planet3/p3_frontier.tscn"
+target_door = "DoorLeft"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DoorRight"]
+shape = SubResource("shape_door")
+
+[node name="ColorRect" type="ColorRect" parent="DoorRight"]
+offset_left = -15.0
+offset_top = -280.0
+offset_right = 15.0
+offset_bottom = 280.0
+color = Color(0.3, 0.8, 0.4, 0.25)
+
+[node name="Entry" type="Marker2D" parent="DoorRight"]
+position = Vector2(-75, 140)

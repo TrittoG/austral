@@ -73,6 +73,11 @@ const CHARMS := {
 		"desc": "La niebla se vuelve más tenue a tu alrededor",
 		"cost": 1,
 	},
+	"savia_espesa": {
+		"name": "Savia Espesa",
+		"desc": "Quedate quieto unos segundos y regenerás vida",
+		"cost": 2,
+	},
 }
 
 # ---- Catálogo del Chatarrero (tienda) ------------------------

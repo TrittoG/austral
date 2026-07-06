@@ -162,6 +162,9 @@ var charm_reach_mult: float = 1.0
 # Lo setean las áreas updraft al entrar/salir. Empuja hacia arriba.
 var updraft_force: float = 0.0
 
+# ---- Savia Espesa (regeneración quieto) --------------------
+var _still_time: float = 0.0
+
 # Se emite cuando cambia la vida, para que el HUD se actualice.
 signal health_changed(current: int, maximum: int)
 
@@ -255,6 +258,21 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	_check_landing()
 	_update_squash_stretch(delta)
+	_update_sap_regen(delta)
+
+
+# Savia Espesa: quieto en el piso 4 segundos → +1 HP. Lento pero fiel.
+func _update_sap_regen(delta: float) -> void:
+	var resting := is_on_floor() and absf(velocity.x) < 5.0 and health < max_health
+	if resting and Game.is_charm_equipped("savia_espesa"):
+		_still_time += delta
+		if _still_time >= 4.0:
+			_still_time = 0.0
+			health += 1
+			health_changed.emit(health, max_health)
+			Audio.play("checkpoint", 0.0, -12.0)
+	else:
+		_still_time = 0.0
 
 
 # Sonido, polvo y squash al aterrizar (transición aire → piso).

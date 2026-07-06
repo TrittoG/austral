@@ -1,46 +1,39 @@
-[gd_scene format=3 uid="uid://3un6axfncqxh"]
+[gd_scene format=3 uid="uid://ciplil0nxp4n6"]
 
-[ext_resource type="Script" path="res://scripts/boss_fanal.gd" id="1_boss"]
+[ext_resource type="Script" path="res://scripts/enemies/enemy_shooter.gd" id="1_spitter"]
 [ext_resource type="PackedScene" path="res://scenes/enemies/projectile.tscn" id="2_proj"]
 
 [sub_resource type="RectangleShape2D" id="shape_body"]
-size = Vector2(70, 54)
+size = Vector2(34, 38)
 
 [sub_resource type="RectangleShape2D" id="shape_hurt"]
-size = Vector2(70, 54)
+size = Vector2(34, 38)
 
 [sub_resource type="RectangleShape2D" id="shape_contact"]
-size = Vector2(74, 58)
+size = Vector2(38, 42)
 
-[node name="BossFanal" type="CharacterBody2D"]
+[node name="SapSpitter" type="CharacterBody2D"]
 collision_layer = 4
 collision_mask = 1
-script = ExtResource("1_boss")
+script = ExtResource("1_spitter")
 projectile_scene = ExtResource("2_proj")
-use_gravity = false
-max_health = 35
-currency_drop = 40
-reward_key_item = "disipador_ionico"
-boss_id = "p2_fanal"
+max_health = 5
+shoot_interval = 2.0
+detect_range = 380.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("shape_body")
 
 [node name="Body" type="ColorRect" parent="."]
-offset_left = -35.0
-offset_top = -27.0
-offset_right = 35.0
-offset_bottom = 27.0
-color = Color(0.35, 0.45, 0.55, 1)
+offset_left = -17.0
+offset_top = -19.0
+offset_right = 17.0
+offset_bottom = 19.0
+color = Color(0.55, 0.6, 0.25, 1)
 
-[node name="Tail" type="Polygon2D" parent="."]
-color = Color(0.3, 0.38, 0.48, 1)
-polygon = PackedVector2Array(35, -10, 62, -2, 68, 6, 55, 10, 35, 12)
-
-[node name="Lantern" type="Polygon2D" parent="."]
-position = Vector2(-46, -18)
-color = Color(1, 0.9, 0.55, 1)
-polygon = PackedVector2Array(0, -9, 8, -4, 9, 5, 0, 10, -8, 5, -9, -4)
+[node name="Bulb" type="Polygon2D" parent="."]
+color = Color(0.75, 0.8, 0.35, 1)
+polygon = PackedVector2Array(-8, -19, 0, -32, 8, -19)
 
 [node name="Hurtbox" type="Area2D" parent="." groups=["enemy_hurtbox"]]
 collision_layer = 16

@@ -1,11 +1,10 @@
-[gd_scene format=3 uid="uid://p2core000argen"]
+[gd_scene format=3 uid="uid://p3arrival0argen"]
 
 [ext_resource type="Script" path="res://scripts/room.gd" id="1_room"]
 [ext_resource type="Script" path="res://scripts/room_transition.gd" id="2_door"]
 [ext_resource type="Script" path="res://scripts/portal.gd" id="3_portal"]
 [ext_resource type="PackedScene" path="res://scenes/props/sign.tscn" id="4_sign"]
 [ext_resource type="PackedScene" path="res://scenes/props/bench.tscn" id="5_pod"]
-[ext_resource type="PackedScene" path="res://scenes/props/heart_container.tscn" id="6_heart"]
 
 [sub_resource type="RectangleShape2D" id="shape_floor"]
 size = Vector2(800, 40)
@@ -19,12 +18,10 @@ size = Vector2(30, 560)
 [sub_resource type="RectangleShape2D" id="shape_portal"]
 size = Vector2(60, 130)
 
-[node name="P2Core" type="Node2D"]
+[node name="P3Arrival" type="Node2D"]
 script = ExtResource("1_room")
 camera_limit_right = 800
-music_track = "res://assets/audio/music/planet2.wav"
-fog = true
-fog_intensity = 1.0
+music_track = "res://assets/audio/music/planet3.wav"
 
 [node name="Floor" type="StaticBody2D" parent="."]
 position = Vector2(400, 600)
@@ -37,41 +34,23 @@ offset_left = -400.0
 offset_top = -20.0
 offset_right = 400.0
 offset_bottom = 20.0
-color = Color(0.18, 0.24, 0.3, 1)
+color = Color(0.24, 0.32, 0.2, 1)
 
-[node name="WallRight" type="StaticBody2D" parent="."]
-position = Vector2(780, 300)
+[node name="WallLeft" type="StaticBody2D" parent="."]
+position = Vector2(20, 300)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="WallRight"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallLeft"]
 shape = SubResource("shape_wall")
 
-[node name="ColorRect" type="ColorRect" parent="WallRight"]
+[node name="ColorRect" type="ColorRect" parent="WallLeft"]
 offset_left = -20.0
 offset_top = -320.0
 offset_right = 20.0
 offset_bottom = 320.0
-color = Color(0.14, 0.18, 0.24, 1)
-
-[node name="RestPod" parent="." instance=ExtResource("5_pod")]
-position = Vector2(180, 540)
-
-[node name="Heart" parent="." instance=ExtResource("6_heart")]
-position = Vector2(400, 500)
-container_id = "p2_heart_1"
-
-[node name="SignCore" parent="." instance=ExtResource("4_sign")]
-position = Vector2(450, 540)
-text = "El corazón del Velo
-el portal apunta a RAÍZ"
-
-[node name="FromRaiz" type="Node2D" parent="."]
-position = Vector2(520, 540)
-
-[node name="Entry" type="Marker2D" parent="FromRaiz"]
-position = Vector2(0, 0)
+color = Color(0.18, 0.26, 0.16, 1)
 
 [node name="Portal" type="Node2D" parent="."]
-position = Vector2(620, 540)
+position = Vector2(150, 540)
 
 [node name="Frame" type="ColorRect" parent="Portal"]
 offset_left = -38.0
@@ -85,36 +64,50 @@ offset_left = -28.0
 offset_top = -100.0
 offset_right = 28.0
 offset_bottom = 30.0
-color = Color(0.35, 0.75, 0.9, 0.6)
+color = Color(0.5, 0.8, 0.55, 0.6)
 
 [node name="PortalZone" type="Area2D" parent="Portal"]
 collision_layer = 0
 collision_mask = 2
 script = ExtResource("3_portal")
-target_room = "res://scenes/rooms/planet3/p3_arrival.tscn"
-target_door = "ArrivalPoint"
+target_room = "res://scenes/rooms/planet2/p2_core.tscn"
+target_door = "FromRaiz"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Portal/PortalZone"]
 position = Vector2(0, -35)
 shape = SubResource("shape_portal")
 
-[node name="DoorLeft" type="Area2D" parent="."]
-position = Vector2(15, 400)
+[node name="ArrivalPoint" type="Node2D" parent="."]
+position = Vector2(280, 540)
+
+[node name="Entry" type="Marker2D" parent="ArrivalPoint"]
+position = Vector2(0, 0)
+
+[node name="RestPod" parent="." instance=ExtResource("5_pod")]
+position = Vector2(430, 540)
+
+[node name="SignTitle" parent="." instance=ExtResource("4_sign")]
+position = Vector2(610, 540)
+text = "RAÍZ
+donde el gris no ganó"
+
+[node name="DoorRight" type="Area2D" parent="."]
+position = Vector2(785, 400)
 collision_layer = 0
 collision_mask = 2
 script = ExtResource("2_door")
-target_room = "res://scenes/rooms/planet2/p2_boss.tscn"
-target_door = "DoorRight"
+target_room = "res://scenes/rooms/planet3/p3_jungle.tscn"
+target_door = "DoorLeft"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="DoorLeft"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DoorRight"]
 shape = SubResource("shape_door")
 
-[node name="ColorRect" type="ColorRect" parent="DoorLeft"]
+[node name="ColorRect" type="ColorRect" parent="DoorRight"]
 offset_left = -15.0
 offset_top = -280.0
 offset_right = 15.0
 offset_bottom = 280.0
 color = Color(0.3, 0.8, 0.4, 0.25)
 
-[node name="Entry" type="Marker2D" parent="DoorLeft"]
-position = Vector2(75, 140)
+[node name="Entry" type="Marker2D" parent="DoorRight"]
+position = Vector2(-75, 140)

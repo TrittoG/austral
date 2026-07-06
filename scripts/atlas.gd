@@ -71,6 +71,20 @@ const ROOMS := {
 		{"planet": "planet2", "rect": Rect2(5100, 0, 1100, 640)},
 	"res://scenes/rooms/planet2/p2_core.tscn":
 		{"planet": "planet2", "rect": Rect2(6200, 0, 800, 640)},
+	"res://scenes/rooms/planet3/p3_arrival.tscn":
+		{"planet": "planet3", "rect": Rect2(0, 0, 800, 640)},
+	"res://scenes/rooms/planet3/p3_jungle.tscn":
+		{"planet": "planet3", "rect": Rect2(800, 0, 1600, 640)},
+	"res://scenes/rooms/planet3/p3_frontier.tscn":
+		{"planet": "planet3", "rect": Rect2(2400, 0, 1100, 640)},
+	"res://scenes/rooms/planet3/p3_mute.tscn":
+		{"planet": "planet3", "rect": Rect2(3500, 0, 1600, 640)},
+	"res://scenes/rooms/planet3/p3_grove.tscn":
+		{"planet": "planet3", "rect": Rect2(5100, 0, 1100, 640)},
+	"res://scenes/rooms/planet3/p3_boss.tscn":
+		{"planet": "planet3", "rect": Rect2(6200, 0, 1100, 640)},
+	"res://scenes/rooms/planet3/p3_seed.tscn":
+		{"planet": "planet3", "rect": Rect2(7300, 0, 800, 640)},
 }
 
 
