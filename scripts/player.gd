@@ -172,7 +172,7 @@ signal health_changed(current: int, maximum: int)
 @onready var sword: Area2D = $Sword
 @onready var sword_shape: CollisionShape2D = $Sword/CollisionShape2D
 @onready var hurtbox: Area2D = $Hurtbox
-@onready var body: ColorRect = $Body
+@onready var body: AnimatedSprite2D = $Body
 @onready var dust_land: CPUParticles2D = $DustLand
 @onready var dust_dash: CPUParticles2D = $DustDash
 @onready var hit_sparks: CPUParticles2D = $HitSparks
@@ -259,6 +259,20 @@ func _physics_process(delta: float) -> void:
 	_check_landing()
 	_update_squash_stretch(delta)
 	_update_sap_regen(delta)
+	_update_animation()
+
+
+# Elige la animación según el estado (y espeja el sprite al mirar
+# a la izquierda). El dibujo lo pone el arte; la lógica va acá.
+func _update_animation() -> void:
+	body.flip_h = facing < 0
+	var next := "idle"
+	if not is_on_floor():
+		next = "jump" if velocity.y < 0.0 else "fall"
+	elif absf(velocity.x) > 10.0:
+		next = "run"
+	if body.animation != next:
+		body.play(next)
 
 
 # Savia Espesa: quieto en el piso 4 segundos → +1 HP. Lento pero fiel.
