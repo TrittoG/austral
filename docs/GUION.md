@@ -91,8 +91,14 @@ cero". Roca seca, ruinas de una civilización minera, cuevas y un abismo.
   - **El Chatarrero**: ver personajes (§5).
 - **Mecánica propia**: el Abismo vertical + la niebla de las Profundidades
   (teaser del Velo).
-- **El portal**: tecnología de la civilización minera. El Chatarrero sabe
-  encenderlo… si le llevás qué encender (gancho a P2).
+- **LA NAVE (sistema de viaje)**: tu nave se partió en **3 FRAGMENTOS**
+  repartidos por el Páramo (cabina en la Grieta alta, motor en las
+  Profundidades, ala junto al Espectro). Con los 3, la **plataforma de
+  vuelo** la reconstruye y podés volar al Velo. La progresión entre
+  mundos son MEJORAS de la nave: el **Blindaje Estelar** (corazón del
+  Velo) cruza el cinturón de asteroides hacia Raíz; el **Núcleo de
+  Pulso** (al pie del árbol madre) da energía para llegar a la
+  Garganta. Volar entre mundos ya visitados = viaje rápido.
 
 ### 🔵 PLANETA 2 — EL VELO *(gaseoso — el planeta de la niebla)*
 Un gigante gaseoso sin superficie: se juega sobre **plataformas flotantes,

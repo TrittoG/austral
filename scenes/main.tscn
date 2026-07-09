@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" path="res://scenes/map_screen.tscn" id="6_map"]
 [ext_resource type="PackedScene" path="res://scenes/shop_menu.tscn" id="7_shop"]
 [ext_resource type="PackedScene" path="res://scenes/dialogue_box.tscn" id="8_dialogue"]
+[ext_resource type="PackedScene" path="res://scenes/travel_menu.tscn" id="9_travel"]
 
 [sub_resource type="Gradient" id="grad_fog"]
 offsets = PackedFloat32Array(0.0, 0.22, 0.5)
@@ -92,5 +93,7 @@ mouse_filter = 2
 [node name="MapScreen" parent="." instance=ExtResource("6_map")]
 
 [node name="ShopMenu" parent="." instance=ExtResource("7_shop")]
+
+[node name="TravelMenu" parent="." instance=ExtResource("9_travel")]
 
 [node name="DialogueBox" parent="." instance=ExtResource("8_dialogue")]

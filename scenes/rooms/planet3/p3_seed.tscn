@@ -74,43 +74,9 @@ text = "Acá el Pulso todavía canta.
 Quedate un rato, si querés."
 
 [node name="SignFin" parent="." instance=ExtResource("4_sign")]
-position = Vector2(560, 540)
-text = "El portal apunta a LA GARGANTA.
-Llevá la Semilla."
-
-[node name="FromGarganta" type="Node2D" parent="."]
 position = Vector2(600, 540)
-
-[node name="Entry" type="Marker2D" parent="FromGarganta"]
-position = Vector2(0, 0)
-
-[node name="Portal" type="Node2D" parent="."]
-position = Vector2(680, 540)
-
-[node name="Frame" type="ColorRect" parent="Portal"]
-offset_left = -38.0
-offset_top = -110.0
-offset_right = 38.0
-offset_bottom = 40.0
-color = Color(0.25, 0.3, 0.4, 1)
-
-[node name="Glow" type="ColorRect" parent="Portal"]
-offset_left = -28.0
-offset_top = -100.0
-offset_right = 28.0
-offset_bottom = 30.0
-color = Color(0.35, 0.75, 0.9, 0.6)
-
-[node name="PortalZone" type="Area2D" parent="Portal"]
-collision_layer = 0
-collision_mask = 2
-script = ExtResource("3_portal")
-target_room = "res://scenes/rooms/garganta/g_arrival.tscn"
-target_door = "ArrivalPoint"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Portal/PortalZone"]
-position = Vector2(0, -35)
-shape = SubResource("shape_portal")
+text = "Con el Núcleo de Pulso,
+la nave llega a LA GARGANTA."
 
 [node name="DoorLeft" type="Area2D" parent="."]
 position = Vector2(15, 400)

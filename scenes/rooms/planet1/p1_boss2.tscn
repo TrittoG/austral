@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://scripts/boss_arena.gd" id="1_arena"]
 [ext_resource type="Script" path="res://scripts/room_transition.gd" id="2_door"]
 [ext_resource type="PackedScene" path="res://scenes/boss_espectro.tscn" id="3_boss"]
+[ext_resource type="PackedScene" path="res://scenes/props/ship_fragment.tscn" id="5_frag"]
 
 [sub_resource type="RectangleShape2D" id="shape_floor"]
 size = Vector2(1100, 40)
@@ -125,6 +126,10 @@ color = Color(0.3, 0.33, 0.4, 1)
 position = Vector2(750, 300)
 boss_id = "p1_espectro"
 reward_ability = "wall_jump"
+
+[node name="Fragmento" parent="." instance=ExtResource("5_frag")]
+position = Vector2(950, 520)
+fragment_id = "fragmento_ala"
 
 [node name="BossUI" type="CanvasLayer" parent="."]
 

@@ -21,6 +21,8 @@ signal charms_changed
 signal currency_changed(total: int)
 # Se emite al conseguir un objeto clave (madera, disipador...).
 signal key_item_collected(id: String)
+# Se emite al juntar un fragmento de la nave (el HUD muestra el conteo).
+signal ship_fragment_collected(count: int, total: int)
 
 # ---- Objetos que dan habilidades (identidad espacial) -------
 # El nombre que se ve al agarrar el pickup de cada habilidad.
@@ -41,7 +43,18 @@ const KEY_ITEMS := {
 		"name": "Disipador Iónico",
 		"desc": "Dispersa las nieblas densas de los mundos gaseosos.",
 	},
+	"blindaje_estelar": {
+		"name": "Blindaje Estelar",
+		"desc": "Placas del Velo: la nave puede cruzar el cinturón de asteroides.",
+	},
+	"nucleo_pulso": {
+		"name": "Núcleo de Pulso",
+		"desc": "Energía viva de Raíz: alcanza para llegar a un mundo muerto.",
+	},
 }
+
+# ---- Fragmentos de la nave (progresión del Páramo) -----------
+const SHIP_FRAGMENTS_TOTAL := 3
 
 # ---- Registro de amuletos (estilo Hollow Knight) ------------
 # Cada amuleto ocupa muescas. Se equipan/desequipan en los bancos.
@@ -123,6 +136,7 @@ var key_items: Array = []               # ids de objetos clave obtenidos
 var lost_currency: int = 0              # cuánto quedó tirado
 var lost_room: String = ""              # en qué sala
 var lost_position: Vector2 = Vector2.ZERO
+var ship_fragments: Array = []          # ids de fragmentos de nave juntados
 
 
 func _ready() -> void:
@@ -151,6 +165,7 @@ func new_game() -> void:
 	lost_currency = 0
 	lost_room = ""
 	lost_position = Vector2.ZERO
+	ship_fragments = []
 
 
 # ---- Habilidades -------------------------------------------
@@ -245,6 +260,18 @@ func recover_lost_currency() -> void:
 	currency_changed.emit(currency)
 
 
+# ---- Fragmentos de la nave ------------------------------------
+func collect_ship_fragment(id: String) -> void:
+	if id in ship_fragments:
+		return
+	ship_fragments.append(id)
+	ship_fragment_collected.emit(ship_fragments.size(), SHIP_FRAGMENTS_TOTAL)
+
+
+func ship_complete() -> bool:
+	return ship_fragments.size() >= SHIP_FRAGMENTS_TOTAL
+
+
 # ---- Objetos clave --------------------------------------------
 func has_key_item(id: String) -> bool:
 	return id in key_items
@@ -309,6 +336,7 @@ func save_game() -> void:
 		"lost_currency": lost_currency,
 		"lost_room": lost_room,
 		"lost_position": [lost_position.x, lost_position.y],
+		"ship_fragments": ship_fragments,
 	}
 	var file := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
 	if file != null:
@@ -346,4 +374,5 @@ func load_game() -> bool:
 	lost_room = parsed.get("lost_room", "")
 	var lost_pos = parsed.get("lost_position", [0, 0])
 	lost_position = Vector2(lost_pos[0], lost_pos[1])
+	ship_fragments = parsed.get("ship_fragments", [])
 	return true

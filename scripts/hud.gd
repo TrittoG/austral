@@ -27,6 +27,7 @@ func _ready() -> void:
 		Game.ability_unlocked.connect(_on_ability_unlocked)
 		Game.charm_collected.connect(_on_charm_collected)
 		Game.key_item_collected.connect(_on_key_item_collected)
+		Game.ship_fragment_collected.connect(_on_ship_fragment)
 	if currency_label != null:
 		Game.currency_changed.connect(_on_currency_changed)
 		_on_currency_changed(Game.currency)
@@ -54,6 +55,13 @@ func _on_charm_collected(id: String) -> void:
 func _on_key_item_collected(id: String) -> void:
 	var item_name: String = Game.KEY_ITEMS.get(id, {}).get("name", id)
 	_show_notice("Objeto clave: %s" % item_name)
+
+
+func _on_ship_fragment(count: int, total: int) -> void:
+	if count >= total:
+		_show_notice("¡Fragmento de nave (%d/%d)! La nave está COMPLETA" % [count, total])
+	else:
+		_show_notice("Fragmento de nave (%d/%d)" % [count, total])
 
 
 func _on_currency_changed(total: int) -> void:

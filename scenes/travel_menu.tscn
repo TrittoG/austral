@@ -1,0 +1,59 @@
+[gd_scene format=3 uid="uid://c1travel00argen"]
+
+[ext_resource type="Script" path="res://scripts/travel_menu.gd" id="1_travel"]
+
+[node name="TravelMenu" type="CanvasLayer"]
+process_mode = 3
+layer = 96
+script = ExtResource("1_travel")
+
+[node name="Dim" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 0.7)
+
+[node name="Frame" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 280.0
+offset_top = 100.0
+offset_right = -280.0
+offset_bottom = -100.0
+color = Color(0.08, 0.09, 0.13, 0.95)
+
+[node name="VBox" type="VBoxContainer" parent="Frame"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 30.0
+offset_top = 20.0
+offset_right = -30.0
+offset_bottom = -20.0
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="Frame/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "PLATAFORMA DE VUELO"
+horizontal_alignment = 1
+
+[node name="Sub" type="Label" parent="Frame/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.6, 0.65, 1)
+theme_override_font_sizes/font_size = 15
+text = "elegí destino"
+horizontal_alignment = 1
+
+[node name="List" type="VBoxContainer" parent="Frame/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 10
+
+[node name="CloseButton" type="Button" parent="Frame/VBox"]
+custom_minimum_size = Vector2(200, 42)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 18
+text = "Cerrar (Esc)"

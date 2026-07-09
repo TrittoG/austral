@@ -32,8 +32,15 @@ Idioma: español rioplatense (voseo) en comentarios, textos y diálogos.
 - ✅ Pipeline de arte: player con AnimatedSprite2D (6 frames pixel art en
   assets/sprites/player/, generados con Pillow). Guía en docs/ARTE.md:
   pisar PNG del mismo nombre/tamaño lo actualiza solo.
-- ⬜ Pendiente: quest del núcleo del portal, susurros, sprites del resto de
-  entidades, balance/playtest completo, export Windows + itch.io.
+- ✅ LA NAVE reemplaza a los portales: 3 fragmentos en el Páramo (grieta
+  alta / profundidades / sala del Espectro) reconstruyen la nave en la
+  plataforma de vuelo (p1_exit). Viaje vía travel_menu (grupo
+  "travel_menu", nave = props/ship.tscn en cada *_arrival): Velo libre
+  con nave completa; Raíz pide key_item blindaje_estelar (p2_core);
+  Garganta pide nucleo_pulso (p3_boss, junto al árbol). Viaje rápido
+  gratis entre mundos desbloqueados. portal.gd quedó sin uso.
+- ⬜ Pendiente: susurros, sprites del resto de entidades, balance/playtest
+  completo, export Windows + itch.io.
 
 ## Arquitectura
 
