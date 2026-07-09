@@ -22,9 +22,18 @@ Idioma: español rioplatense (voseo) en comentarios, textos y diálogos.
   quieto), tienda por vendedor, antimateria + rocas + sombra, diálogos + Ecos,
   objetos clave, intro/fin de demo, menús 100% teclado/joystick (layout HK),
   juice, audio procedural. Jefes: _on_hit y _should_free_on_death virtuales.
-- ⬜ Pendiente: mundo final "La Garganta" (el Silencio, 3 fases, zonas mudas
-  sin música), quest del núcleo del portal, susurros, finales normal/verdadero
-  (plantar la Semilla), export Windows + itch.io. Detalle en GUION.md §11.
+- ✅ La Garganta (mundo final): 5 salas SIN música (music_track=""), gauntlet
+  de dash/doble salto + chimenea de wall jump, enemigos eco, y EL SILENCIO:
+  jefe de 3 fases (_check_phase propio por tercios; fase 2 roba el dash del
+  player y lo devuelve en fase 3 o al morir vía refresh_abilities en el
+  respawn; fase 3 apaga música + oscurece con el FogOverlay). Al caer corta
+  a ending.tscn: final normal o VERDADERO según Game.has_key_item("madera")
+  (galaxia encendiéndose planeta a planeta + créditos).
+- ✅ Pipeline de arte: player con AnimatedSprite2D (6 frames pixel art en
+  assets/sprites/player/, generados con Pillow). Guía en docs/ARTE.md:
+  pisar PNG del mismo nombre/tamaño lo actualiza solo.
+- ⬜ Pendiente: quest del núcleo del portal, susurros, sprites del resto de
+  entidades, balance/playtest completo, export Windows + itch.io.
 
 ## Arquitectura
 

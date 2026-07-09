@@ -1,0 +1,86 @@
+[gd_scene format=3 uid="uid://grest00000argen"]
+
+[ext_resource type="Script" path="res://scripts/room.gd" id="1_room"]
+[ext_resource type="Script" path="res://scripts/room_transition.gd" id="2_door"]
+[ext_resource type="PackedScene" path="res://scenes/props/bench.tscn" id="3_pod"]
+[ext_resource type="PackedScene" path="res://scenes/props/sign.tscn" id="4_sign"]
+[ext_resource type="PackedScene" path="res://scenes/props/eco.tscn" id="5_eco"]
+
+[sub_resource type="RectangleShape2D" id="shape_floor"]
+size = Vector2(800, 40)
+
+[sub_resource type="RectangleShape2D" id="shape_door"]
+size = Vector2(30, 560)
+
+[node name="GRest" type="Node2D"]
+script = ExtResource("1_room")
+camera_limit_right = 800
+music_track = ""
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(400, 600)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("shape_floor")
+
+[node name="ColorRect" type="ColorRect" parent="Floor"]
+offset_left = -400.0
+offset_top = -20.0
+offset_right = 400.0
+offset_bottom = 20.0
+color = Color(0.1, 0.09, 0.13, 1)
+
+[node name="RestPod" parent="." instance=ExtResource("3_pod")]
+position = Vector2(300, 540)
+
+[node name="SignFinal" parent="." instance=ExtResource("4_sign")]
+position = Vector2(500, 540)
+text = "no pelees con él
+apagalo"
+
+[node name="EcoFinal" parent="." instance=ExtResource("5_eco")]
+position = Vector2(620, 520)
+text = "…fuimos los primeros…
+…que seas el último…"
+
+[node name="DoorLeft" type="Area2D" parent="."]
+position = Vector2(15, 400)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("2_door")
+target_room = "res://scenes/rooms/garganta/g_gauntlet2.tscn"
+target_door = "DoorRight"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DoorLeft"]
+shape = SubResource("shape_door")
+
+[node name="ColorRect" type="ColorRect" parent="DoorLeft"]
+offset_left = -15.0
+offset_top = -280.0
+offset_right = 15.0
+offset_bottom = 280.0
+color = Color(0.5, 0.3, 0.6, 0.3)
+
+[node name="Entry" type="Marker2D" parent="DoorLeft"]
+position = Vector2(75, 140)
+
+[node name="DoorRight" type="Area2D" parent="."]
+position = Vector2(785, 400)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("2_door")
+target_room = "res://scenes/rooms/garganta/g_boss.tscn"
+target_door = "DoorLeft"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DoorRight"]
+shape = SubResource("shape_door")
+
+[node name="ColorRect" type="ColorRect" parent="DoorRight"]
+offset_left = -15.0
+offset_top = -280.0
+offset_right = 15.0
+offset_bottom = 280.0
+color = Color(0.8, 0.35, 0.3, 0.3)
+
+[node name="Entry" type="Marker2D" parent="DoorRight"]
+position = Vector2(-75, 140)

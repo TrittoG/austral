@@ -1,0 +1,115 @@
+[gd_scene format=3 uid="uid://garrival00argen"]
+
+[ext_resource type="Script" path="res://scripts/room.gd" id="1_room"]
+[ext_resource type="Script" path="res://scripts/room_transition.gd" id="2_door"]
+[ext_resource type="Script" path="res://scripts/portal.gd" id="3_portal"]
+[ext_resource type="PackedScene" path="res://scenes/props/sign.tscn" id="4_sign"]
+[ext_resource type="PackedScene" path="res://scenes/props/eco.tscn" id="5_eco"]
+
+[sub_resource type="RectangleShape2D" id="shape_floor"]
+size = Vector2(800, 40)
+
+[sub_resource type="RectangleShape2D" id="shape_wall"]
+size = Vector2(40, 640)
+
+[sub_resource type="RectangleShape2D" id="shape_door"]
+size = Vector2(30, 560)
+
+[sub_resource type="RectangleShape2D" id="shape_portal"]
+size = Vector2(60, 130)
+
+[node name="GArrival" type="Node2D"]
+script = ExtResource("1_room")
+camera_limit_right = 800
+music_track = ""
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(400, 600)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+shape = SubResource("shape_floor")
+
+[node name="ColorRect" type="ColorRect" parent="Floor"]
+offset_left = -400.0
+offset_top = -20.0
+offset_right = 400.0
+offset_bottom = 20.0
+color = Color(0.1, 0.09, 0.13, 1)
+
+[node name="WallLeft" type="StaticBody2D" parent="."]
+position = Vector2(20, 300)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallLeft"]
+shape = SubResource("shape_wall")
+
+[node name="ColorRect" type="ColorRect" parent="WallLeft"]
+offset_left = -20.0
+offset_top = -320.0
+offset_right = 20.0
+offset_bottom = 320.0
+color = Color(0.07, 0.06, 0.1, 1)
+
+[node name="Portal" type="Node2D" parent="."]
+position = Vector2(150, 540)
+
+[node name="Frame" type="ColorRect" parent="Portal"]
+offset_left = -38.0
+offset_top = -110.0
+offset_right = 38.0
+offset_bottom = 40.0
+color = Color(0.25, 0.3, 0.4, 1)
+
+[node name="Glow" type="ColorRect" parent="Portal"]
+offset_left = -28.0
+offset_top = -100.0
+offset_right = 28.0
+offset_bottom = 30.0
+color = Color(0.5, 0.8, 0.55, 0.6)
+
+[node name="PortalZone" type="Area2D" parent="Portal"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("3_portal")
+target_room = "res://scenes/rooms/planet3/p3_seed.tscn"
+target_door = "FromGarganta"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Portal/PortalZone"]
+position = Vector2(0, -35)
+shape = SubResource("shape_portal")
+
+[node name="ArrivalPoint" type="Node2D" parent="."]
+position = Vector2(280, 540)
+
+[node name="Entry" type="Marker2D" parent="ArrivalPoint"]
+position = Vector2(0, 0)
+
+[node name="SignTitle" parent="." instance=ExtResource("4_sign")]
+position = Vector2(480, 540)
+text = "LA GARGANTA
+acá empezó"
+
+[node name="EcoEntrada" parent="." instance=ExtResource("5_eco")]
+position = Vector2(620, 520)
+text = "…acá no llega el Pulso…
+…acá nació el hambre…"
+
+[node name="DoorRight" type="Area2D" parent="."]
+position = Vector2(785, 400)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("2_door")
+target_room = "res://scenes/rooms/garganta/g_gauntlet1.tscn"
+target_door = "DoorLeft"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DoorRight"]
+shape = SubResource("shape_door")
+
+[node name="ColorRect" type="ColorRect" parent="DoorRight"]
+offset_left = -15.0
+offset_top = -280.0
+offset_right = 15.0
+offset_bottom = 280.0
+color = Color(0.5, 0.3, 0.6, 0.3)
+
+[node name="Entry" type="Marker2D" parent="DoorRight"]
+position = Vector2(-75, 140)

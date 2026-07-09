@@ -61,10 +61,13 @@ func respawn_at_checkpoint() -> void:
 		room = start_room
 		pos = Vector2.INF
 	await _transition(room, "", pos)
-	# Recuperar la vida al reaparecer.
+	# Recuperar la vida al reaparecer, y las habilidades por si un jefe
+	# te las había robado (el Silencio) cuando moriste.
 	var p = get_tree().get_first_node_in_group("player")
 	if p != null and p.has_method("full_heal"):
 		p.full_heal()
+	if p != null and p.has_method("refresh_abilities"):
+		p.refresh_abilities()
 
 
 # explicit_pos = Vector2.INF significa "usar la puerta/DefaultSpawn".

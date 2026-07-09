@@ -28,6 +28,11 @@ const PLANETS := {
 		"color": Color(0.6, 0.4, 0.7),
 		"pos": Vector2(0.8, 0.62),
 	},
+	"garganta": {
+		"name": "La Garganta",
+		"color": Color(0.35, 0.2, 0.45),
+		"pos": Vector2(0.9, 0.18),
+	},
 }
 
 # rect: dónde queda cada sala en el plano del planeta (coordenadas de
@@ -85,6 +90,16 @@ const ROOMS := {
 		{"planet": "planet3", "rect": Rect2(6200, 0, 1100, 640)},
 	"res://scenes/rooms/planet3/p3_seed.tscn":
 		{"planet": "planet3", "rect": Rect2(7300, 0, 800, 640)},
+	"res://scenes/rooms/garganta/g_arrival.tscn":
+		{"planet": "garganta", "rect": Rect2(0, 0, 800, 640)},
+	"res://scenes/rooms/garganta/g_gauntlet1.tscn":
+		{"planet": "garganta", "rect": Rect2(800, 0, 2200, 640)},
+	"res://scenes/rooms/garganta/g_gauntlet2.tscn":
+		{"planet": "garganta", "rect": Rect2(3000, -640, 1100, 1280)},
+	"res://scenes/rooms/garganta/g_rest.tscn":
+		{"planet": "garganta", "rect": Rect2(4100, -640, 800, 640)},
+	"res://scenes/rooms/garganta/g_boss.tscn":
+		{"planet": "garganta", "rect": Rect2(4900, -640, 1400, 640)},
 }
 
 
