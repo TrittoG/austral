@@ -29,9 +29,14 @@ Idioma: español rioplatense (voseo) en comentarios, textos y diálogos.
   respawn; fase 3 apaga música + oscurece con el FogOverlay). Al caer corta
   a ending.tscn: final normal o VERDADERO según Game.has_key_item("madera")
   (galaxia encendiéndose planeta a planeta + créditos).
-- ✅ Pipeline de arte: player con AnimatedSprite2D (6 frames pixel art en
-  assets/sprites/player/, generados con Pillow). Guía en docs/ARTE.md:
-  pisar PNG del mismo nombre/tamaño lo actualiza solo.
+- ✅ Pipeline de arte HD (decisión de Giuli: arte 2D suave, NO pixel art):
+  el concept del Caído (docs/concept/caido_concept.png, generado con IA)
+  se procesa con Pillow (fondo→alpha por flood fill, sin sombra, escala
+  LANCZOS a 62px) → assets/sprites/player/hd_caido.png, usado por las 4
+  animaciones del AnimatedSprite2D (una pose; squash/espejado dan vida).
+  Flujo completo en docs/ARTE.md: Giuli genera concepts en docs/concept/,
+  Claude los procesa y conecta. Poses de animación: editar sobre la
+  imagen original en la IA ("same character, running pose").
 - ✅ LA NAVE reemplaza a los portales: 3 fragmentos en el Páramo (grieta
   alta / profundidades / sala del Espectro) reconstruyen la nave en la
   plataforma de vuelo (p1_exit). Viaje vía travel_menu (grupo
