@@ -52,9 +52,11 @@ llevaba. Por eso, al morir, tu antimateria queda con **tu sombra** esperándote.
   **Alba Austral**, el último mundo con Pulso. Los australes mapean la galaxia
   desde hace generaciones; por eso el juego tiene *dos mapas* (galaxia y mundo).
   Ser cartógrafo ES la justificación del sistema de mapa.
-- **Diseño sugerido** (para tus dibujos): pequeño (2 cabezas), casco redondo con
-  **un solo visor** que brilla (el punto celeste del mapa es su visor), bufanda
-  o antena quebrada de la nave, silueta simple y legible.
+- **Diseño CANÓNICO** (concept de Giuli en `docs/concept/caido_concept.png`):
+  pequeño (2 cabezas), casco redondo crema con **antena de bolita**, **visor
+  oscuro con dos ojos brillantes** (su única cara), **poncho blanco con guarda
+  de zigzag** (el toque textil de Alba Austral) y una **colita oscura** que
+  asoma atrás. Silueta redonda, tierna y legible.
 - **Arma**: **la Aguja** — la aguja de navegación de su nave rota, afilada.
   Un cartógrafo pelea con su instrumento. (El "nail" del juego.)
 - **Personalidad**: muda. Se expresa con el cuerpo (squash & stretch 😉).

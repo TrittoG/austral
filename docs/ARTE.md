@@ -68,5 +68,10 @@ idle / run / jump / fall. Ese es el molde para todo lo demás.
 3. Cuando tengas 2-3 bichos, definimos la paleta por planeta y voy
    convirtiendo el resto de las escenas al sistema de sprites.
 
-Paleta actual del Caído: casco #E8E4D8 · visor #7FD8FF · traje #2A3550
-· bufanda #4A8B8C · acentos #FFD966.
+Paleta canónica del Caído (según `docs/concept/caido_concept.png`):
+crema #F2EEE4 · sombra crema #D6D0C0 · oscuro (visor/colita) #2E2C33
+· ojos #F7F0D9 · antena #8A8A90.
+
+El concept art de referencia de cada personaje va en `docs/concept/` —
+generá el personaje grande y lindo ahí, y después se convierte a los
+tamaños de juego (yo puedo hacer esa conversión a pixel art).
