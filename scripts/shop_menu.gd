@@ -113,6 +113,8 @@ func _on_buy(id: String, row_index: int = 0) -> void:
 			Game.own_charm("iman_estelar")
 		"shop_charm_oido":
 			Game.own_charm("oido_fino")
+		"shop_charm_impulso":
+			Game.own_charm("doble_impulso")
 
 	Audio.play("checkpoint")
 	Game.save_game()  # la compra queda guardada ya mismo

@@ -91,6 +91,11 @@ const CHARMS := {
 		"desc": "Quedate quieto unos segundos y regenerás vida",
 		"cost": 2,
 	},
+	"doble_impulso": {
+		"name": "Doble Impulso",
+		"desc": "Un segundo dash en el aire (y no más)",
+		"cost": 2,
+	},
 }
 
 # ---- Catálogo del Chatarrero (tienda) ------------------------
@@ -115,6 +120,11 @@ const SHOP_ITEMS := {
 		"name": "Amuleto: Oído Fino",
 		"desc": "La niebla se vuelve más tenue (1 muesca)",
 		"price": 40,
+	},
+	"shop_charm_impulso": {
+		"name": "Amuleto: Doble Impulso",
+		"desc": "Un segundo dash en el aire (2 muescas)",
+		"price": 55,
 	},
 }
 

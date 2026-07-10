@@ -147,6 +147,7 @@ var is_dashing: bool = false
 var dash_timer: float = 0.0              # tiempo activo restante
 var dash_cooldown_timer: float = 0.0     # tiempo hasta poder volver a dashear
 var dash_dir: int = 1                    # dirección del dash en curso
+var air_dashes_used: int = 0             # dashes aéreos desde el último piso/pared
 
 # ---- Estado de doble salto y wall slide --------------------
 var air_jumps_used: int = 0              # saltos aéreos consumidos desde el último piso/pared
@@ -377,7 +378,8 @@ func _update_assist_timers(delta: float) -> void:
 	# borde (sin saltar) empieza a descontar, dándote unos frames para saltar.
 	if is_on_floor():
 		coyote_timer = coyote_time
-		air_jumps_used = 0  # tocar el piso recarga el doble salto
+		air_jumps_used = 0    # tocar el piso recarga el doble salto
+		air_dashes_used = 0   # ...y el dash aéreo
 	else:
 		coyote_timer -= delta
 
@@ -483,7 +485,8 @@ func _detect_wall_slide() -> void:
 	var pushing_into_wall := direction != 0.0 and (direction > 0.0) == (wall_dir > 0)
 	if pushing_into_wall and velocity.y >= 0.0:
 		is_wall_sliding = true
-		air_jumps_used = 0  # agarrarte de la pared recarga el doble salto
+		air_jumps_used = 0    # agarrarte de la pared recarga el doble salto
+		air_dashes_used = 0   # ...y el dash aéreo
 
 
 # Limita la velocidad de caída mientras deslizás. Va DESPUÉS de la gravedad
@@ -502,8 +505,11 @@ func _apply_wall_slide_clamp() -> void:
 func _handle_dash(delta: float) -> void:
 	dash_cooldown_timer = maxf(dash_cooldown_timer - delta, 0.0)
 
-	# Iniciar dash: requiere tener la habilidad y no estar en cooldown.
+	# Iniciar dash: habilidad + sin cooldown + (en el piso, o con dashes
+	# aéreos disponibles: 1 normal, 2 con Doble Impulso, ∞ en modo dios).
 	var can_dash := has_dash and dash_cooldown_timer <= 0.0 and not is_dashing
+	if not is_on_floor() and air_dashes_used >= _max_air_dashes():
+		can_dash = false
 	if Input.is_action_just_pressed("dash") and can_dash:
 		_start_dash()
 
@@ -516,9 +522,20 @@ func _handle_dash(delta: float) -> void:
 			is_dashing = false
 
 
+# Cuántos dashes se pueden encadenar en el aire.
+func _max_air_dashes() -> int:
+	if god_mode:
+		return 99
+	if Game.is_charm_equipped("doble_impulso"):
+		return 2
+	return 1
+
+
 func _start_dash() -> void:
 	is_dashing = true
 	dash_timer = dash_duration
+	if not is_on_floor():
+		air_dashes_used += 1
 	# Garra Veloz reduce el cooldown a la mitad.
 	dash_cooldown_timer = dash_cooldown * charm_dash_cooldown_mult
 	dash_dir = facing  # dashea hacia donde mira
