@@ -14,6 +14,7 @@ extends CanvasLayer
 
 
 func _ready() -> void:
+	add_to_group("hud")
 	# Esperar un frame asegura que el player ya hizo su _ready
 	# (y se agregó al grupo "player").
 	await get_tree().process_frame
@@ -66,6 +67,12 @@ func _on_ship_fragment(count: int, total: int) -> void:
 
 func _on_currency_changed(total: int) -> void:
 	currency_label.text = "◆ %d" % total
+
+
+# Aviso genérico desde afuera (ej: el modo dios del player).
+func notify(message: String) -> void:
+	if notice != null:
+		_show_notice(message)
 
 
 func _show_notice(message: String) -> void:

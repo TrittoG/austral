@@ -165,6 +165,12 @@ var updraft_force: float = 0.0
 # ---- Savia Espesa (regeneración quieto) --------------------
 var _still_time: float = 0.0
 
+# ---- Modo dios (F1, solo builds de desarrollo) --------------
+# Invulnerable + daño x5 + todas las habilidades. Para testear
+# zonas sin pelear cada tramo. En el export final queda apagado
+# (OS.is_debug_build()).
+var god_mode: bool = false
+
 # Se emite cuando cambia la vida, para que el HUD se actualice.
 signal health_changed(current: int, maximum: int)
 
@@ -173,6 +179,7 @@ signal health_changed(current: int, maximum: int)
 @onready var sword_shape: CollisionShape2D = $Sword/CollisionShape2D
 @onready var hurtbox: Area2D = $Hurtbox
 @onready var body: AnimatedSprite2D = $Body
+@onready var slash_fx: Polygon2D = $SlashFX
 @onready var dust_land: CPUParticles2D = $DustLand
 @onready var dust_dash: CPUParticles2D = $DustDash
 @onready var hit_sparks: CPUParticles2D = $HitSparks
@@ -229,6 +236,24 @@ func _on_ability_unlocked(_key: String) -> void:
 	refresh_abilities()
 
 
+# ------------------------------------------------------------
+#  MODO DIOS (F1, testing)
+# ------------------------------------------------------------
+func _toggle_god_mode() -> void:
+	god_mode = not god_mode
+	if god_mode:
+		body.modulate = Color(1.6, 1.35, 0.7)  # tinte dorado: se nota que está activo
+		has_dash = true
+		has_double_jump = true
+		has_wall_jump = true
+	else:
+		body.modulate = Color.WHITE
+		refresh_abilities()  # vuelve a lo que dice el save
+	var hud = get_tree().get_first_node_in_group("hud")
+	if hud != null and hud.has_method("notify"):
+		hud.notify("MODO DIOS: %s" % ("ON — invulnerable, daño x5" if god_mode else "OFF"))
+
+
 # Restaura la vida al máximo (la usa el banco / checkpoint).
 func full_heal() -> void:
 	health = max_health
@@ -239,6 +264,9 @@ func _physics_process(delta: float) -> void:
 	# Recalcular salto/gravedad cada frame permite tunear desde el inspector
 	# con el juego corriendo. Es barato y vale oro para iterar el feel.
 	_update_jump_parameters()
+
+	if OS.is_debug_build() and Input.is_action_just_pressed("debug_god"):
+		_toggle_god_mode()
 
 	# El dash manda: mientras dura, ignora gravedad y control horizontal normal.
 	_handle_dash(delta)
@@ -521,8 +549,11 @@ func _handle_attack(delta: float) -> void:
 	if attack_active_timer > 0.0:
 		attack_active_timer -= delta
 		_check_attack_hits()
+		# El tajo visible se desvanece con la duración del golpe.
+		slash_fx.modulate.a = attack_active_timer / attack_duration
 		if attack_active_timer <= 0.0:
 			sword_shape.set_deferred("disabled", true)
+			slash_fx.visible = false
 
 
 func _start_attack() -> void:
@@ -532,6 +563,11 @@ func _start_attack() -> void:
 	attack_hit_targets.clear()
 	_position_sword(attack_dir)
 	sword_shape.disabled = false
+	# El tajo visible: apunta y se coloca en la dirección del golpe.
+	slash_fx.rotation = attack_dir.angle()
+	slash_fx.position = attack_dir * (attack_reach * charm_reach_mult * 0.5 + 8.0)
+	slash_fx.modulate.a = 1.0
+	slash_fx.visible = true
 	Audio.play("attack", 0.06)
 
 
@@ -572,7 +608,8 @@ func _check_attack_hits() -> void:
 		attack_hit_targets.append(target)
 
 		if target.has_method("take_damage"):
-			target.take_damage(attack_damage, global_position)
+			var dmg := attack_damage * (5 if god_mode else 1)
+			target.take_damage(dmg, global_position)
 
 		Juice.hitstop(attack_hitstop)
 		Juice.shake(2.0, 0.12)  # sutil: es un golpe que conecta
@@ -621,7 +658,7 @@ func _damage_from(area: Area2D) -> int:
 
 
 func _take_damage(amount: int, from_position: Vector2) -> void:
-	if invuln_timer > 0.0:
+	if god_mode or invuln_timer > 0.0:
 		return
 	health -= amount
 	invuln_timer = invuln_time
