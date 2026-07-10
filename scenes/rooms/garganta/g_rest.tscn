@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" path="res://scenes/props/bench.tscn" id="3_pod"]
 [ext_resource type="PackedScene" path="res://scenes/props/sign.tscn" id="4_sign"]
 [ext_resource type="PackedScene" path="res://scenes/props/eco.tscn" id="5_eco"]
+[ext_resource type="PackedScene" path="res://scenes/props/merchant.tscn" id="6_merchant"]
 
 [sub_resource type="RectangleShape2D" id="shape_floor"]
 size = Vector2(800, 40)
@@ -37,6 +38,14 @@ position = Vector2(300, 540)
 position = Vector2(500, 540)
 text = "no pelees con él
 apagalo"
+
+[node name="Chatarrero" parent="." instance=ExtResource("6_merchant")]
+position = Vector2(140, 540)
+npc_name = "El Chatarrero"
+first_lines = PackedStringArray("¿Llegaste hasta acá? Los vivos me sorprenden.", "Yo de esa puerta no paso. Pero vos vas a entrar, y ahí adentro vas a querer moverte RÁPIDO.", "Última oferta de la galaxia. Precio de última oferta.")
+repeat_lines = PackedStringArray("Último puesto antes del hambre. Aprovechá.")
+met_id = "npc_chatarrero_garganta_met"
+shop_items = PackedStringArray("shop_charm_impulso")
 
 [node name="EcoFinal" parent="." instance=ExtResource("5_eco")]
 position = Vector2(620, 520)

@@ -51,7 +51,7 @@ position = Vector2(280, 540)
 
 [node name="Merchant" parent="." instance=ExtResource("5_merchant")]
 position = Vector2(650, 540)
-shop_items = PackedStringArray("shop_heart", "shop_notch", "shop_charm_iman", "shop_charm_impulso")
+shop_items = PackedStringArray("shop_heart", "shop_notch", "shop_charm_iman")
 
 [node name="SignShop" parent="." instance=ExtResource("3_sign")]
 position = Vector2(830, 540)

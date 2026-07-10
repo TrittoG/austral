@@ -124,7 +124,7 @@ const SHOP_ITEMS := {
 	"shop_charm_impulso": {
 		"name": "Amuleto: Doble Impulso",
 		"desc": "Un segundo dash en el aire (2 muescas)",
-		"price": 55,
+		"price": 180,
 	},
 }
 
