@@ -1,21 +1,13 @@
-[gd_scene load_steps=12 format=3 uid="uid://b8player0argen"]
+[gd_scene load_steps=7 format=3 uid="uid://b8player0argen"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_player"]
-[ext_resource type="Texture2D" path="res://assets/sprites/player/idle_0.png" id="t_idle0"]
-[ext_resource type="Texture2D" path="res://assets/sprites/player/idle_1.png" id="t_idle1"]
-[ext_resource type="Texture2D" path="res://assets/sprites/player/run_0.png" id="t_run0"]
-[ext_resource type="Texture2D" path="res://assets/sprites/player/run_1.png" id="t_run1"]
-[ext_resource type="Texture2D" path="res://assets/sprites/player/jump.png" id="t_jump"]
-[ext_resource type="Texture2D" path="res://assets/sprites/player/fall.png" id="t_fall"]
+[ext_resource type="Texture2D" path="res://assets/sprites/player/hd_caido.png" id="t_caido"]
 
 [sub_resource type="SpriteFrames" id="frames_body"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("t_idle0")
-}, {
-"duration": 1.0,
-"texture": ExtResource("t_idle1")
+"texture": ExtResource("t_caido")
 }],
 "loop": true,
 "name": &"idle",
@@ -23,10 +15,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("t_run0")
-}, {
-"duration": 1.0,
-"texture": ExtResource("t_run1")
+"texture": ExtResource("t_caido")
 }],
 "loop": true,
 "name": &"run",
@@ -34,7 +23,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("t_jump")
+"texture": ExtResource("t_caido")
 }],
 "loop": true,
 "name": &"jump",
@@ -42,7 +31,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("t_fall")
+"texture": ExtResource("t_caido")
 }],
 "loop": true,
 "name": &"fall",
@@ -67,6 +56,7 @@ script = ExtResource("1_player")
 shape = SubResource("RectangleShape2D_body")
 
 [node name="Body" type="AnimatedSprite2D" parent="."]
+offset = Vector2(0, -7)
 sprite_frames = SubResource("frames_body")
 animation = &"idle"
 autoplay = "idle"

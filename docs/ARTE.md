@@ -1,77 +1,60 @@
-# AUSTRAL — Guía de arte (cómo hacer y meter los gráficos)
+# AUSTRAL — Guía de arte (estilo HD, no pixel art)
 
-## Cómo funciona el pipeline (ya armado con el player)
+## El estilo del juego
 
-1. Dibujás (o generás) un **PNG con fondo transparente** del tamaño indicado abajo.
-2. Lo guardás en `assets/sprites/<entidad>/` con el nombre del frame
-   (ej: `idle_0.png`). **Si pisás un archivo existente con otro del mismo
-   nombre y tamaño, el juego lo toma solo** — sin tocar código ni escenas.
-3. Para entidades nuevas o más frames: se agrega en la escena (pedímelo,
-   es un momento).
+**Arte 2D suave de alta resolución** — como el concept del Caído
+(`docs/concept/caido_concept.png`): formas redondas, línea de contorno
+gruesa y oscura, colores planos con sombreado sutil, paleta acotada.
+*(Hollow Knight tampoco es pixel art: es exactamente esta familia.)*
 
-El player ya funciona así: mirá `assets/sprites/player/` (6 frames) y
-cómo `player.tscn` los usa en un AnimatedSprite2D con animaciones
-idle / run / jump / fall. Ese es el molde para todo lo demás.
+## El flujo (probado con el Caído)
 
-## Reglas de oro
+1. **Generás el personaje GRANDE y lindo** con la IA de imágenes
+   (fondo blanco liso, cuerpo entero, de costado o 3/4).
+2. Lo guardás en **`docs/concept/`** con un nombre claro
+   (ej: `chatarrero_concept.png`).
+3. **Yo lo proceso**: fondo transparente, recorte, quitar sombra de
+   piso, escalado suave al tamaño del juego, y lo conecto a la escena.
+4. Para **animaciones**: generá variantes del MISMO personaje
+   ("same character, running pose", "same character, jumping") —
+   la IA de ChatGPT mantiene consistencia si editás sobre la imagen
+   original. Cada pose es un frame que yo conecto.
 
-- **Fondo transparente** (PNG con alpha), nunca fondo blanco.
-- **Tamaño exacto** de la tabla de abajo (el doble de la hitbox aprox.);
-  el personaje centrado, los pies apoyados en el borde inferior.
-- Dibujá **mirando a la derecha**: el juego espeja solo al ir a la izquierda.
-- Pixel art: trabajá a la mitad del tamaño y escalá ×2 SIN suavizado
-  (nearest neighbor). Godot ya está en GL Compatibility, se ve nítido.
-- Silueta primero: si la sombra negra del bicho no se reconoce, el
-  detalle no lo va a salvar.
+Mientras un personaje tenga una sola pose, el movimiento lo venden el
+squash & stretch, el espejado y las partículas (ya implementados).
 
-## Tamaños por entidad (canvas del PNG en px)
+## Reglas para generar concepts
 
-| Entidad | Canvas | Frames mínimos |
-|---|---|---|
-| Player (el Caído) | 40×48 ✅ hecho | idle×2, run×2, jump, fall (+attack×2 a futuro) |
-| Walker / Beetle | 40×36 | walk×2 |
-| Hopper | 32×32 | idle, salto |
-| Flyer / Medusa | 40×40 | flotar×2 |
-| Shooter / Escupidor | 36×40 | idle, disparo |
-| Charger | 40×40 | walk×2, embestida |
-| Guardián (jefe 1) | 64×84 | idle×2, telegraph, embestida |
-| Espectro (jefe 2) | 60×60 | flotar×2, picada |
-| Fanal (jefe 3) | 76×58 | acecho, atacando (la linterna manda) |
-| Jardinera (jefe 4) | 56×92 | idle×2, telegraph, cura, arrodillada |
-| Chatarrero / Ermitaña / Brote | 56×80 / 56×80 / 24×32 | idle×2 |
-| Cápsula de reposo | 100×84 | idle, activa (campo dorado) |
-| Portal | 80×152 | idle×2 (ondulando) |
-| Esquirla ◆ / corazón / amuleto / orbe | 16×16 / 32×32 / 32×32 / 32×32 | 1 (girando×4 si pinta) |
-| Espinas / espinas vivas | 120×24 | 1 / extendida+retraída |
-| Tiles de piso/pared (a futuro) | 32×32 | por planeta |
+- **Fondo blanco liso** (lo remuevo por código) y sin marca de agua.
+- **Cuerpo entero**, sin recortes, con contorno cerrado (la línea
+  oscura continua es lo que protege el recorte automático).
+- Mirando **a la derecha** o de frente (el juego espeja solo).
+- Mismo estilo siempre: línea gruesa, formas redondas, pocos colores.
+  Truco: editá sobre el concept del Caído pidiendo "otro personaje en
+  el mismo estilo" para mantener coherencia.
 
-## Con qué hacer el arte (de más fácil a más pro)
+## Tamaños en juego (a esto escalo cada uno)
 
-1. **IA de imágenes** (lo que empezaste): usá el prompt del Caído que ya
-   tenemos. Generá el personaje grande y lindo → después alguien (o yo
-   con Pillow) lo reduce al tamaño de juego. Ideal para concept art y
-   para NPCs/jefes que necesitan personalidad.
-2. **Piskel** (piskelapp.com, gratis, en el navegador): editor de pixel
-   art pensado para juegos. Exporta PNG por frame. La opción más directa
-   para hacer los frames chicos vos misma — con 20×24 píxeles alcanza.
-3. **Libresprite / Aseprite** (gratis / ~USD 20): el estándar indie para
-   pixel art animado. Vale la pena si le agarrás el gusto.
-4. **Packs gratis de itch.io** (itch.io/game-assets/free/tag-metroidvania):
-   arte listo con licencia libre para prototipar zonas enteras. Mezclable
-   con lo tuyo mientras encontrás tu estilo.
+| Entidad | Altura en juego (px) |
+|---|---|
+| Player (el Caído) | 62 ✅ hecho |
+| Enemigos chicos (walker, hopper, medusa...) | 40-50 |
+| Chatarrero / Ermitaña | 85 |
+| Brote | 34 |
+| Jefes (Guardián, Espectro, Fanal, Jardinera) | 90-120 |
+| El Silencio | 150 |
+| Ítems (esquirla, corazón, amuleto, fragmento) | 20-34 |
+| Nave | 90 (ancho ~160) |
+| Cápsula de reposo / portal | 80-150 |
 
-## Flujo recomendado
+## Prioridad sugerida
 
-1. Jugá con el player nuevo y decidí si el estilo pixel ×2 te gusta.
-2. Elegí UNA entidad chica (el Brote es ideal: 2 frames) y hacela en
-   Piskel imitando los tamaños/paleta. Me la pasás y la conecto.
-3. Cuando tengas 2-3 bichos, definimos la paleta por planeta y voy
-   convirtiendo el resto de las escenas al sistema de sprites.
+1. ✅ El Caído
+2. El Brote y el Chatarrero (los queribles)
+3. Los 4 enemigos del Páramo
+4. Los jefes, uno por planeta
+5. Ítems y props (cápsula, nave, carteles)
+6. Fondos/tiles por planeta (lo vemos juntos: eso pide otra técnica)
 
-Paleta canónica del Caído (según `docs/concept/caido_concept.png`):
-crema #F2EEE4 · sombra crema #D6D0C0 · oscuro (visor/colita) #2E2C33
-· ojos #F7F0D9 · antena #8A8A90.
-
-El concept art de referencia de cada personaje va en `docs/concept/` —
-generá el personaje grande y lindo ahí, y después se convierte a los
-tamaños de juego (yo puedo hacer esa conversión a pixel art).
+Paleta canónica del Caído: crema #F2EEE4 · sombra #D6D0C0 ·
+oscuro #2E2C33 · ojos #F7F0D9 · antena #8A8A90.

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b3wgjo6ueygp6"
-path="res://.godot/imported/jump.png-c3f95b961857855bc13fa37dd6abd938.ctex"
+uid="uid://bpc32a6jqpd0k"
+path="res://.godot/imported/caido_concept.png-e725866ea68d60c2c30025b6fc2dc3fe.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/player/jump.png"
-dest_files=["res://.godot/imported/jump.png-c3f95b961857855bc13fa37dd6abd938.ctex"]
+source_file="res://docs/concept/caido_concept.png"
+dest_files=["res://.godot/imported/caido_concept.png-e725866ea68d60c2c30025b6fc2dc3fe.ctex"]
 
 [params]
 
