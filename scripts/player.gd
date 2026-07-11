@@ -142,6 +142,11 @@ var attack_hit_targets: Array = []       # a quién ya golpeó este swing (evita
 var invuln_timer: float = 0.0            # i-frames restantes
 var spawn_point: Vector2                 # dónde reaparecer al morir (provisorio)
 
+# ---- Último piso seguro (respawn de pinchos, estilo HK) -----
+# Al tocar un hazard de terreno (grupo hazard_respawn) volvés acá.
+var last_safe_position: Vector2
+var _safe_ground_timer: float = 0.0
+
 # ---- Estado del dash ---------------------------------------
 var is_dashing: bool = false
 var dash_timer: float = 0.0              # tiempo activo restante
@@ -191,6 +196,7 @@ func _ready() -> void:
 	add_to_group("player")
 	_apply_saved_state()
 	spawn_point = global_position
+	last_safe_position = global_position
 	# El hitbox del golpe arranca apagado; se prende solo al atacar.
 	sword_shape.disabled = true
 	health_changed.emit(health, max_health)
@@ -289,6 +295,18 @@ func _physics_process(delta: float) -> void:
 	_update_squash_stretch(delta)
 	_update_sap_regen(delta)
 	_update_animation()
+	_track_safe_ground(delta)
+
+
+# Memoriza dónde pisaste firme por última vez: si llevás un ratito
+# parado en el piso (y no dasheando), este lugar es "seguro".
+func _track_safe_ground(delta: float) -> void:
+	if is_on_floor() and not is_dashing:
+		_safe_ground_timer += delta
+		if _safe_ground_timer >= 0.2:
+			last_safe_position = global_position
+	else:
+		_safe_ground_timer = 0.0
 
 
 # Elige la animación según el estado (y espeja el sprite al mirar
@@ -661,8 +679,25 @@ func _check_incoming_damage() -> void:
 		return
 	for area in hurtbox.get_overlapping_areas():
 		if area.is_in_group("enemy_hitbox"):
-			_take_damage(_damage_from(area), area.global_position)
+			if area.is_in_group("hazard_respawn") and not god_mode:
+				_hazard_hit(area)
+			else:
+				_take_damage(_damage_from(area), area.global_position)
 			break
+
+
+# Pinchos/ácido estilo Hollow Knight: dañan Y te devuelven al último
+# piso seguro (con un flash), en vez de solo empujarte.
+func _hazard_hit(area: Area2D) -> void:
+	_take_damage(_damage_from(area), area.global_position)
+	if health <= 0:
+		return  # la muerte ya te llevó al checkpoint
+	global_position = last_safe_position
+	velocity = Vector2.ZERO
+	_safe_ground_timer = 0.0
+	var manager = get_tree().get_first_node_in_group("rooms")
+	if manager != null and manager.has_method("hazard_flash"):
+		manager.hazard_flash()
 
 
 # Cuánto daño hace una fuente de daño. Si el dueño del área (el enemigo)

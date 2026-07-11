@@ -102,6 +102,9 @@ func _load_room(path: String, door_name: String, explicit_pos := Vector2.INF) ->
 	# Si cruzaste la puerta adentro de un géiser, el empuje no debe viajar.
 	if "updraft_force" in player:
 		player.updraft_force = 0.0
+	# El punto de entrada a la sala es el primer "piso seguro" (pinchos).
+	if "last_safe_position" in player:
+		player.last_safe_position = player.global_position
 
 	_apply_camera_limits()
 
@@ -171,3 +174,10 @@ func _fade_to(target_alpha: float) -> void:
 	var tween := create_tween()
 	tween.tween_property(fade_rect, "color:a", target_alpha, fade_time)
 	await tween.finished
+
+
+# Flash rápido al caer en pinchos (el respawn no debe sentirse teleport).
+func hazard_flash() -> void:
+	var tween := create_tween()
+	tween.tween_property(fade_rect, "color:a", 0.65, 0.07)
+	tween.tween_property(fade_rect, "color:a", 0.0, 0.2)
