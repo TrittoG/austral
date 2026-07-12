@@ -314,7 +314,9 @@ func _track_safe_ground(delta: float) -> void:
 func _update_animation() -> void:
 	body.flip_h = facing < 0
 	var next := "idle"
-	if not is_on_floor():
+	if attack_active_timer > 0.0:
+		next = "attack"  # la estocada manda mientras el golpe está activo
+	elif not is_on_floor():
 		next = "jump" if velocity.y < 0.0 else "fall"
 	elif absf(velocity.x) > 10.0:
 		next = "run"

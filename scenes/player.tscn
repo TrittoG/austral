@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://b8player0argen"]
+[gd_scene load_steps=10 format=3 uid="uid://b8player0argen"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_player"]
 [ext_resource type="Texture2D" path="res://assets/sprites/player/hd_caido.png" id="t_caido"]
 [ext_resource type="Texture2D" path="res://assets/sprites/player/hd_caido_run.png" id="t_caido_run"]
 [ext_resource type="Texture2D" path="res://assets/sprites/player/hd_caido_jump.png" id="t_caido_jump"]
+[ext_resource type="Texture2D" path="res://assets/sprites/player/hd_caido_attack.png" id="t_caido_attack"]
 
 [sub_resource type="SpriteFrames" id="frames_body"]
 animations = [{
@@ -40,6 +41,14 @@ animations = [{
 }],
 "loop": true,
 "name": &"fall",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("t_caido_attack")
+}],
+"loop": true,
+"name": &"attack",
 "speed": 5.0
 }]
 
